@@ -1,18 +1,18 @@
-class Cards {
+class CardModel {
   final int id;
   final String name;
   final String type;
   final String imageUrl;
 
-  Cards({
+  CardModel({
     required this.id,
     required this.name,
     required this.type,
     required this.imageUrl,
   });
 
-  factory Cards.fromJson(Map<String, dynamic> json) {
-    return Cards(
+  factory CardModel.fromJson(Map<String, dynamic> json) {
+    return CardModel(
       id: json['id'],
       name: json['name'],
       type: json['type'],
