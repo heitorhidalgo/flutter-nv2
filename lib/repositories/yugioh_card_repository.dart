@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../models/card_model.dart';
+import '../models/yugioh_card_model.dart';
 import '../models/api_error.dart';
 
-class CardRepository {
+class YugiohCardRepository {
   // A URL fica encapsulada aqui. A tela não precisa saber de onde os dados vêm.
   final String _baseUrl = 'https://db.ygoprodeck.com/api/v7/cardinfo.php?staple=yes';
 
   // O método agora promete retornar uma Lista de YugiohCard
-  Future<List<CardModel>> fetchCards() async {
+  Future<List<YugiohCardModel>> fetchCards() async {
     try {
       final url = Uri.parse(_baseUrl);
       final response = await http.get(
@@ -21,7 +21,7 @@ class CardRepository {
         final List<dynamic> listaJson = mapData['data'];
 
         // Mapeia o JSON para objetos Dart e retorna a lista pronta
-        return listaJson.map((json) => CardModel.fromJson(json)).toList();
+        return listaJson.map((json) => YugiohCardModel.fromJson(json)).toList();
       } else {
         // Se a API retornar erro (Caminho Triste), nós decodificamos a mensagem
         // e "lançamos" (throw) o erro para quem chamou a função.

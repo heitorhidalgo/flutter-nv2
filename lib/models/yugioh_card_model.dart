@@ -1,18 +1,18 @@
-class CardModel {
+class YugiohCardModel {
   final int id;
   final String name;
   final String type;
   final String imageUrl;
 
-  CardModel({
+  YugiohCardModel({
     required this.id,
     required this.name,
     required this.type,
     required this.imageUrl,
   });
 
-  factory CardModel.fromJson(Map<String, dynamic> json) {
-    return CardModel(
+  factory YugiohCardModel.fromJson(Map<String, dynamic> json) {
+    return YugiohCardModel(
       id: json['id'],
       name: json['name'],
       type: json['type'],

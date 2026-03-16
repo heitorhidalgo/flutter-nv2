@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'models/api_error.dart';
-import 'models/card_model.dart';
+import 'models/yugioh_card_model.dart';
 
 void main() {
   runApp(
@@ -20,7 +20,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<CardModel> _cartas = [];
+  List<YugiohCardModel> _cartas = [];
   bool _isLoading = true;
   ApiError? _apiError;
 
@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
       if (response.statusCode == 200) {
         final List<dynamic> listaJson = mapData['data'];
         setState(() {
-          _cartas = listaJson.map((json) => CardModel.fromJson(json)).toList();
+          _cartas = listaJson.map((json) => YugiohCardModel.fromJson(json)).toList();
           _apiError = null;
           _isLoading = false;
         });
