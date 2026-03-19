@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_nv2/views/card_details_page.dart';
 import '../controllers/yugioh_card_controller.dart';
 import '../repositories/yugioh_card_repository.dart';
 
@@ -51,7 +52,6 @@ class _HomePageState extends State<HomePage> {
           child: CircularProgressIndicator()
       );
     }
-
     if (_controller.apiError != null) {
       return Center(
         child: Column(
@@ -82,16 +82,26 @@ class _HomePageState extends State<HomePage> {
         ),
       );
     }
-
     return ListView.builder(
       itemCount: _controller.cartas.length,
       itemBuilder: (context, index) {
         final carta = _controller.cartas[index];
         return ListTile(
-            title: Text(
-                carta.name),
-            subtitle: Text(
-                carta.type),
+          title: Text(
+              carta.name
+          ),
+          subtitle: Text(
+              carta.type
+          ),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CardDetailsPage(carta: carta),
+              ),
+            );
+          },
         );
       },
     );
