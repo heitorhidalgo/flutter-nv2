@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nv2/views/card_details_page.dart';
 import '../controllers/yugioh_card_controller.dart';
+import '../core/themes/app_theme.dart';
 import '../repositories/yugioh_card_repository.dart';
 
 class HomePage extends StatefulWidget {
@@ -32,7 +33,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.fundoApp,
       appBar: AppBar(
+        backgroundColor: AppTheme.fundoApp,
           title: const Text(
               'Yu-Gi-Oh! App'
           ),

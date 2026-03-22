@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nv2/models/yugioh_card_model.dart';
 
+import '../core/themes/app_theme.dart';
+
 class CardDetailsPage extends StatelessWidget{
   final YugiohCardModel carta;
 
@@ -12,7 +14,9 @@ class CardDetailsPage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.fundoApp,
       appBar: AppBar(
+        backgroundColor: AppTheme.fundoApp,
         title: Text(
           carta.name
         ),
@@ -52,9 +56,9 @@ class CardDetailsPage extends StatelessWidget{
             Text(
               carta.name,
               style: const TextStyle(
-                fontSize: 26,
+                fontSize: 35,
                 fontWeight: FontWeight.bold,
-                color: Colors.grey
+                color: AppTheme.textoPrimario,
               ),
                 textAlign: TextAlign.center,
               ),
@@ -62,8 +66,17 @@ class CardDetailsPage extends StatelessWidget{
             Text(
               'Tipo: ${carta.type}',
               style: const TextStyle(
-                fontSize: 18,
-                color: Colors.grey
+                fontSize: 25,
+                color: AppTheme.textoSecundario,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Descrição: ${carta.description}',
+              style: const TextStyle(
+                  fontSize: 20,
+                  color: AppTheme.textoSecundario,
               ),
               textAlign: TextAlign.center,
             ),
