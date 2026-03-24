@@ -18,7 +18,9 @@ class CardDetailsPage extends StatelessWidget{
       appBar: AppBar(
         backgroundColor: AppTheme.fundoApp,
         title: Text(
-          carta.name
+          carta.name,
+          style: AppTheme.fonteTitulo(30),
+          textAlign: TextAlign.center,
         ),
       ),
       body: SingleChildScrollView(
@@ -55,31 +57,21 @@ class CardDetailsPage extends StatelessWidget{
             const SizedBox(height: 24),
             Text(
               carta.name,
-              style: const TextStyle(
-                fontSize: 35,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.textoPrimario,
-              ),
-                textAlign: TextAlign.center,
+              style: AppTheme.fonteTitulo(35),
+              textAlign: TextAlign.center,
               ),
             const SizedBox(height: 8),
             Text(
               'Tipo: ${carta.type}',
-              style: const TextStyle(
-                fontSize: 25,
-                color: AppTheme.textoSecundario,
-              ),
+              style: AppTheme.fonteSubtitulo(30),
               textAlign: TextAlign.center,
-            ),
+              ),
             const SizedBox(height: 8),
             Text(
               'Descrição: ${carta.description}',
-              style: const TextStyle(
-                  fontSize: 20,
-                  color: AppTheme.textoSecundario,
+              style: AppTheme.fonteDescricao(25),
+              textAlign: TextAlign.justify,
               ),
-              textAlign: TextAlign.center,
-            ),
           ],
         ),
       ),
