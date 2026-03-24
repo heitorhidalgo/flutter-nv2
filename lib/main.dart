@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_nv2/views/home_page.dart';
+import 'package:flutter_nv2/views/login_page.dart';
 
 void main() {
   runApp(
     const MaterialApp(
-        home: HomePage(),
+        home: LoginPage(),
         debugShowCheckedModeBanner: false),
   );
 }
