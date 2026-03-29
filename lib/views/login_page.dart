@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_nv2/views/home_page.dart';
-
 import '../core/themes/app_theme.dart';
+import '../controllers/login_controller.dart';
+import 'home_page.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,40 +14,60 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _senhaController = TextEditingController();
-  
-  void _fazerLogin(){
-    Navigator.pushReplacement(
-        context, 
-        MaterialPageRoute(
-            builder: (context) => const HomePage()
-        ),
+
+  final _loginController = LoginController();
+
+  Future<void> _entrar() async {
+    FocusScope.of(context).unfocus();
+
+    final sucesso = await _loginController.fazerLogin(
+      _emailController.text,
+      _senhaController.text,
     );
+
+    if (!mounted) return;
+
+    if (sucesso) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(_loginController.errorMessage ?? 'Erro desconhecido'),
+          backgroundColor: AppTheme.corErro,
+        ),
+      );
+    }
   }
-  
+
   @override
-  void dispose(){
+  void dispose() {
     _emailController.dispose();
     _senhaController.dispose();
+    _loginController.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.fundoApp,
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(32),
+          padding: const EdgeInsets.all(32.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                'Yu-Gi-Oh! App',
-                style: AppTheme.fonteTitulo(40),
-                textAlign: TextAlign.center,
+              Image.asset(
+                'assets/icons/logotipo.png',
+               height: 200,
+                fit: BoxFit.contain,
+                semanticLabel: 'Yu-Gi-Oh! Logotipo',
               ),
-              const SizedBox(height: 48),
+              const SizedBox(height: 30),
               TextField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
@@ -71,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: InputDecoration(
                   labelText: 'Senha',
                   labelStyle: AppTheme.fonteSubtitulo(16),
-                  prefixIcon: const Icon(Icons.password, color: AppTheme.textoSecundario),
+                  prefixIcon: const Icon(Icons.lock, color: AppTheme.textoSecundario),
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: AppTheme.textoSecundario),
                   ),
@@ -81,18 +102,34 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SizedBox(height: 32),
-              ElevatedButton(onPressed: _fazerLogin,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.textoPrimario,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+              ListenableBuilder(
+                listenable: _loginController,
+                builder: (context, child) {
+                  return ElevatedButton(
+                    onPressed: _loginController.isLoading ? null : _entrar,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.textoPrimario,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      disabledBackgroundColor: AppTheme.textoSecundario.withValues(alpha: 0.5),
+                    ),
+                    child: _loginController.isLoading
+                        ? const SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: CircularProgressIndicator(
+                        color: AppTheme.fundoApp,
+                        strokeWidth: 3,
+                      ),
                     )
-                  ),
-                  child: Text(
-                    'Entrar',
-                    style: AppTheme.fonteTitulo(18).copyWith(color: AppTheme.fundoApp),
-                  ),
+                        : Text(
+                      'ENTRAR',
+                      style: AppTheme.fonteTitulo(18).copyWith(color: AppTheme.fundoApp),
+                    ),
+                  );
+                },
               ),
             ],
           ),
