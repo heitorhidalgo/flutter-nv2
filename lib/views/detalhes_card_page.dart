@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nv2/models/yugioh_card_model.dart';
-
 import '../core/themes/app_theme.dart';
 
-class CardDetailsPage extends StatelessWidget{
+class DetalhesCardPage extends StatelessWidget{
   final YugiohCardModel carta;
 
-  const CardDetailsPage({
+  const DetalhesCardPage({
     super.key,
     required this.carta
   });

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_nv2/views/card_details_page.dart';
+import 'package:flutter_nv2/views/detalhes_card_page.dart';
 import '../controllers/yugioh_card_controller.dart';
 import '../core/themes/app_theme.dart';
 import '../repositories/yugioh_card_repository.dart';
@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => CardDetailsPage(carta: carta),
+                builder: (context) => DetalhesCardPage(carta: carta),
               ),
             );
           },

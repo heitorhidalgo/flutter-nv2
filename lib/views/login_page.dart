@@ -3,7 +3,6 @@ import '../core/themes/app_theme.dart';
 import '../controllers/login_controller.dart';
 import 'home_page.dart';
 
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -67,14 +66,14 @@ class _LoginPageState extends State<LoginPage> {
                 fit: BoxFit.contain,
                 semanticLabel: 'Yu-Gi-Oh! Logotipo',
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 14),
               TextField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                style: AppTheme.fonteDescricao(18),
+                style: AppTheme.fonteDescricao(22),
                 decoration: InputDecoration(
                   labelText: 'E-mail',
-                  labelStyle: AppTheme.fonteSubtitulo(16),
+                  labelStyle: AppTheme.fonteSubtitulo(18),
                   prefixIcon: const Icon(Icons.email, color: AppTheme.textoSecundario),
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: AppTheme.textoSecundario),
@@ -84,14 +83,14 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 14),
               TextField(
                 controller: _senhaController,
                 obscureText: true,
-                style: AppTheme.fonteDescricao(18),
+                style: AppTheme.fonteDescricao(22),
                 decoration: InputDecoration(
                   labelText: 'Senha',
-                  labelStyle: AppTheme.fonteSubtitulo(16),
+                  labelStyle: AppTheme.fonteSubtitulo(18),
                   prefixIcon: const Icon(Icons.lock, color: AppTheme.textoSecundario),
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: AppTheme.textoSecundario),

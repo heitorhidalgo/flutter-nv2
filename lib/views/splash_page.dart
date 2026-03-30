@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_nv2/controllers/splash_controller.dart';
 import '../core/themes/app_theme.dart';
 import 'login_page.dart';
 
@@ -12,14 +12,16 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
+  late final AnimationController _animationController;
   late final Animation<double> _pulseAnimation;
+
+  final SplashController _splashController = SplashController();
 
   @override
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
+    _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
     );
@@ -27,27 +29,38 @@ class _SplashPageState extends State<SplashPage>
     _pulseAnimation = Tween<double>(
       begin: 1.0,
       end: 1.10,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
 
-    _controller.repeat(reverse: true);
+    _animationController.repeat(reverse: true);
 
-    _navegarParaLogin();
+    _iniciarCarregamento();
   }
 
-  void _navegarParaLogin() async {
-    await Future.delayed(const Duration(seconds: 3));
+  void _iniciarCarregamento() async {
+    final sucesso = await _splashController.carregarDependencias();
 
-    if (mounted) {
+    if(!mounted) {
+      return;
+    }
+
+    if(sucesso) {
       Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginPage()),
-      );
+          context,
+          MaterialPageRoute(
+              builder: (context) => const LoginPage()));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+                'Erro ao iniciar o aplicativo. Tente novamente!'),
+            backgroundColor: AppTheme.corErro,
+          ));
     }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -72,7 +85,7 @@ class _SplashPageState extends State<SplashPage>
             ),
             const SizedBox(height: 75),
             Text('Carregando...',
-                style: AppTheme.fonteTitulo(18)),
+                style: AppTheme.fonteTitulo(20)),
           ],
         ),
       ),
