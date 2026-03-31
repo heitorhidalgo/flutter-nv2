@@ -1,112 +1,71 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_nv2/views/detalhes_card_page.dart';
-import '../controllers/yugioh_card_controller.dart';
+import 'package:flutter_nv2/views/catalogo_page.dart';
 import '../core/themes/app_theme.dart';
-import '../repositories/yugioh_card_repository.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  late final YugiohCardController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-
-    final repository = YugiohCardRepository();
-    _controller = YugiohCardController(repository);
-
-    _controller.loadCards();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.fundoApp,
       appBar: AppBar(
-        backgroundColor: AppTheme.fundoApp,
-          title: const Text(
-              'Yu-Gi-Oh! App'
-          ),
-      ),
-      body: ListenableBuilder(
-        listenable: _controller,
-        builder: (context, child) {
-          return _buildBody();
-        },
-      ),
-    );
-  }
-
-  Widget _buildBody() {
-    if (_controller.isLoading) {
-      return const Center(
-          child: CircularProgressIndicator()
-      );
-    }
-    if (_controller.apiError != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-                Icons.error_outline,
-                color: Colors.red,
-                size: 60),
-            const SizedBox(height: 16),
-            Text(
-              _controller.apiError.toString(),
-              style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.red),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                _controller.loadCards();
-              },
-              child: const Text(
-                  'Tentar novamente'
-              ),
-            ),
-          ],
+        backgroundColor: AppTheme.textoPrimario,
+        title: Text(
+          'Yu-Gi-Oh! App',
+          style: AppTheme.fonteTitulo(24).copyWith(color: AppTheme.fundoApp),
         ),
-      );
-    }
-    return ListView.builder(
-      itemCount: _controller.cartas.length,
-      itemBuilder: (context, index) {
-        final carta = _controller.cartas[index];
-        return ListTile(
-          title: Text(
-              carta.name
-          ),
-          subtitle: Text(
-              carta.type
-          ),
-          trailing: const Icon(Icons.chevron_right),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DetalhesCardPage(carta: carta),
+        centerTitle: true,
+      ),
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/icons/logotipo.png',
+                height: 200,
+                fit: BoxFit.contain,
+                semanticLabel: 'Yu-Gi-Oh! Logotipo',
               ),
-            );
-          },
-        );
-      },
+              const SizedBox(height: 10),
+              Center(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const CatalogoPage()),
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(16),
+                  child: Container(
+                    padding: const EdgeInsets.all(32),
+                    decoration: BoxDecoration(
+                      color: AppTheme.textoPrimario.withValues(alpha: 0.05),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: AppTheme.textoPrimario, width: 2),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.style,
+                          size: 80,
+                          color: AppTheme.textoPrimario,
+                        ),
+                        const SizedBox(height: 24),
+                        Text(
+                          'Catálogo de Cartas',
+                          style: AppTheme.fonteTitulo(24),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
     );
   }
 }
