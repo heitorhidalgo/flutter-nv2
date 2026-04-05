@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nv2/views/detalhes_card_page.dart';
+import 'package:flutter_nv2/widgets/cabecalho_widget.dart';
 import '../controllers/yugioh_card_controller.dart';
 import '../core/themes/app_theme.dart';
 import '../repositories/yugioh_card_repository.dart';
@@ -34,11 +35,8 @@ class _CatalogoPageState extends State<CatalogoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.fundoApp,
-      appBar: AppBar(
-        backgroundColor: AppTheme.fundoApp,
-        title: const Text(
-            'Yu-Gi-Oh! App'
-        ),
+      appBar: const CabecalhoWidget(
+      mostrarBotaoVoltar: true,
       ),
       body: ListenableBuilder(
         listenable: _controller,
