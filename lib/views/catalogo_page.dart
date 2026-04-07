@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_nv2/views/detalhes_card_page.dart';
 import 'package:flutter_nv2/widgets/cabecalho_widget.dart';
@@ -15,18 +16,29 @@ class CatalogoPage extends StatefulWidget {
 class _CatalogoPageState extends State<CatalogoPage> {
   late final YugiohCardController _controller;
 
+  final ScrollController _scrollController = ScrollController();
+  Timer? _debounce;
+
   @override
   void initState() {
     super.initState();
 
     final repository = YugiohCardRepository();
     _controller = YugiohCardController(repository);
+    _scrollController.addListener(_onScroll);
+    _controller.buscarCartas();
+  }
 
-    _controller.loadCards();
+  void _onScroll() {
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
+      _controller.buscarCartas(isLoadMore: true);
+    }
   }
 
   @override
   void dispose() {
+    _scrollController.dispose();
+    _debounce?.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -48,9 +60,6 @@ class _CatalogoPageState extends State<CatalogoPage> {
   }
 
   Widget _buildBody() {
-    if (_controller.isLoading) {
-      return const Center(child: CircularProgressIndicator(color: AppTheme.textoPrimario));
-    }
     return Column(
       children: [
         Padding(
@@ -72,15 +81,48 @@ class _CatalogoPageState extends State<CatalogoPage> {
               ),
             ),
             onChanged: (textoDigitado) {
-              // TODO: Conectar com o Controller depois!
-              print('Usuário digitou: $textoDigitado');
+              if (_debounce?.isActive ?? false) _debounce!.cancel();
+              _debounce = Timer(const Duration(milliseconds: 500), () {
+                _controller.pesquisarCarta(textoDigitado);
+              });
             },
           ),
         ),
         Expanded(
-          child: ListView.builder(
-            itemCount: _controller.cartas.length,
+          child: _controller.isLoading
+              ? const Center(child: CircularProgressIndicator(color: AppTheme.textoPrimario))
+              : _controller.errorMessage != null
+              ? Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.error_outline, color: Colors.red, size: 60),
+                const SizedBox(height: 16),
+                Text(_controller.errorMessage!, style: const TextStyle(color: Colors.red)),
+                ElevatedButton(
+                  onPressed: () => _controller.buscarCartas(),
+                  child: const Text('Tentar novamente'),
+                ),
+              ],
+            ),
+          )
+              : _controller.cartas.isEmpty
+              ? Center(
+            child: Text(
+              'Nenhuma carta encontrada.',
+              style: AppTheme.fonteTitulo(20),
+            ),
+          )
+              : ListView.builder(
+            controller: _scrollController,
+            itemCount: _controller.cartas.length + (_controller.isFetchingMore ? 1 : 0),
             itemBuilder: (context, index) {
+              if (index == _controller.cartas.length) {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 32.0),
+                  child: Center(child: CircularProgressIndicator(color: AppTheme.textoPrimario)),
+                );
+              }
               final carta = _controller.cartas[index];
               return ListTile(
                 title: Text(carta.name, style: AppTheme.fonteSubtitulo(18)),
