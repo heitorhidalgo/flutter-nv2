@@ -36,7 +36,7 @@ class _CatalogoPageState extends State<CatalogoPage> {
     return Scaffold(
       backgroundColor: AppTheme.fundoApp,
       appBar: const CabecalhoWidget(
-      mostrarBotaoVoltar: true,
+        mostrarBotaoVoltar: true,
       ),
       body: ListenableBuilder(
         listenable: _controller,
@@ -49,62 +49,56 @@ class _CatalogoPageState extends State<CatalogoPage> {
 
   Widget _buildBody() {
     if (_controller.isLoading) {
-      return const Center(
-          child: CircularProgressIndicator()
-      );
+      return const Center(child: CircularProgressIndicator(color: AppTheme.textoPrimario));
     }
-    if (_controller.apiError != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-                Icons.error_outline,
-                color: Colors.red,
-                size: 60),
-            const SizedBox(height: 16),
-            Text(
-              _controller.apiError.toString(),
-              style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.red),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                _controller.loadCards();
-              },
-              child: const Text(
-                  'Tentar novamente'
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: TextField(
+            style: AppTheme.fonteDescricao(18),
+            decoration: InputDecoration(
+              hintText: 'Pesquisar...',
+              prefixIcon: const Icon(Icons.search, color: AppTheme.textoSecundario),
+              filled: true,
+              fillColor: Colors.white.withValues(alpha: 0.5),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(color: AppTheme.textoPrimario),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(color: AppTheme.textoPrimario, width: 2),
               ),
             ),
-          ],
+            onChanged: (textoDigitado) {
+              // TODO: Conectar com o Controller depois!
+              print('Usuário digitou: $textoDigitado');
+            },
+          ),
         ),
-      );
-    }
-    return ListView.builder(
-      itemCount: _controller.cartas.length,
-      itemBuilder: (context, index) {
-        final carta = _controller.cartas[index];
-        return ListTile(
-          title: Text(
-              carta.name
+        Expanded(
+          child: ListView.builder(
+            itemCount: _controller.cartas.length,
+            itemBuilder: (context, index) {
+              final carta = _controller.cartas[index];
+              return ListTile(
+                title: Text(carta.name, style: AppTheme.fonteSubtitulo(18)),
+                subtitle: Text(carta.type),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetalhesCardPage(carta: carta),
+                    ),
+                  );
+                },
+              );
+            },
           ),
-          subtitle: Text(
-              carta.type
-          ),
-          trailing: const Icon(Icons.chevron_right),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DetalhesCardPage(carta: carta),
-              ),
-            );
-          },
-        );
-      },
+        ),
+      ],
     );
   }
 }

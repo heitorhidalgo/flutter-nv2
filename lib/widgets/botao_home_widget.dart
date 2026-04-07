@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../core/themes/app_theme.dart';
 
 class BotaoHomeWidget extends StatelessWidget{
-  //aqui será o widget principal da home, onde será catálogo, personagens, curiosidades, meu deck, etc
   final String titulo;
   final IconData icone;
   final VoidCallback clique;

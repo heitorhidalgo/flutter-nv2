@@ -3,6 +3,7 @@ import 'package:flutter_nv2/models/yugioh_card_model.dart';
 import '../core/themes/app_theme.dart';
 
 class DetalhesCardPage extends StatelessWidget{
+  // colocar uma opcao para adicionar a carta ao "meu deck"
   final YugiohCardModel carta;
 
   const DetalhesCardPage({
