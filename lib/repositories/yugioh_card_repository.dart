@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../core/configs/app_config.dart';
 import '../models/yugioh_card_model.dart';
 import '../models/api_error.dart';
 
 class YugiohCardRepository {
-  final String _baseUrl = 'https://db.ygoprodeck.com/api/v7/cardinfo.php';
+  final String _baseUrl = AppConfig.baseUrlApi;
 
   Future<List<YugiohCardModel>> buscarCartasApi({
     required int offset,

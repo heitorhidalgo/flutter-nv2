@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nv2/models/yugioh_card_model.dart';
 import '../core/themes/app_theme.dart';
+import '../widgets/cabecalho_widget.dart';
 
-class DetalhesCardPage extends StatelessWidget{
-  // colocar uma opcao para adicionar a carta ao "meu deck"
+class DetalhesCardPage extends StatelessWidget {
+  // TODO: colocar uma opcao para adicionar a carta ao "meu deck"
   final YugiohCardModel carta;
 
   const DetalhesCardPage({
@@ -15,65 +16,84 @@ class DetalhesCardPage extends StatelessWidget{
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.fundoApp,
-      appBar: AppBar(
-        backgroundColor: AppTheme.fundoApp,
-        title: Text(
-          carta.name,
-          style: AppTheme.fonteTitulo(30),
-          textAlign: TextAlign.center,
-        ),
+      appBar: CabecalhoWidget(
+        mostrarBotaoVoltar: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                carta.imageUrl,
-                height: 400,
-                fit: BoxFit.contain,
-                loadingBuilder: (context, child, loadingProgress){
-                  if(loadingProgress == null) {
-                    return child;
-                  }
-                  return SizedBox(
-                    height: 400,
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                },
-                errorBuilder: (context, error, stackTrace) => const SizedBox(
-                  height: 400,
-                  child: Icon(Icons.broken_image,
-                  size: 100,
-                  color: Colors.grey
-                  ),
-                ),
-              ),
-            ),
+            _imagemCarta(),
+            const SizedBox(height: 32),
+            _nomeCarta(),
+            const SizedBox(height: 8),
+            _tipoCarta(),
             const SizedBox(height: 24),
-            Text(
-              carta.name,
-              style: AppTheme.fonteTitulo(35),
-              textAlign: TextAlign.center,
-              ),
-            const SizedBox(height: 8),
-            Text(
-              'Tipo: ${carta.type}',
-              style: AppTheme.fonteSubtitulo(30),
-              textAlign: TextAlign.center,
-              ),
-            const SizedBox(height: 8),
-            Text(
-              'Descrição: ${carta.description}',
-              style: AppTheme.fonteDescricao(25),
-              textAlign: TextAlign.justify,
-              ),
+            _descricaoCarta(),
           ],
         ),
+      ),
+    );
+  }
+
+  // --- WIDGETS FRAGMENTADOS ---
+
+  Widget _imagemCarta() {
+    return Hero(
+      tag: 'carta-image-${carta.id}',
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Image.network(
+          carta.imageUrl,
+          height: 400,
+          fit: BoxFit.contain,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return const SizedBox(
+              height: 400,
+              child: Center(
+                child: CircularProgressIndicator(color: AppTheme.textoPrimario),
+              ),
+            );
+          },
+          errorBuilder: (context, error, stackTrace) => const SizedBox(
+            height: 400,
+            child: Icon(Icons.broken_image, size: 100, color: Colors.grey),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _nomeCarta() {
+    return Text(
+      carta.name,
+      style: AppTheme.fonteTitulo(35),
+      textAlign: TextAlign.center,
+    );
+  }
+
+  Widget _tipoCarta() {
+    return Text(
+      'TIPO: ${carta.type.toUpperCase()}',
+      style: AppTheme.fonteSubtitulo(20).copyWith(fontWeight: FontWeight.bold),
+      textAlign: TextAlign.center,
+    );
+  }
+
+  Widget _descricaoCarta() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppTheme.textoPrimario.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppTheme.textoPrimario, width: 1),
+      ),
+      child: Text(
+        carta.description,
+        style: AppTheme.fonteDescricao(22),
+        textAlign: TextAlign.justify,
       ),
     );
   }

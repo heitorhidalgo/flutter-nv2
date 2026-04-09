@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_nv2/views/detalhes_card_page.dart';
 import 'package:flutter_nv2/widgets/cabecalho_widget.dart';
-import '../controllers/yugioh_card_controller.dart';
+import '../controllers/catalogo_controller.dart';
 import '../core/themes/app_theme.dart';
 import '../repositories/yugioh_card_repository.dart';
 
@@ -14,7 +14,7 @@ class CatalogoPage extends StatefulWidget {
 }
 
 class _CatalogoPageState extends State<CatalogoPage> {
-  late final YugiohCardController _controller;
+  late final CatalogoController _controller;
 
   final ScrollController _scrollController = ScrollController();
   Timer? _debounce;
@@ -22,9 +22,8 @@ class _CatalogoPageState extends State<CatalogoPage> {
   @override
   void initState() {
     super.initState();
-
     final repository = YugiohCardRepository();
-    _controller = YugiohCardController(repository);
+    _controller = CatalogoController(repository);
     _scrollController.addListener(_onScroll);
     _controller.buscarCartas();
   }
@@ -82,6 +81,7 @@ class _CatalogoPageState extends State<CatalogoPage> {
             ),
             onChanged: (textoDigitado) {
               if (_debounce?.isActive ?? false) _debounce!.cancel();
+
               _debounce = Timer(const Duration(milliseconds: 500), () {
                 _controller.pesquisarCarta(textoDigitado);
               });
@@ -123,6 +123,7 @@ class _CatalogoPageState extends State<CatalogoPage> {
                   child: Center(child: CircularProgressIndicator(color: AppTheme.textoPrimario)),
                 );
               }
+
               final carta = _controller.cartas[index];
               return ListTile(
                 title: Text(carta.name, style: AppTheme.fonteSubtitulo(18)),

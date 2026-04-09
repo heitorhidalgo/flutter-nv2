@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_nv2/core/configs/app_config.dart';
 import '../models/yugioh_card_model.dart';
 import '../repositories/yugioh_card_repository.dart';
 
@@ -13,7 +14,7 @@ class CatalogoController extends ChangeNotifier {
   String? errorMessage;
 
   int _offset = 0;
-  final int _limit = 20;
+  final int _limit = AppConfig.limitePaginacao;
   bool hasReachedMax = false;
   String _termoPesquisa = '';
 
