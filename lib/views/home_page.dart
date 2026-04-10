@@ -3,6 +3,7 @@ import 'package:flutter_nv2/views/catalogo_page.dart';
 import 'package:flutter_nv2/widgets/botao_home_widget.dart';
 import 'package:flutter_nv2/widgets/cabecalho_widget.dart';
 import '../core/themes/app_theme.dart';
+import 'meu_deck_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -43,7 +44,10 @@ class HomePage extends StatelessWidget {
                       titulo: 'Meu deck',
                       icone: Icons.style_outlined,
                       clique: (){
-                        print('indo para pag deck');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const MeuDeckPage())
+                        );
                       },
                     ),
                     BotaoHomeWidget(
@@ -58,6 +62,13 @@ class HomePage extends StatelessWidget {
                       icone: Icons.question_mark,
                       clique: (){
                         print('indo para pag de curiosidades');
+                      },
+                    ),
+                    BotaoHomeWidget(
+                      titulo: 'Como Jogar?',
+                      icone: Icons.play_arrow,
+                      clique: (){
+                        print('indo para pag de como jogar');
                       },
                     ),
                   ],

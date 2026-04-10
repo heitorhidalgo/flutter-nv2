@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nv2/models/yugioh_card_model.dart';
+import '../controllers/meu_deck_controller.dart';
 import '../core/themes/app_theme.dart';
 import '../widgets/cabecalho_widget.dart';
 
 class DetalhesCardPage extends StatelessWidget {
-  // TODO: colocar uma opcao para adicionar a carta ao "meu deck"
   final YugiohCardModel carta;
 
   const DetalhesCardPage({
@@ -18,6 +18,17 @@ class DetalhesCardPage extends StatelessWidget {
       backgroundColor: AppTheme.fundoApp,
       appBar: CabecalhoWidget(
         mostrarBotaoVoltar: true,
+        mostrarBotaoAddDeck: true,
+        cliqueBotaoAddDeck: () {
+          MeuDeckController().adicionarCarta(carta);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('${carta.name} adicionada ao deck!'),
+              backgroundColor: AppTheme.corSucesso,
+              duration: const Duration(seconds: 2),
+            ),
+          );
+        },
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),

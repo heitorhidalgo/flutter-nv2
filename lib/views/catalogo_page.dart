@@ -115,6 +115,7 @@ class _CatalogoPageState extends State<CatalogoPage> {
           )
               : ListView.builder(
             controller: _scrollController,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             itemCount: _controller.cartas.length + (_controller.isFetchingMore ? 1 : 0),
             itemBuilder: (context, index) {
               if (index == _controller.cartas.length) {
@@ -123,20 +124,41 @@ class _CatalogoPageState extends State<CatalogoPage> {
                   child: Center(child: CircularProgressIndicator(color: AppTheme.textoPrimario)),
                 );
               }
-
               final carta = _controller.cartas[index];
-              return ListTile(
-                title: Text(carta.name, style: AppTheme.fonteSubtitulo(18)),
-                subtitle: Text(carta.type),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetalhesCardPage(carta: carta),
+              return Card(
+                color: AppTheme.fundoApp,
+                elevation: 2,
+                margin: const EdgeInsets.only(bottom: 12),
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(color: AppTheme.textoSecundario, width: 0.5),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: ListTile(
+                  leading: Hero(
+                    tag: 'carta-image-${carta.id}',
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: Image.network(
+                        carta.imageUrl,
+                        width: 40,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                        const Icon(Icons.broken_image, color: AppTheme.textoSecundario),
+                      ),
                     ),
-                  );
-                },
+                  ),
+                  title: Text(carta.name, style: AppTheme.fonteSubtitulo(18)),
+                  subtitle: Text(carta.type, style: AppTheme.fonteDescricao(14)),
+                  trailing: const Icon(Icons.chevron_right, color: AppTheme.textoPrimario),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetalhesCardPage(carta: carta),
+                      ),
+                    );
+                  },
+                ),
               );
             },
           ),
