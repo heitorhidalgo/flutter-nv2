@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nv2/views/catalogo_page.dart';
+import 'package:flutter_nv2/views/personagens_page.dart';
 import 'package:flutter_nv2/widgets/botao_home_widget.dart';
 import 'package:flutter_nv2/widgets/cabecalho_widget.dart';
 import '../core/themes/app_theme.dart';
@@ -54,7 +55,10 @@ class HomePage extends StatelessWidget {
                       titulo: 'Personagens',
                       icone: Icons.person,
                       clique: (){
-                        print('indo para pag de personagens');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const PersonagensPage())
+                        );
                       },
                     ),
                     BotaoHomeWidget(
