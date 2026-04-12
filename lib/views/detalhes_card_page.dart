@@ -20,14 +20,24 @@ class DetalhesCardPage extends StatelessWidget {
         mostrarBotaoVoltar: true,
         mostrarBotaoAddDeck: true,
         cliqueBotaoAddDeck: () {
-          MeuDeckController().adicionarCarta(carta);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('${carta.name} adicionada ao deck!'),
-              backgroundColor: AppTheme.corSucesso,
-              duration: const Duration(seconds: 2),
-            ),
-          );
+          final mensagemErro = MeuDeckController().adicionarCarta(carta);
+          if (mensagemErro != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(mensagemErro),
+                backgroundColor: AppTheme.corErro,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('${carta.name} adicionada ao deck!'),
+                backgroundColor: AppTheme.corSucesso,
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          }
         },
       ),
       body: SingleChildScrollView(
