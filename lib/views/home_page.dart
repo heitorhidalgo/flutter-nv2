@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nv2/views/catalogo_page.dart';
+import 'package:flutter_nv2/views/curiosidades_page.dart';
 import 'package:flutter_nv2/views/personagens_page.dart';
 import 'package:flutter_nv2/widgets/botao_home_widget.dart';
 import 'package:flutter_nv2/widgets/cabecalho_widget.dart';
@@ -65,7 +66,10 @@ class HomePage extends StatelessWidget {
                       titulo: 'Curiosidades',
                       icone: Icons.question_mark,
                       clique: (){
-                        print('indo para pag de curiosidades');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const CuriosidadesPage())
+                        );
                       },
                     ),
                     BotaoHomeWidget(
@@ -73,6 +77,13 @@ class HomePage extends StatelessWidget {
                       icone: Icons.play_arrow,
                       clique: (){
                         print('indo para pag de como jogar');
+                      },
+                    ),
+                    BotaoHomeWidget(
+                      titulo: 'Configurações',
+                      icone: Icons.settings,
+                      clique: (){
+                        print('indo para pag de configurações');
                       },
                     ),
                   ],

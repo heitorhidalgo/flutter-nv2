@@ -42,11 +42,11 @@ class _MeuDeckPageState extends State<MeuDeckPage> {
             itemBuilder: (context, index) {
               final carta = _controller.minhasCartas[index];
               return Card(
-                color: AppTheme.fundoApp,
+                color: AppTheme.textoSecundario,
                 elevation: 2,
                 margin: const EdgeInsets.only(bottom: 12),
                 shape: RoundedRectangleBorder(
-                  side: const BorderSide(color: AppTheme.textoSecundario, width: 0.5),
+                  side: const BorderSide(color: AppTheme.textoPrimario, width: 2),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: ListTile(
@@ -59,13 +59,19 @@ class _MeuDeckPageState extends State<MeuDeckPage> {
                         width: 40,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
-                        const Icon(Icons.broken_image, color: AppTheme.textoSecundario),
+                        const Icon(Icons.broken_image, color: AppTheme.fundoApp),
                       ),
                     ),
                   ),
-                  title: Text(carta.name, style: AppTheme.fonteSubtitulo(18)),
-                  subtitle: Text(carta.type, style: AppTheme.fonteDescricao(14)),
-                  trailing: const Icon(Icons.chevron_right, color: AppTheme.textoPrimario),
+                  title: Text(
+                      carta.name,
+                      style: AppTheme.fonteSubtitulo(18).copyWith(color: AppTheme.fundoApp)
+                  ),
+                  subtitle: Text(
+                      carta.type,
+                      style: AppTheme.fonteDescricao(14).copyWith(color: AppTheme.fundoApp)
+                  ),
+                  trailing: const Icon(Icons.chevron_right, color: AppTheme.fundoApp),
                   onTap: () {
                     Navigator.push(
                       context,

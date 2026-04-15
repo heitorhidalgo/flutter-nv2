@@ -13,12 +13,12 @@ class CardPersonagemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppTheme.fundoApp,
+      color: AppTheme.textoSecundario,
       elevation: 4,
       margin: const EdgeInsets.only(bottom: 24),
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
-        side: const BorderSide(color: AppTheme.textoSecundario, width: 1),
+        side: const BorderSide(color: AppTheme.textoPrimario, width: 2),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -45,7 +45,7 @@ class CardPersonagemWidget extends StatelessWidget {
 
   Widget _imagemPersonagem() {
     return Container(
-      color: AppTheme.textoPrimario.withValues(alpha: 0.1),
+      color: AppTheme.fundoApp.withValues(alpha: 0.1),
       child: Image.asset(
         personagem.imagem,
         height: 250,
@@ -54,7 +54,7 @@ class CardPersonagemWidget extends StatelessWidget {
         alignment: Alignment.topCenter,
         errorBuilder: (context, error, stackTrace) => const SizedBox(
           height: 250,
-          child: Icon(Icons.person, size: 80, color: AppTheme.textoSecundario),
+          child: Icon(Icons.person, size: 80, color: AppTheme.fundoApp),
         ),
       ),
     );
@@ -63,14 +63,14 @@ class CardPersonagemWidget extends StatelessWidget {
   Widget _nomePersonagem() {
     return Text(
       personagem.nome,
-      style: AppTheme.fonteTitulo(26),
+      style: AppTheme.fonteTitulo(26).copyWith(color: AppTheme.fundoApp),
     );
   }
 
   Widget _descricaoPersonagem() {
     return Text(
       personagem.descricao,
-      style: AppTheme.fonteDescricao(18),
+      style: AppTheme.fonteDescricao(20).copyWith(color: AppTheme.fundoApp),
       textAlign: TextAlign.justify,
     );
   }

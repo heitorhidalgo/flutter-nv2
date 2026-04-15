@@ -38,7 +38,7 @@ class BotaoHomeWidget extends StatelessWidget{
             const SizedBox(height: 12),
             Text(
               titulo,
-              style: AppTheme.fonteTitulo(18).copyWith(color: AppTheme.fundoApp),
+              style: AppTheme.fonteTitulo(16).copyWith(color: AppTheme.fundoApp),
               textAlign: TextAlign.center,
             )
           ],

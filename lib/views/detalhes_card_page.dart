@@ -107,13 +107,13 @@ class DetalhesCardPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppTheme.textoPrimario.withValues(alpha: 0.05),
+        color: AppTheme.textoSecundario,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.textoPrimario, width: 1),
+        border: Border.all(color: AppTheme.textoPrimario, width: 2),
       ),
       child: Text(
         carta.description,
-        style: AppTheme.fonteDescricao(22),
+        style: AppTheme.fonteDescricao(20).copyWith(color: AppTheme.fundoApp),
         textAlign: TextAlign.justify,
       ),
     );
