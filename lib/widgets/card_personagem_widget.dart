@@ -48,7 +48,6 @@ class CardPersonagemWidget extends StatelessWidget {
       color: AppTheme.fundoApp.withValues(alpha: 0.1),
       child: Image.asset(
         personagem.imagem,
-        height: 250,
         width: double.infinity,
         fit: BoxFit.cover,
         alignment: Alignment.topCenter,
