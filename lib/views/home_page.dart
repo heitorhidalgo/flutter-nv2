@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nv2/views/catalogo_page.dart';
+import 'package:flutter_nv2/views/como_jogar_page.dart';
 import 'package:flutter_nv2/views/curiosidades_page.dart';
 import 'package:flutter_nv2/views/personagens_page.dart';
 import 'package:flutter_nv2/widgets/botao_home_widget.dart';
@@ -76,7 +77,10 @@ class HomePage extends StatelessWidget {
                       titulo: 'Como Jogar?',
                       icone: Icons.play_arrow,
                       clique: (){
-                        print('indo para pag de como jogar');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const ComoJogarPage())
+                        );
                       },
                     ),
                     BotaoHomeWidget(
