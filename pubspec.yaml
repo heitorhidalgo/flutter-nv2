@@ -38,6 +38,8 @@ dependencies:
   google_fonts: ^8.0.2
   flutter_launcher_icons: ^0.14.4
   flutter_svg: ^2.2.4
+  url_launcher: ^6.3.2
+  easy_localization: ^3.0.8
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +74,8 @@ flutter:
     - assets/icons/
     - assets/personagens/
     - assets/curiosidades/
+    - assets/perfis/
+    - assets/translations/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

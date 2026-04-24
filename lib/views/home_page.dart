@@ -6,6 +6,7 @@ import 'package:flutter_nv2/views/personagens_page.dart';
 import 'package:flutter_nv2/widgets/botao_home_widget.dart';
 import 'package:flutter_nv2/widgets/cabecalho_widget.dart';
 import '../core/themes/app_theme.dart';
+import 'configuracoes_page.dart';
 import 'meu_deck_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -87,7 +88,10 @@ class HomePage extends StatelessWidget {
                       titulo: 'Configurações',
                       icone: Icons.settings,
                       clique: (){
-                        print('indo para pag de configurações');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const ConfiguracoesPage())
+                        );
                       },
                     ),
                   ],
