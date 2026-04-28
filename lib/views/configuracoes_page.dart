@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../controllers/configuracoes_controller.dart';
 import '../core/themes/app_theme.dart';
 import '../widgets/cabecalho_widget.dart';
@@ -15,6 +16,12 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
   final ConfiguracoesController _controller = ConfiguracoesController();
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _controller.carregarIdiomaAtual(context);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.fundoApp,
@@ -27,13 +34,13 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _tituloSecao('PREFERÊNCIAS'),
+                _tituloSecao('configuracoes.preferencias'.tr()),
                 _cardIdioma(),
                 const SizedBox(height: 32),
-                _tituloSecao('SOBRE O APLICATIVO'),
+                _tituloSecao('configuracoes.sobre_app'.tr()),
                 _cardVersao(),
                 const SizedBox(height: 16),
-                _tituloSecao('DESENVOLVIDO POR'),
+                _tituloSecao('configuracoes.desenvolvido_por'.tr()),
                 _cardDesenvolvedor(),
               ],
             ),
@@ -69,7 +76,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
       ),
       child: ListTile(
         leading: const Icon(Icons.language, color: AppTheme.fundoApp, size: 28),
-        title: Text('Idioma', style: AppTheme.fonteTitulo(20).copyWith(color: AppTheme.fundoApp)),
+        title: Text('configuracoes.idioma'.tr(), style: AppTheme.fonteTitulo(20).copyWith(color: AppTheme.fundoApp)),
         trailing: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
             value: _controller.idiomaSelecionado,
@@ -77,7 +84,9 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
             icon: const Icon(Icons.arrow_drop_down, color: AppTheme.fundoApp),
             style: AppTheme.fonteDescricao(16).copyWith(color: AppTheme.fundoApp),
             items: _controller.idiomasDisponiveis.map((String idioma) {
-              return DropdownMenuItem<String>(value: idioma, child: Text(idioma));
+              return DropdownMenuItem<String>(
+                  value: idioma,
+                  child: Text(idioma));
             }).toList(),
             onChanged: (String? novoIdioma) {
               if (novoIdioma != null) {
@@ -100,7 +109,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
       ),
       child: ListTile(
         leading: const Icon(Icons.info_outline, color: AppTheme.fundoApp, size: 28),
-        title: Text('Versão', style: AppTheme.fonteTitulo(20).copyWith(color: AppTheme.fundoApp)),
+        title: Text('configuracoes.versao'.tr(), style: AppTheme.fonteTitulo(20).copyWith(color: AppTheme.fundoApp)),
         trailing: Text(
           _controller.versaoApp,
           style: AppTheme.fonteDescricao(16).copyWith(color: AppTheme.fundoApp),
@@ -124,8 +133,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
             const CircleAvatar(
               radius: 50,
               backgroundColor: AppTheme.fundoApp,
-              // TODO: Substituir pelo caminho da sua foto nos assets
-              backgroundImage: AssetImage('assets/perfis/minha_foto.png'),
+              backgroundImage: AssetImage('assets/perfis/dev.png'),
             ),
             const SizedBox(height: 16),
             Text(
@@ -133,16 +141,16 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
               style: AppTheme.fonteTitulo(24).copyWith(color: AppTheme.fundoApp),
             ),
             Text(
-              'Software Developer',
+              'configuracoes.software_developer'.tr(),
               style: AppTheme.fonteDescricao(20).copyWith(color: AppTheme.fundoApp),
             ),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _botaoSocial(Icons.link, 'LinkedIn', _controller.linkLinkedin),
+                _botaoSocial('assets/icons/linkedin.png', 'LinkedIn', _controller.linkLinkedin),
                 const SizedBox(width: 20),
-                _botaoSocial(Icons.code, 'GitHub', _controller.linkGithub),
+                _botaoSocial('assets/icons/github.png', 'GitHub', _controller.linkGithub),
               ],
             ),
           ],
@@ -151,7 +159,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
     );
   }
 
-  Widget _botaoSocial(IconData icone, String label, String url) {
+  Widget _botaoSocial(String caminhoImagem, String label, String url) {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppTheme.fundoApp,
@@ -168,7 +176,11 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
           debugPrint('Erro ao tentar abrir o link: $e');
         }
       },
-      icon: Icon(icone, size: 20),
+      icon: Image.asset(
+        caminhoImagem,
+        height: 24,
+        width: 24,
+      ),
       label: Text(label),
     );
   }

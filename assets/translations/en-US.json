@@ -1,0 +1,91 @@
+{
+  "geral": {
+    "carregando": "Loading...",
+    "tentar_novamente": "Try again",
+    "erro_desconhecido": "Unknown error",
+    "erro_iniciar_app": "Error starting the application. Please try again!"
+  },
+
+  "login": {
+    "email": "E-mail",
+    "senha": "Password",
+    "entrar": "LOG IN",
+    "erro_campos_vazios": "Please fill in all fields to log in",
+    "erro_email_invalido": "Please enter a valid e-mail address",
+    "erro_senha_requisitos": "Password does not meet the requirements"
+  },
+
+  "home": {
+    "catalogo": "Catalog",
+    "meu_deck": "My Deck",
+    "personagens": "Characters",
+    "curiosidades": "Fun Facts",
+    "como_jogar": "How to Play?",
+    "configuracoes": "Settings"
+  },
+
+  "catalogo": {
+    "pesquisar": "Search...",
+    "nenhuma_carta": "No cards found.",
+    "erro_buscar": "Error fetching cards: {erro}"
+  },
+
+  "deck": {
+    "carta_adicionada": "{nome} added to deck!",
+    "limite_maximo": "Your deck has already reached the maximum limit of 60 cards!",
+    "limite_copias": "You already have 3 copies of {nome} in your deck!",
+    "deck_vazio": "No cards added!\n\nGo to the Catalog and add cards to your deck."
+  },
+
+  "detalhes": {
+    "tipo": "TYPE: {tipo}"
+  },
+
+  "configuracoes": {
+    "preferencias": "PREFERENCES",
+    "sobre_app": "ABOUT THE APP",
+    "desenvolvido_por": "DEVELOPED BY",
+    "idioma": "Language",
+    "versao": "Version",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "software_developer": "Software Developer"
+  },
+
+  "como_jogar": {
+    "objetivo_titulo": "Game Objective",
+    "objetivo_descricao": "Each player starts with 8,000 Life Points (LP). The main goal is to reduce your opponent's LP to 0 by attacking with your monsters. You also win if the opponent cannot draw a card when required, or if you assemble all 5 parts of the legendary \"Exodia\".",
+    "campo_titulo": "The Duel Field",
+    "campo_descricao": "The field is divided into main zones:\n\n• Monster Zone: Where your creatures battle.\n• Spell & Trap Zone: Where your support cards are placed.\n• Deck & Graveyard: Where your cards come from and go to.\n• Field Zone: For field magic cards that affect the entire game.",
+    "fases_titulo": "Turn Phases",
+    "fases_descricao": "1. Draw Phase: Draw 1 card.\n2. Standby Phase: Resolve specific card effects.\n3. Main Phase 1: Summon monsters and activate spells/traps.\n4. Battle Phase: Attack the opponent's monsters or Life Points.\n5. Main Phase 2: Same as Main Phase 1 (after the battle).\n6. End Phase: Pass the turn to the opponent.",
+    "monstros_titulo": "Monster Cards",
+    "monstros_descricao": "They have Attack Points (ATK) and Defense (DEF). You can Normal Summon them once per turn in Attack Position (face-up) or set them in Defense Position (face-down). Level 5 or higher monsters require Tributes (sacrificing monsters already on the field).",
+    "magias_titulo": "Spells and Traps",
+    "magias_descricao": "• Spells (Green): They help your strategy and are usually activated on your own turn.\n\n• Traps (Pink): Must be set face-down and can only be activated from the opponent's turn onward. They are perfect for ruining the opponent's plays."
+  },
+
+  "personagens": {
+    "yugi_nome": "Yugi Muto",
+    "yugi_descricao": "The protagonist of the series. A kind boy who, after assembling the Millennium Puzzle, began sharing his body with the spirit of an ancient Pharaoh. His ace monster is the legendary Dark Magician.",
+    "kaiba_nome": "Seto Kaiba",
+    "kaiba_descricao": "Yugi's eternal rival and the brilliant president of KaibaCorp. Arrogant, a billionaire, and ruthless in duels, his strategy revolves around the powerful Blue-Eyes White Dragon.",
+    "joey_nome": "Joey Wheeler",
+    "joey_descricao": "Yugi's best friend. A passionate and brave duelist who relies heavily on luck and the \"heart of the cards\". His favorite monster is the Red-Eyes Black Dragon.",
+    "mai_nome": "Mai Valentine",
+    "mai_descricao": "A professional and independent duelist. Initially vain, she becomes a great ally of the group. She uses the graceful and lethal Harpie Lady deck."
+  },
+
+  "curiosidades": {
+    "manga_titulo": "The Original Manga",
+    "manga_descricao": "Launched in September 1996 in the Weekly Shōnen Jump magazine, the original manga had 343 chapters compiled into 38 volumes. Interestingly, the first chapters focused on various games (Shadow Games) and not just the card game.",
+    "anime_titulo": "The Anime and Its Generations",
+    "anime_descricao": "The main series (Duel Monsters) was released in 2000 and had 224 episodes. It was so successful that it spawned several spin-offs: GX, 5D's, ZEXAL, ARC-V, VRAINS, SEVENS and Go Rush!!, totaling over 1,000 episodes in the franchise.",
+    "games_titulo": "World of Games",
+    "games_descricao": "Yu-Gi-Oh! is a giant in video games. Classic titles include \"Forbidden Memories\" (PS1). Currently, \"Duel Links\" (Mobile) and \"Master Duel\" (PC/Consoles) are the official simulators with millions of active players.",
+    "criador_titulo": "The Creator",
+    "criador_descricao": "Kazuki Takahashi was the brilliant mangaka behind the work. Initially, he wanted to write a horror manga, but the idea evolved into games where villains were punished. Takahashi unfortunately passed away in 2022, but his legacy is eternal.",
+    "cartas_titulo": "The Famous Cards",
+    "cartas_descricao": "The most famous is undoubtedly the \"Blue-Eyes White Dragon\". The most historically used is the \"Pot of Greed\" (so powerful it remains banned to this day). And the rarest card is \"Tyler the Great Warrior\", which has only 1 printed copy in the entire world."
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "geral": {
+    "carregando": "Cargando...",
+    "tentar_novamente": "Intentar de nuevo",
+    "erro_desconhecido": "Error desconocido",
+    "erro_iniciar_app": "Error al iniciar la aplicación. ¡Inténtalo de nuevo!"
+  },
+
+  "login": {
+    "email": "Correo electrónico",
+    "senha": "Contraseña",
+    "entrar": "INICIAR SESIÓN",
+    "erro_campos_vazios": "Por favor, completa todos los campos para iniciar sesión",
+    "erro_email_invalido": "Por favor, ingresa un correo electrónico válido",
+    "erro_senha_requisitos": "La contraseña no cumple con los requisitos"
+  },
+
+  "home": {
+    "catalogo": "Catálogo",
+    "meu_deck": "Mi Mazo",
+    "personagens": "Personajes",
+    "curiosidades": "Curiosidades",
+    "como_jogar": "¿Cómo Jugar?",
+    "configuracoes": "Configuración"
+  },
+
+  "catalogo": {
+    "pesquisar": "Buscar...",
+    "nenhuma_carta": "No se encontraron cartas.",
+    "erro_buscar": "Error al buscar cartas: {erro}"
+  },
+
+  "deck": {
+    "carta_adicionada": "¡{nome} añadida al mazo!",
+    "limite_maximo": "¡Tu mazo ya alcanzó el límite máximo de 60 cartas!",
+    "limite_copias": "¡Ya tienes 3 copias de {nome} en tu mazo!",
+    "deck_vazio": "¡No hay cartas añadidas!\n\nVe al Catálogo y añade cartas a tu mazo."
+  },
+
+  "detalhes": {
+    "tipo": "TIPO: {tipo}"
+  },
+
+  "configuracoes": {
+    "preferencias": "PREFERENCIAS",
+    "sobre_app": "ACERCA DE LA APP",
+    "desenvolvido_por": "DESARROLLADO POR",
+    "idioma": "Idioma",
+    "versao": "Versión",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "software_developer": "Desarrollador de Software"
+  },
+
+  "como_jogar": {
+    "objetivo_titulo": "Objetivo del Juego",
+    "objetivo_descricao": "Cada jugador comienza con 8.000 Puntos de Vida (LP). El objetivo principal es reducir los LP de tu oponente a 0 atacando con tus monstruos. También ganas si el oponente no puede robar una carta cuando está obligado a hacerlo, o si reúnes las 5 partes del legendario \"Exodia\".",
+    "campo_titulo": "El Campo de Duelo",
+    "campo_descricao": "El campo está dividido en zonas principales:\n\n• Zona de Monstruos: Donde luchan tus criaturas.\n• Zona de Magia y Trampa: Donde se colocan tus cartas de soporte.\n• Mazo y Cementerio: De donde vienen y a donde van tus cartas.\n• Zona de Campo: Para cartas mágicas de campo que afectan todo el juego.",
+    "fases_titulo": "Las Fases del Turno",
+    "fases_descricao": "1. Fase de Robo: Roba 1 carta.\n2. Fase de Espera: Resuelve efectos específicos de cartas.\n3. Fase Principal 1: Invoca monstruos y activa magias/trampas.\n4. Fase de Batalla: Ataca los monstruos o los Puntos de Vida del oponente.\n5. Fase Principal 2: Igual que la Fase Principal 1 (después de la batalla).\n6. Fase Final: Pasa el turno al oponente.",
+    "monstros_titulo": "Cartas de Monstruo",
+    "monstros_descricao": "Tienen Puntos de Ataque (ATK) y Defensa (DEF). Puedes Invocarlos Normalmente una vez por turno en Posición de Ataque (boca arriba) o colocarlos en Posición de Defensa (boca abajo). Los Monstruos de Nivel 5 o superior requieren Tributos (sacrificar monstruos ya en el campo).",
+    "magias_titulo": "Magias y Trampas",
+    "magias_descricao": "• Mágicas (Verdes): Ayudan a tu estrategia y normalmente se activan en tu propio turno.\n\n• Trampas (Rosas): Deben colocarse boca abajo y solo pueden activarse a partir del turno del oponente. Son perfectas para arruinar las jugadas del adversario."
+  },
+
+  "personagens": {
+    "yugi_nome": "Yugi Muto",
+    "yugi_descricao": "El protagonista de la serie. Un chico amable que, al armar el Rompecabezas del Milenio, comenzó a compartir su cuerpo con el espíritu de un antiguo Faraón. Su monstruo as es el legendario Mago Oscuro.",
+    "kaiba_nome": "Seto Kaiba",
+    "kaiba_descricao": "El eterno rival de Yugi y el brillante presidente de KaibaCorp. Arrogante, multimillonario e implacable en los duelos, su estrategia gira en torno al poderoso Dragón Blanco de Ojos Azules.",
+    "joey_nome": "Joey Wheeler",
+    "joey_descricao": "El mejor amigo de Yugi. Un duelista apasionado y valiente que confía mucho en la suerte y en el \"corazón de las cartas\". Su monstruo favorito es el Dragón Negro de Ojos Rojos.",
+    "mai_nome": "Mai Valentine",
+    "mai_descricao": "Una duelista profesional e independiente. Inicialmente fútil, se convierte en una gran aliada del grupo. Utiliza el elegante y letal mazo de Dama Arpía."
+  },
+
+  "curiosidades": {
+    "manga_titulo": "El Manga Original",
+    "manga_descricao": "Lanzado en septiembre de 1996 en la revista Weekly Shōnen Jump, el manga original tuvo 343 capítulos compilados en 38 volúmenes. Curiosamente, los primeros capítulos se centraban en juegos diversos (Shadow Games) y no solo en el juego de cartas.",
+    "anime_titulo": "El Anime y sus Generaciones",
+    "anime_descricao": "La serie principal (Duel Monsters) fue lanzada en 2000 y tuvo 224 episodios. El éxito fue tal que generó varios spin-offs: GX, 5D's, ZEXAL, ARC-V, VRAINS, SEVENS y Go Rush!!, sumando más de 1.000 episodios en la franquicia.",
+    "games_titulo": "Mundo de los Videojuegos",
+    "games_descricao": "¡Yu-Gi-Oh! es un gigante en los videojuegos. Títulos clásicos incluyen \"Forbidden Memories\" (PS1). Actualmente, \"Duel Links\" (Móvil) y \"Master Duel\" (PC/Consolas) son los simuladores oficiales con millones de jugadores activos.",
+    "criador_titulo": "El Creador de la Obra",
+    "criador_descricao": "Kazuki Takahashi fue el brillante mangaka detrás de la obra. Inicialmente, quería escribir un manga de terror, pero la idea evolucionó hacia juegos donde los villanos eran castigados. Takahashi lamentablemente falleció en 2022, pero su legado es eterno.",
+    "cartas_titulo": "Las Cartas Famosas",
+    "cartas_descricao": "La más famosa es sin duda el \"Dragón Blanco de Ojos Azules\". La más usada históricamente es el \"Pot of Greed\" (tan poderosa que sigue prohibida hasta hoy). Y la carta más rara es \"Tyler the Great Warrior\", que tiene solo 1 copia impresa en todo el mundo."
+  }
+}

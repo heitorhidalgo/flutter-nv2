@@ -3,7 +3,7 @@ import '../core/themes/app_theme.dart';
 
 class CabecalhoWidget extends StatelessWidget implements PreferredSizeWidget {
   final bool mostrarBotaoVoltar;
-  final bool mostrarDrawer;
+  final bool mostrarDrawer; // TODO: alterar futuramente para ser um  circulo com o avatar que o usuario escolher, ao clicar nele abre o drawer e no drawer ira conter as opcoes de editar perfil e logout
   final bool mostrarBotaoAddDeck;
   final VoidCallback? cliqueBotaoAddDeck;
 
