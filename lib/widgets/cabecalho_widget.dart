@@ -39,10 +39,11 @@ class CabecalhoWidget extends StatelessWidget implements PreferredSizeWidget {
         onPressed: () => Navigator.pop(context),
       );
     } else if (mostrarDrawer) {
+      final controller = PerfilController();
       return ListenableBuilder(
-        listenable: PerfilController(),
+        listenable: controller,
         builder: (context, child) {
-          final avatarPath = PerfilController().perfil.avatarPath;
+          final avatarPath = controller.perfil.avatarPath;
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
@@ -50,7 +51,8 @@ class CabecalhoWidget extends StatelessWidget implements PreferredSizeWidget {
               child: CircleAvatar(
                 radius: 20,
                 backgroundColor: AppTheme.textoSecundario,
-                backgroundImage: avatarPath != null ? AssetImage(avatarPath) : null,
+                backgroundImage:
+                avatarPath != null ? AssetImage(avatarPath) : null,
                 child: avatarPath == null
                     ? const Icon(Icons.person, size: 20, color: AppTheme.fundoApp)
                     : null,

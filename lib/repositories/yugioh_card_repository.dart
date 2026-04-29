@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../core/configs/app_config.dart';
@@ -24,28 +25,24 @@ class YugiohCardRepository {
 
       final url = Uri.parse(_baseUrl).replace(queryParameters: queryParams);
 
-      final response = await http.get(
-        url,
-        headers: {'Accept': 'application/json'},
-      );
+      final response = await http
+          .get(url, headers: {'Accept': 'application/json'})
+          .timeout(const Duration(seconds: 10));
 
       if (response.statusCode == 200) {
         final mapData = jsonDecode(response.body);
         final List<dynamic> listaJson = mapData['data'];
         return listaJson.map((json) => YugiohCardModel.fromJson(json)).toList();
-      }
-
-      else if (response.statusCode == 400) {
+      } else if (response.statusCode == 400) {
         return [];
-      }
-      else {
+      } else {
         final mapData = jsonDecode(response.body);
         throw ApiError.fromJson(mapData, response.statusCode);
       }
+    } on TimeoutException {
+      throw ApiError(message: 'Tempo de conexão esgotado. Verifique sua internet.', statusCode: 0);
     } catch (e) {
-      if (e is ApiError) {
-        rethrow;
-      }
+      if (e is ApiError) rethrow;
       throw ApiError(message: 'Falha de conexão: $e', statusCode: 0);
     }
   }

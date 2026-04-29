@@ -14,12 +14,17 @@ class YugiohCardModel {
   });
 
   factory YugiohCardModel.fromJson(Map<String, dynamic> json) {
+    final cardImages = json['card_images'];
+    final imageUrl = (cardImages != null && cardImages.isNotEmpty)
+        ? (cardImages[0]['image_url'] ?? '')
+        : '';
+
     return YugiohCardModel(
-      id: json['id'],
-      name: json['name'],
-      type: json['type'],
-      imageUrl: json['card_images'][0]['image_url'],
-      description: json['desc'],
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      type: json['type'] ?? '',
+      imageUrl: imageUrl,
+      description: json['desc'] ?? '',
     );
   }
 }

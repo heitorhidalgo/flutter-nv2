@@ -1,30 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../models/personagem_model.dart';
 
 class PersonagensController extends ChangeNotifier {
-  final List<PersonagemModel> listaPersonagens = [
+  List<PersonagemModel> get listaPersonagens => [
     PersonagemModel(
       id: 1,
-      nome: 'Yugi Muto',
-      descricao: 'O protagonista da série. Um garoto gentil que, ao montar o Enigma do Milênio, passou a compartilhar seu corpo com o espírito de um antigo Faraó. Seu monstro ás é o lendário Mago Negro.',
+      nome: 'personagens.yugi_nome'.tr(),
+      descricao: 'personagens.yugi_descricao'.tr(),
       imagem: 'assets/personagens/yugi.jpg',
     ),
     PersonagemModel(
       id: 2,
-      nome: 'Seto Kaiba',
-      descricao: 'O eterno rival de Yugi e o brilhante presidente da KaibaCorp. Arrogante, bilionário e implacável nos duelos, sua estratégia gira em torno do poderoso Dragão Branco de Olhos Azuis.',
+      nome: 'personagens.kaiba_nome'.tr(),
+      descricao: 'personagens.kaiba_descricao'.tr(),
       imagem: 'assets/personagens/kaiba.jpg',
     ),
     PersonagemModel(
       id: 3,
-      nome: 'Joey Wheeler',
-      descricao: 'O melhor amigo de Yugi. Um duelista passional e corajoso que confia muito na sorte e no "coração das cartas". Seu monstro favorito é o Dragão Negro de Olhos Vermelhos.',
+      nome: 'personagens.joey_nome'.tr(),
+      descricao: 'personagens.joey_descricao'.tr(),
       imagem: 'assets/personagens/joey.jpg',
     ),
     PersonagemModel(
       id: 4,
-      nome: 'Mai Valentine',
-      descricao: 'Uma duelista profissional e independente. Inicialmente fútil, ela se torna uma grande aliada do grupo. Utiliza o gracioso e letal deck de Lady Harpia.',
+      nome: 'personagens.mai_nome'.tr(),
+      descricao: 'personagens.mai_descricao'.tr(),
       imagem: 'assets/personagens/mai.jpg',
     ),
   ];

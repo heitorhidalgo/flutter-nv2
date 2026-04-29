@@ -1,37 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../models/curiosidades_model.dart';
 
 class CuriosidadesController extends ChangeNotifier {
-  final List<CuriosidadesModel> listaCuriosidades = [
+  List<CuriosidadesModel> get listaCuriosidades => [
     CuriosidadesModel(
-      titulo: 'O Mangá Original',
-      descricao: 'Lançado em setembro de 1996 na revista Weekly Shōnen Jump, o mangá original teve 343 capítulos compilados em 38 volumes. Curiosamente, os primeiros capítulos focavam em jogos diversos (Shadow Games) e não apenas no jogo de cartas.',
+      titulo: 'curiosidades.manga_titulo'.tr(),
+      descricao: 'curiosidades.manga_descricao'.tr(),
       icone: Icons.menu_book,
-      imagem: 'assets/curiosidades/manga.png'
+      imagem: 'assets/curiosidades/manga.png',
     ),
     CuriosidadesModel(
-      titulo: 'O Anime e suas Gerações',
-      descricao: 'A série principal (Duel Monsters) foi lançada em 2000 e teve 224 episódios. O sucesso foi tanto que gerou diversos spin-offs: GX, 5D\'s, ZEXAL, ARC-V, VRAINS, SEVENS e Go Rush!!, somando mais de 1.000 episódios na franquia.',
+      titulo: 'curiosidades.anime_titulo'.tr(),
+      descricao: 'curiosidades.anime_descricao'.tr(),
       icone: Icons.live_tv,
-      imagem: 'assets/curiosidades/anime.png'
+      imagem: 'assets/curiosidades/anime.png',
     ),
     CuriosidadesModel(
-      titulo: 'Mundo dos Games',
-      descricao: 'Yu-Gi-Oh! é um gigante nos videogames. Títulos clássicos incluem "Forbidden Memories" (PS1). Atualmente, "Duel Links" (Mobile) e "Master Duel" (PC/Consoles) são os simuladores oficiais com milhões de jogadores ativos.',
+      titulo: 'curiosidades.games_titulo'.tr(),
+      descricao: 'curiosidades.games_descricao'.tr(),
       icone: Icons.sports_esports,
-      imagem: 'assets/curiosidades/game.png'
+      imagem: 'assets/curiosidades/game.png',
     ),
     CuriosidadesModel(
-      titulo: 'O Criador da Obra',
-      descricao: 'Kazuki Takahashi foi o brilhante mangaká por trás da obra. Inicialmente, ele queria escrever um mangá de terror, mas a ideia evoluiu para jogos onde os vilões eram punidos. Takahashi infelizmente faleceu em 2022, mas seu legado é eterno.',
+      titulo: 'curiosidades.criador_titulo'.tr(),
+      descricao: 'curiosidades.criador_descricao'.tr(),
       icone: Icons.draw,
-      imagem: 'assets/curiosidades/autor.png'
+      imagem: 'assets/curiosidades/autor.png',
     ),
     CuriosidadesModel(
-      titulo: 'As Cartas Famosas',
-      descricao: 'A mais famosa é sem dúvida o "Dragão Branco de Olhos Azuis". A mais utilizada historicamente é o "Pote da Ganância" (tão forte que é banida até hoje). E a carta mais rara é a "Tyler the Great Warrior", que possui apenas 1 cópia impressa no mundo inteiro.',
+      titulo: 'curiosidades.cartas_titulo'.tr(),
+      descricao: 'curiosidades.cartas_descricao'.tr(),
       icone: Icons.style,
-      imagem: 'assets/curiosidades/raras.png'
+      imagem: 'assets/curiosidades/raras.png',
     ),
   ];
 }
