@@ -82,7 +82,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
             value: _controller.idiomaSelecionado,
             dropdownColor: AppTheme.textoSecundario,
             icon: const Icon(Icons.arrow_drop_down, color: AppTheme.fundoApp),
-            style: AppTheme.fonteDescricao(16).copyWith(color: AppTheme.fundoApp),
+            style: AppTheme.fonteDescricao(18).copyWith(color: AppTheme.fundoApp),
             items: _controller.idiomasDisponiveis.map((String idioma) {
               return DropdownMenuItem<String>(
                   value: idioma,

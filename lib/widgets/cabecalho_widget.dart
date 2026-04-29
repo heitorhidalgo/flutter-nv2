@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import '../controllers/perfil_controller.dart';
 import '../core/themes/app_theme.dart';
 
 class CabecalhoWidget extends StatelessWidget implements PreferredSizeWidget {
   final bool mostrarBotaoVoltar;
-  final bool mostrarDrawer; // TODO: alterar futuramente para ser um  circulo com o avatar que o usuario escolher, ao clicar nele abre o drawer e no drawer ira conter as opcoes de editar perfil e logout
+  final bool mostrarDrawer;
   final bool mostrarBotaoAddDeck;
   final VoidCallback? cliqueBotaoAddDeck;
-
 
   const CabecalhoWidget({
     super.key,
@@ -33,15 +33,31 @@ class CabecalhoWidget extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Widget? _construirLeading(BuildContext context) {
-    if(mostrarBotaoVoltar) {
+    if (mostrarBotaoVoltar) {
       return IconButton(
         icon: const Icon(Icons.arrow_back, color: AppTheme.textoPrimario),
         onPressed: () => Navigator.pop(context),
       );
     } else if (mostrarDrawer) {
-      return IconButton(
-        icon: const Icon(Icons.menu, color: AppTheme.textoPrimario),
-        onPressed: () => Scaffold.of(context).openDrawer(),
+      return ListenableBuilder(
+        listenable: PerfilController(),
+        builder: (context, child) {
+          final avatarPath = PerfilController().perfil.avatarPath;
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: () => Scaffold.of(context).openDrawer(),
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: AppTheme.textoSecundario,
+                backgroundImage: avatarPath != null ? AssetImage(avatarPath) : null,
+                child: avatarPath == null
+                    ? const Icon(Icons.person, size: 20, color: AppTheme.fundoApp)
+                    : null,
+              ),
+            ),
+          );
+        },
       );
     }
     return null;
@@ -68,7 +84,7 @@ class CabecalhoWidget extends StatelessWidget implements PreferredSizeWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 children: [
-                  Icon(Icons.add_circle, color: AppTheme.fundoApp, size: 20),
+                  const Icon(Icons.add_circle, color: AppTheme.fundoApp, size: 20),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
