@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_nv2/views/catalogo_page.dart';
 import 'package:flutter_nv2/views/como_jogar_page.dart';
 import 'package:flutter_nv2/views/curiosidades_page.dart';
@@ -10,9 +11,14 @@ import '../core/themes/app_theme.dart';
 import 'configuracoes_page.dart';
 import 'meu_deck_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +43,7 @@ class HomePage extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
                   BotaoHomeWidget(
-                    titulo: 'Catálogo',
+                    titulo: 'home.catalogo'.tr(),
                     icone: Icons.style,
                     clique: () {
                       Navigator.push(context,
@@ -45,7 +51,7 @@ class HomePage extends StatelessWidget {
                     },
                   ),
                   BotaoHomeWidget(
-                    titulo: 'Meu deck',
+                    titulo: 'home.meu_deck'.tr(),
                     icone: Icons.style_outlined,
                     clique: () {
                       Navigator.push(context,
@@ -53,7 +59,7 @@ class HomePage extends StatelessWidget {
                     },
                   ),
                   BotaoHomeWidget(
-                    titulo: 'Personagens',
+                    titulo: 'home.personagens'.tr(),
                     icone: Icons.person,
                     clique: () {
                       Navigator.push(context,
@@ -61,7 +67,7 @@ class HomePage extends StatelessWidget {
                     },
                   ),
                   BotaoHomeWidget(
-                    titulo: 'Curiosidades',
+                    titulo: 'home.curiosidades'.tr(),
                     icone: Icons.question_mark,
                     clique: () {
                       Navigator.push(context,
@@ -69,7 +75,7 @@ class HomePage extends StatelessWidget {
                     },
                   ),
                   BotaoHomeWidget(
-                    titulo: 'Como Jogar?',
+                    titulo: 'home.como_jogar'.tr(),
                     icone: Icons.play_arrow,
                     clique: () {
                       Navigator.push(context,
@@ -77,11 +83,13 @@ class HomePage extends StatelessWidget {
                     },
                   ),
                   BotaoHomeWidget(
-                    titulo: 'Configurações',
+                    titulo: 'home.configuracoes'.tr(),
                     icone: Icons.settings,
                     clique: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const ConfiguracoesPage()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ConfiguracoesPage()),
+                      ).then((_) => setState(() {}));
                     },
                   ),
                 ],

@@ -77,7 +77,7 @@ class DrawerWidget extends StatelessWidget {
     return ListTile(
       leading: const Icon(Icons.logout, color: AppTheme.fundoApp),
       title: Text(
-        'Logout',
+        'Sair',
         style: AppTheme.fonteSubtitulo(16).copyWith(color: AppTheme.fundoApp),
       ),
       onTap: () => _confirmarLogout(context, controller),

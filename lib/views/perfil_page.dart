@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../controllers/perfil_controller.dart';
 import '../core/themes/app_theme.dart';
 import '../widgets/cabecalho_widget.dart';
@@ -93,13 +94,13 @@ class _PerfilPageState extends State<PerfilPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Nome', style: AppTheme.fonteSubtitulo(18)),
+        Text('perfil.nome'.tr(), style: AppTheme.fonteSubtitulo(18)),
         const SizedBox(height: 8),
         TextField(
           controller: _nomeController,
           style: AppTheme.fonteDescricao(18),
           decoration: InputDecoration(
-            hintText: 'Insira seu nome',
+            hintText: 'perfil.insira_nome'.tr(),
             hintStyle: AppTheme.fonteDescricao(16).copyWith(color: AppTheme.textoSecundario),
             filled: true,
             fillColor: Colors.white.withValues(alpha: 0.4),
@@ -121,7 +122,7 @@ class _PerfilPageState extends State<PerfilPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Escolha seu avatar', style: AppTheme.fonteSubtitulo(18)),
+        Text('perfil.escolha_avatar'.tr(), style: AppTheme.fonteSubtitulo(18)),
         const SizedBox(height: 12),
         GridView.builder(
           shrinkWrap: true,
@@ -168,7 +169,7 @@ class _PerfilPageState extends State<PerfilPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Perfil atualizado!',
+              'perfil.atualizado'.tr(),
               style: AppTheme.fonteDescricao(16).copyWith(color: AppTheme.textoPrimario),
             ),
             backgroundColor: AppTheme.corSucesso,
@@ -177,7 +178,7 @@ class _PerfilPageState extends State<PerfilPage> {
         Navigator.pop(context);
       },
       child: Text(
-        'SALVAR',
+        'perfil.salvar'.tr(),
         style: AppTheme.fonteTitulo(16).copyWith(color: AppTheme.fundoApp),
       ),
     );

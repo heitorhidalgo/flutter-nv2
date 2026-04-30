@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_nv2/widgets/cabecalho_widget.dart';
 import '../controllers/catalogo_controller.dart';
 import '../core/themes/app_theme.dart';
@@ -15,7 +16,6 @@ class CatalogoPage extends StatefulWidget {
 
 class _CatalogoPageState extends State<CatalogoPage> {
   late final CatalogoController _controller;
-
   final ScrollController _scrollController = ScrollController();
   Timer? _debounce;
 
@@ -46,18 +46,14 @@ class _CatalogoPageState extends State<CatalogoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.fundoApp,
-      appBar: const CabecalhoWidget(
-        mostrarBotaoVoltar: true,
-      ),
+      appBar: const CabecalhoWidget(mostrarBotaoVoltar: true),
       body: ListenableBuilder(
         listenable: _controller,
         builder: (context, child) {
           return Column(
             children: [
               _barraDePesquisa(),
-              Expanded(
-                child: _conteudoPrincipal(),
-              ),
+              Expanded(child: _conteudoPrincipal()),
             ],
           );
         },
@@ -71,7 +67,6 @@ class _CatalogoPageState extends State<CatalogoPage> {
     if (_controller.isLoading) return _estadoCarregando();
     if (_controller.errorMessage != null) return _estadoErro();
     if (_controller.cartas.isEmpty) return _estadoVazio();
-
     return _listaDeCartas();
   }
 
@@ -81,7 +76,7 @@ class _CatalogoPageState extends State<CatalogoPage> {
       child: TextField(
         style: AppTheme.fonteDescricao(18),
         decoration: InputDecoration(
-          hintText: 'Pesquisar...',
+          hintText: 'catalogo.pesquisar'.tr(),
           prefixIcon: const Icon(Icons.search, color: AppTheme.textoSecundario),
           filled: true,
           fillColor: Colors.white.withValues(alpha: 0.5),
@@ -120,7 +115,7 @@ class _CatalogoPageState extends State<CatalogoPage> {
           Text(_controller.errorMessage!, style: const TextStyle(color: Colors.red)),
           ElevatedButton(
             onPressed: () => _controller.buscarCartas(),
-            child: const Text('Tentar novamente'),
+            child: Text('geral.tentar_novamente'.tr()),
           ),
         ],
       ),
@@ -130,7 +125,7 @@ class _CatalogoPageState extends State<CatalogoPage> {
   Widget _estadoVazio() {
     return Center(
       child: Text(
-        'Nenhuma carta encontrada.',
+        'catalogo.nenhuma_carta'.tr(),
         style: AppTheme.fonteTitulo(20),
       ),
     );

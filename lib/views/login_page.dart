@@ -3,6 +3,8 @@ import '../core/themes/app_theme.dart';
 import '../controllers/login_controller.dart';
 import 'home_page.dart';
 
+//TODO: checkbox manter conectado, senha esquecida, fazer cadastro (criar tela de cadastro)
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 

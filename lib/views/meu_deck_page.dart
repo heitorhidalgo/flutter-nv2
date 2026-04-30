@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_nv2/widgets/cabecalho_widget.dart';
 import '../controllers/meu_deck_controller.dart';
 import '../core/themes/app_theme.dart';
@@ -18,9 +19,7 @@ class _MeuDeckPageState extends State<MeuDeckPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.fundoApp,
-      appBar: const CabecalhoWidget(
-        mostrarBotaoVoltar: true,
-      ),
+      appBar: const CabecalhoWidget(mostrarBotaoVoltar: true),
       body: ListenableBuilder(
         listenable: _controller,
         builder: (context, child) {
@@ -33,9 +32,7 @@ class _MeuDeckPageState extends State<MeuDeckPage> {
   // --- WIDGETS FRAGMENTADOS ---
 
   Widget _conteudoPrincipal() {
-    if (_controller.minhasCartas.isEmpty) {
-      return _estadoVazio();
-    }
+    if (_controller.minhasCartas.isEmpty) return _estadoVazio();
     return _listaDeCartas();
   }
 
@@ -44,7 +41,7 @@ class _MeuDeckPageState extends State<MeuDeckPage> {
       child: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Text(
-          'Nenhuma carta adicionada!\n\nVá até o Catálogo e adicione cartas ao seu deck.',
+          'deck.deck_vazio'.tr(),
           style: AppTheme.fonteTitulo(20),
           textAlign: TextAlign.center,
         ),
@@ -53,8 +50,6 @@ class _MeuDeckPageState extends State<MeuDeckPage> {
   }
 
   Widget _listaDeCartas() {
-    return ListaCartasWidget(
-      cartas: _controller.minhasCartas,
-    );
+    return ListaCartasWidget(cartas: _controller.minhasCartas);
   }
 }

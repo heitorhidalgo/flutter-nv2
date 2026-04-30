@@ -5,7 +5,6 @@
     "erro_desconhecido": "Unknown error",
     "erro_iniciar_app": "Error starting the application. Please try again!"
   },
-
   "login": {
     "email": "E-mail",
     "senha": "Password",
@@ -14,7 +13,6 @@
     "erro_email_invalido": "Please enter a valid e-mail address",
     "erro_senha_requisitos": "Password does not meet the requirements"
   },
-
   "home": {
     "catalogo": "Catalog",
     "meu_deck": "My Deck",
@@ -23,24 +21,20 @@
     "como_jogar": "How to Play?",
     "configuracoes": "Settings"
   },
-
   "catalogo": {
     "pesquisar": "Search...",
     "nenhuma_carta": "No cards found.",
     "erro_buscar": "Error fetching cards: {erro}"
   },
-
   "deck": {
     "carta_adicionada": "{nome} added to deck!",
     "limite_maximo": "Your deck has already reached the maximum limit of 60 cards!",
     "limite_copias": "You already have 3 copies of {nome} in your deck!",
     "deck_vazio": "No cards added!\n\nGo to the Catalog and add cards to your deck."
   },
-
   "detalhes": {
     "tipo": "TYPE: {tipo}"
   },
-
   "configuracoes": {
     "preferencias": "PREFERENCES",
     "sobre_app": "ABOUT THE APP",
@@ -51,7 +45,6 @@
     "github": "GitHub",
     "software_developer": "Software Developer"
   },
-
   "como_jogar": {
     "objetivo_titulo": "Game Objective",
     "objetivo_descricao": "Each player starts with 8,000 Life Points (LP). The main goal is to reduce your opponent's LP to 0 by attacking with your monsters. You also win if the opponent cannot draw a card when required, or if you assemble all 5 parts of the legendary \"Exodia\".",
@@ -64,7 +57,6 @@
     "magias_titulo": "Spells and Traps",
     "magias_descricao": "• Spells (Green): They help your strategy and are usually activated on your own turn.\n\n• Traps (Pink): Must be set face-down and can only be activated from the opponent's turn onward. They are perfect for ruining the opponent's plays."
   },
-
   "personagens": {
     "yugi_nome": "Yugi Muto",
     "yugi_descricao": "The protagonist of the series. A kind boy who, after assembling the Millennium Puzzle, began sharing his body with the spirit of an ancient Pharaoh. His ace monster is the legendary Dark Magician.",
@@ -75,7 +67,6 @@
     "mai_nome": "Mai Valentine",
     "mai_descricao": "A professional and independent duelist. Initially vain, she becomes a great ally of the group. She uses the graceful and lethal Harpie Lady deck."
   },
-
   "curiosidades": {
     "manga_titulo": "The Original Manga",
     "manga_descricao": "Launched in September 1996 in the Weekly Shōnen Jump magazine, the original manga had 343 chapters compiled into 38 volumes. Interestingly, the first chapters focused on various games (Shadow Games) and not just the card game.",
@@ -87,5 +78,12 @@
     "criador_descricao": "Kazuki Takahashi was the brilliant mangaka behind the work. Initially, he wanted to write a horror manga, but the idea evolved into games where villains were punished. Takahashi unfortunately passed away in 2022, but his legacy is eternal.",
     "cartas_titulo": "The Famous Cards",
     "cartas_descricao": "The most famous is undoubtedly the \"Blue-Eyes White Dragon\". The most historically used is the \"Pot of Greed\" (so powerful it remains banned to this day). And the rarest card is \"Tyler the Great Warrior\", which has only 1 printed copy in the entire world."
+  },
+  "perfil": {
+    "nome": "Name",
+    "insira_nome": "Enter your name",
+    "escolha_avatar": "Choose your avatar",
+    "salvar": "SAVE",
+    "atualizado": "Profile updated!"
   }
 }

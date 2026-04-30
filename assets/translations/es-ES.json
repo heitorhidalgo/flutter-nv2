@@ -5,7 +5,6 @@
     "erro_desconhecido": "Error desconocido",
     "erro_iniciar_app": "Error al iniciar la aplicación. ¡Inténtalo de nuevo!"
   },
-
   "login": {
     "email": "Correo electrónico",
     "senha": "Contraseña",
@@ -14,7 +13,6 @@
     "erro_email_invalido": "Por favor, ingresa un correo electrónico válido",
     "erro_senha_requisitos": "La contraseña no cumple con los requisitos"
   },
-
   "home": {
     "catalogo": "Catálogo",
     "meu_deck": "Mi Mazo",
@@ -23,24 +21,20 @@
     "como_jogar": "¿Cómo Jugar?",
     "configuracoes": "Configuración"
   },
-
   "catalogo": {
     "pesquisar": "Buscar...",
     "nenhuma_carta": "No se encontraron cartas.",
     "erro_buscar": "Error al buscar cartas: {erro}"
   },
-
   "deck": {
     "carta_adicionada": "¡{nome} añadida al mazo!",
     "limite_maximo": "¡Tu mazo ya alcanzó el límite máximo de 60 cartas!",
     "limite_copias": "¡Ya tienes 3 copias de {nome} en tu mazo!",
     "deck_vazio": "¡No hay cartas añadidas!\n\nVe al Catálogo y añade cartas a tu mazo."
   },
-
   "detalhes": {
     "tipo": "TIPO: {tipo}"
   },
-
   "configuracoes": {
     "preferencias": "PREFERENCIAS",
     "sobre_app": "ACERCA DE LA APP",
@@ -51,7 +45,6 @@
     "github": "GitHub",
     "software_developer": "Desarrollador de Software"
   },
-
   "como_jogar": {
     "objetivo_titulo": "Objetivo del Juego",
     "objetivo_descricao": "Cada jugador comienza con 8.000 Puntos de Vida (LP). El objetivo principal es reducir los LP de tu oponente a 0 atacando con tus monstruos. También ganas si el oponente no puede robar una carta cuando está obligado a hacerlo, o si reúnes las 5 partes del legendario \"Exodia\".",
@@ -64,7 +57,6 @@
     "magias_titulo": "Magias y Trampas",
     "magias_descricao": "• Mágicas (Verdes): Ayudan a tu estrategia y normalmente se activan en tu propio turno.\n\n• Trampas (Rosas): Deben colocarse boca abajo y solo pueden activarse a partir del turno del oponente. Son perfectas para arruinar las jugadas del adversario."
   },
-
   "personagens": {
     "yugi_nome": "Yugi Muto",
     "yugi_descricao": "El protagonista de la serie. Un chico amable que, al armar el Rompecabezas del Milenio, comenzó a compartir su cuerpo con el espíritu de un antiguo Faraón. Su monstruo as es el legendario Mago Oscuro.",
@@ -75,7 +67,6 @@
     "mai_nome": "Mai Valentine",
     "mai_descricao": "Una duelista profesional e independiente. Inicialmente fútil, se convierte en una gran aliada del grupo. Utiliza el elegante y letal mazo de Dama Arpía."
   },
-
   "curiosidades": {
     "manga_titulo": "El Manga Original",
     "manga_descricao": "Lanzado en septiembre de 1996 en la revista Weekly Shōnen Jump, el manga original tuvo 343 capítulos compilados en 38 volúmenes. Curiosamente, los primeros capítulos se centraban en juegos diversos (Shadow Games) y no solo en el juego de cartas.",
@@ -87,5 +78,12 @@
     "criador_descricao": "Kazuki Takahashi fue el brillante mangaka detrás de la obra. Inicialmente, quería escribir un manga de terror, pero la idea evolucionó hacia juegos donde los villanos eran castigados. Takahashi lamentablemente falleció en 2022, pero su legado es eterno.",
     "cartas_titulo": "Las Cartas Famosas",
     "cartas_descricao": "La más famosa es sin duda el \"Dragón Blanco de Ojos Azules\". La más usada históricamente es el \"Pot of Greed\" (tan poderosa que sigue prohibida hasta hoy). Y la carta más rara es \"Tyler the Great Warrior\", que tiene solo 1 copia impresa en todo el mundo."
+  },
+  "perfil": {
+    "nome": "Nombre",
+    "insira_nome": "Ingresa tu nombre",
+    "escolha_avatar": "Elige tu avatar",
+    "salvar": "GUARDAR",
+    "atualizado": "¡Perfil actualizado!"
   }
 }
