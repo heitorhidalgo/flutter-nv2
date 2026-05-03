@@ -6,9 +6,7 @@ import 'package:flutter_nv2/views/login_page.dart';
 class PerfilController extends ChangeNotifier {
   static final PerfilController _instancia = PerfilController._interno();
   factory PerfilController() => _instancia;
-  PerfilController._interno() {
-    _carregarPerfil();
-  }
+  PerfilController._interno();
 
   PerfilModel perfil = const PerfilModel(
     nome: 'Duelista',
@@ -26,6 +24,10 @@ class PerfilController extends ChangeNotifier {
   static const _chaveNome = 'perfil_nome';
   static const _chaveEmail = 'perfil_email';
   static const _chaveAvatar = 'perfil_avatar';
+
+  Future<void> inicializar() async {
+    await _carregarPerfil();
+  }
 
   void atualizarNome(String novoNome) {
     perfil = perfil.copyWith(nome: novoNome.trim());

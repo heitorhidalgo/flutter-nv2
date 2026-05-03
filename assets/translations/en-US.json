@@ -85,5 +85,11 @@
     "escolha_avatar": "Choose your avatar",
     "salvar": "SAVE",
     "atualizado": "Profile updated!"
+  },
+  "drawer": {
+    "perfil": "Profile",
+    "sair": "Log Out",
+    "confirmar_sair": "Do you really want to log out?",
+    "cancelar": "Cancel"
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_nv2/controllers/splash_controller.dart';
 import '../core/themes/app_theme.dart';
 import 'login_page.dart';
@@ -29,32 +30,32 @@ class _SplashPageState extends State<SplashPage>
     _pulseAnimation = Tween<double>(
       begin: 1.0,
       end: 1.10,
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
 
     _animationController.repeat(reverse: true);
-
     _iniciarCarregamento();
   }
 
   void _iniciarCarregamento() async {
     final sucesso = await _splashController.carregarDependencias();
 
-    if(!mounted) {
-      return;
-    }
+    if (!mounted) return;
 
-    if(sucesso) {
+    if (sucesso) {
       Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const LoginPage()));
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text(
-                'Erro ao iniciar o aplicativo. Tente novamente!'),
-            backgroundColor: AppTheme.corErro,
-          ));
+        SnackBar(
+          content: Text('geral.erro_iniciar_app'.tr()),
+          backgroundColor: AppTheme.corErro,
+        ),
+      );
     }
   }
 
@@ -84,8 +85,7 @@ class _SplashPageState extends State<SplashPage>
               ),
             ),
             const SizedBox(height: 75),
-            Text('Carregando...',
-                style: AppTheme.fonteTitulo(20)),
+            Text('geral.carregando'.tr(), style: AppTheme.fonteTitulo(20)),
           ],
         ),
       ),

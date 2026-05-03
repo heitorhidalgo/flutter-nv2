@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_nv2/models/yugioh_card_model.dart';
 import '../controllers/meu_deck_controller.dart';
 import '../core/themes/app_theme.dart';
@@ -9,7 +10,7 @@ class DetalhesCardPage extends StatelessWidget {
 
   const DetalhesCardPage({
     super.key,
-    required this.carta
+    required this.carta,
   });
 
   @override
@@ -32,7 +33,9 @@ class DetalhesCardPage extends StatelessWidget {
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('${carta.name} adicionada ao deck!'),
+                content: Text(
+                  'deck.carta_adicionada'.tr(namedArgs: {'nome': carta.name}),
+                ),
                 backgroundColor: AppTheme.corSucesso,
                 duration: const Duration(seconds: 2),
               ),
@@ -97,7 +100,7 @@ class DetalhesCardPage extends StatelessWidget {
 
   Widget _tipoCarta() {
     return Text(
-      'TIPO: ${carta.type.toUpperCase()}',
+      'detalhes.tipo'.tr(namedArgs: {'tipo': carta.type.toUpperCase()}),
       style: AppTheme.fonteSubtitulo(20).copyWith(fontWeight: FontWeight.bold),
       textAlign: TextAlign.center,
     );

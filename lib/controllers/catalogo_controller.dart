@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_nv2/core/configs/app_config.dart';
 import '../models/yugioh_card_model.dart';
 import '../repositories/yugioh_card_repository.dart';
@@ -21,7 +22,6 @@ class CatalogoController extends ChangeNotifier {
   Future<void> buscarCartas({bool isLoadMore = false}) async {
     if (isLoadMore) {
       if (isFetchingMore || hasReachedMax) return;
-
       isFetchingMore = true;
       notifyListeners();
     } else {
@@ -45,12 +45,10 @@ class CatalogoController extends ChangeNotifier {
       }
 
       cartas.addAll(novasCartas);
-
       _offset += _limit;
-
     } catch (e) {
       if (!isLoadMore) {
-        errorMessage = 'Erro ao buscar cartas: $e';
+        errorMessage = 'catalogo.erro_buscar'.tr(namedArgs: {'erro': e.toString()});
       }
     } finally {
       isLoading = false;

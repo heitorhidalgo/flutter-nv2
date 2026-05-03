@@ -1,11 +1,13 @@
+import 'package:flutter_nv2/controllers/meu_deck_controller.dart';
+import 'package:flutter_nv2/controllers/perfil_controller.dart';
+
 class SplashController {
   Future<bool> carregarDependencias() async {
-    // futuramente irá verificar:
-    // 1. Iniciar o banco de dados local (SQLite/SharedPreferences)
-    // 2. Checar se existe um token de usuário logado
-    // 3. Baixar configurações iniciais da API
     try {
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.wait([
+        PerfilController().inicializar(),
+        MeuDeckController().inicializar(),
+      ]);
       return true;
     } catch (e) {
       return false;

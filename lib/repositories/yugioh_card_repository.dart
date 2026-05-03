@@ -40,7 +40,10 @@ class YugiohCardRepository {
         throw ApiError.fromJson(mapData, response.statusCode);
       }
     } on TimeoutException {
-      throw ApiError(message: 'Tempo de conexão esgotado. Verifique sua internet.', statusCode: 0);
+      throw ApiError(
+        message: 'Tempo de conexão esgotado. Verifique sua internet.',
+        statusCode: 0,
+      );
     } catch (e) {
       if (e is ApiError) rethrow;
       throw ApiError(message: 'Falha de conexão: $e', statusCode: 0);

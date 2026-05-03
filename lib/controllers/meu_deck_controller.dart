@@ -7,13 +7,15 @@ import '../models/yugioh_card_model.dart';
 class MeuDeckController extends ChangeNotifier {
   static final MeuDeckController _instancia = MeuDeckController._interno();
   factory MeuDeckController() => _instancia;
-  MeuDeckController._interno() {
-    _carregarDeck();
-  }
+  MeuDeckController._interno();
 
   List<YugiohCardModel> minhasCartas = [];
 
   static const _chaveDeck = 'meu_deck';
+
+  Future<void> inicializar() async {
+    await _carregarDeck();
+  }
 
   String? adicionarCarta(YugiohCardModel carta) {
     if (minhasCartas.length >= 60) {
