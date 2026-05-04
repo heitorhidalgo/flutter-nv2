@@ -13,16 +13,28 @@ class PerfilPage extends StatefulWidget {
 
 class _PerfilPageState extends State<PerfilPage> {
   final PerfilController _controller = PerfilController();
-  late final TextEditingController _nomeController;
+  final TextEditingController _nomeController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _nomeController = TextEditingController(text: _controller.perfil.nome);
+    _nomeController.text = _controller.perfil.nome;
+    _controller.addListener(_sincronizarNome);
+  }
+
+  void _sincronizarNome() {
+    final nomeAtual = _controller.perfil.nome;
+    if (_nomeController.text != nomeAtual) {
+      _nomeController.text = nomeAtual;
+      _nomeController.selection = TextSelection.fromPosition(
+        TextPosition(offset: _nomeController.text.length),
+      );
+    }
   }
 
   @override
   void dispose() {
+    _controller.removeListener(_sincronizarNome);
     _nomeController.dispose();
     super.dispose();
   }
@@ -101,7 +113,8 @@ class _PerfilPageState extends State<PerfilPage> {
           style: AppTheme.fonteDescricao(18),
           decoration: InputDecoration(
             hintText: 'perfil.insira_nome'.tr(),
-            hintStyle: AppTheme.fonteDescricao(16).copyWith(color: AppTheme.textoSecundario),
+            hintStyle: AppTheme.fonteDescricao(16)
+                .copyWith(color: AppTheme.textoSecundario),
             filled: true,
             fillColor: Colors.white.withValues(alpha: 0.4),
             border: OutlineInputBorder(
@@ -110,7 +123,8 @@ class _PerfilPageState extends State<PerfilPage> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppTheme.textoPrimario, width: 2),
+              borderSide:
+              const BorderSide(color: AppTheme.textoPrimario, width: 2),
             ),
           ),
         ),
@@ -142,7 +156,9 @@ class _PerfilPageState extends State<PerfilPage> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: selecionado ? AppTheme.textoPrimario : Colors.transparent,
+                    color: selecionado
+                        ? AppTheme.textoPrimario
+                        : Colors.transparent,
                     width: 3,
                   ),
                 ),
@@ -162,7 +178,8 @@ class _PerfilPageState extends State<PerfilPage> {
       style: ElevatedButton.styleFrom(
         backgroundColor: AppTheme.textoPrimario,
         padding: const EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       onPressed: () {
         _controller.atualizarNome(_nomeController.text);
@@ -170,7 +187,8 @@ class _PerfilPageState extends State<PerfilPage> {
           SnackBar(
             content: Text(
               'perfil.atualizado'.tr(),
-              style: AppTheme.fonteDescricao(16).copyWith(color: AppTheme.textoPrimario),
+              style: AppTheme.fonteDescricao(16)
+                  .copyWith(color: AppTheme.textoPrimario),
             ),
             backgroundColor: AppTheme.corSucesso,
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_nv2/models/yugioh_card_model.dart';
 import '../controllers/meu_deck_controller.dart';
 import '../core/themes/app_theme.dart';
@@ -68,20 +69,17 @@ class DetalhesCardPage extends StatelessWidget {
       tag: 'carta-image-${carta.id}',
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: Image.network(
-          carta.imageUrl,
+        child: CachedNetworkImage(
+          imageUrl: carta.imageUrl,
           height: 400,
           fit: BoxFit.contain,
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) return child;
-            return const SizedBox(
-              height: 400,
-              child: Center(
-                child: CircularProgressIndicator(color: AppTheme.textoPrimario),
-              ),
-            );
-          },
-          errorBuilder: (context, error, stackTrace) => const SizedBox(
+          placeholder: (context, url) => const SizedBox(
+            height: 400,
+            child: Center(
+              child: CircularProgressIndicator(color: AppTheme.textoPrimario),
+            ),
+          ),
+          errorWidget: (context, url, error) => const SizedBox(
             height: 400,
             child: Icon(Icons.broken_image, size: 100, color: Colors.grey),
           ),

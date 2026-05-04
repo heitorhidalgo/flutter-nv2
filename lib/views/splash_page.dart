@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_nv2/controllers/splash_controller.dart';
 import '../core/themes/app_theme.dart';
+import 'home_page.dart';
 import 'login_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -40,23 +41,27 @@ class _SplashPageState extends State<SplashPage>
   }
 
   void _iniciarCarregamento() async {
-    final sucesso = await _splashController.carregarDependencias();
+    final sessaoAtiva = await _splashController.carregarDependencias();
 
     if (!mounted) return;
 
-    if (sucesso) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginPage()),
-      );
-    } else {
+    if (sessaoAtiva == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('geral.erro_iniciar_app'.tr()),
           backgroundColor: AppTheme.corErro,
         ),
       );
+      return;
     }
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+        sessaoAtiva ? const HomePage() : const LoginPage(),
+      ),
+    );
   }
 
   @override

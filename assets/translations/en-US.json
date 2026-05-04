@@ -13,7 +13,8 @@
     "entrar": "LOG IN",
     "erro_campos_vazios": "Please fill in all fields to log in",
     "erro_email_invalido": "Please enter a valid e-mail address",
-    "erro_senha_requisitos": "Password does not meet the requirements"
+    "erro_senha_requisitos": "Password does not meet the requirements",
+    "manter_conectado": "Keep me logged in"
   },
   "home": {
     "catalogo": "Catalog",
@@ -26,13 +27,17 @@
   "catalogo": {
     "pesquisar": "Search...",
     "nenhuma_carta": "No cards found.",
-    "erro_buscar": "Error fetching cards: {erro}"
+    "erro_buscar": "Error fetching cards: {erro}",
+    "limpar_pesquisa": "Clear search"
   },
   "deck": {
     "carta_adicionada": "{nome} added to deck!",
     "limite_maximo": "Your deck has already reached the maximum limit of 60 cards!",
     "limite_copias": "You already have 3 copies of {nome} in your deck!",
-    "deck_vazio": "No cards added!\n\nGo to the Catalog and add cards to your deck."
+    "deck_vazio": "No cards added!\n\nGo to the Catalog and add cards to your deck.",
+    "contador": "{atual}/{maximo} cards",
+    "remover_confirmar": "Remove {nome} from deck?",
+    "removida": "{nome} removed from deck."
   },
   "detalhes": {
     "tipo": "TYPE: {tipo}"

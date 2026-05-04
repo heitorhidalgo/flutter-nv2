@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../models/personagem_model.dart';
 
-class PersonagensController extends ChangeNotifier {
+class PersonagensController {
   List<PersonagemModel> get listaPersonagens => [
     PersonagemModel(
       id: 1,

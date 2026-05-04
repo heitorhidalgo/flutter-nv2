@@ -13,7 +13,8 @@
     "entrar": "ENTRAR",
     "erro_campos_vazios": "Preencha todos os campos para realizar o login",
     "erro_email_invalido": "Por favor, digite um e-mail válido",
-    "erro_senha_requisitos": "A senha deve preencher os requisitos"
+    "erro_senha_requisitos": "A senha deve preencher os requisitos",
+    "manter_conectado": "Manter conectado"
   },
   "home": {
     "catalogo": "Catálogo",
@@ -26,13 +27,17 @@
   "catalogo": {
     "pesquisar": "Pesquisar...",
     "nenhuma_carta": "Nenhuma carta encontrada.",
-    "erro_buscar": "Erro ao buscar cartas: {erro}"
+    "erro_buscar": "Erro ao buscar cartas: {erro}",
+    "limpar_pesquisa": "Limpar pesquisa"
   },
   "deck": {
     "carta_adicionada": "{nome} adicionada ao deck!",
     "limite_maximo": "Seu deck já atingiu o limite máximo de 60 cartas!",
     "limite_copias": "Você já possui 3 cópias de {nome} no deck!",
-    "deck_vazio": "Nenhuma carta adicionada!\n\nVá até o Catálogo e adicione cartas ao seu deck."
+    "deck_vazio": "Nenhuma carta adicionada!\n\nVá até o Catálogo e adicione cartas ao seu deck.",
+    "contador": "{atual}/{maximo} cartas",
+    "remover_confirmar": "Remover {nome} do deck?",
+    "removida": "{nome} removida do deck."
   },
   "detalhes": {
     "tipo": "TIPO: {tipo}"

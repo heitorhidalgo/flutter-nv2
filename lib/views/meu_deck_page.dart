@@ -3,7 +3,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_nv2/widgets/cabecalho_widget.dart';
 import '../controllers/meu_deck_controller.dart';
 import '../core/themes/app_theme.dart';
-import '../widgets/lista_cartas_widget.dart';
+import '../models/yugioh_card_model.dart';
+import '../views/detalhes_card_page.dart';
 
 class MeuDeckPage extends StatefulWidget {
   const MeuDeckPage({super.key});
@@ -14,6 +15,7 @@ class MeuDeckPage extends StatefulWidget {
 
 class _MeuDeckPageState extends State<MeuDeckPage> {
   final MeuDeckController _controller = MeuDeckController();
+  static const int _limiteMaximo = 60;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,58 @@ class _MeuDeckPageState extends State<MeuDeckPage> {
 
   Widget _conteudoPrincipal() {
     if (_controller.minhasCartas.isEmpty) return _estadoVazio();
-    return _listaDeCartas();
+    return Column(
+      children: [
+        _contadorCartas(),
+        Expanded(child: _listaDeCartas()),
+      ],
+    );
+  }
+
+  Widget _contadorCartas() {
+    final total = _controller.minhasCartas.length;
+    final porcentagem = total / _limiteMaximo;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'deck.contador'.tr(namedArgs: {
+                  'atual': total.toString(),
+                  'maximo': _limiteMaximo.toString(),
+                }),
+                style: AppTheme.fonteSubtitulo(14),
+              ),
+              Text(
+                '${(porcentagem * 100).toStringAsFixed(0)}%',
+                style: AppTheme.fonteSubtitulo(14),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: LinearProgressIndicator(
+              value: porcentagem,
+              minHeight: 8,
+              backgroundColor: AppTheme.textoSecundario.withValues(alpha: 0.3),
+              valueColor: AlwaysStoppedAnimation<Color>(
+                porcentagem < 0.8
+                    ? Colors.green
+                    : porcentagem < 0.95
+                    ? Colors.orange
+                    : AppTheme.corErro,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _estadoVazio() {
@@ -50,6 +103,123 @@ class _MeuDeckPageState extends State<MeuDeckPage> {
   }
 
   Widget _listaDeCartas() {
-    return ListaCartasWidget(cartas: _controller.minhasCartas);
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      itemCount: _controller.minhasCartas.length,
+      itemBuilder: (context, index) {
+        final carta = _controller.minhasCartas[index];
+        return _cardComSwipe(carta);
+      },
+    );
+  }
+
+  Widget _cardComSwipe(YugiohCardModel carta) {
+    return Dismissible(
+      key: Key('${carta.id}-${_controller.minhasCartas.indexOf(carta)}'),
+      direction: DismissDirection.endToStart,
+      background: _fundoSwipe(),
+      confirmDismiss: (_) => _confirmarRemocao(carta),
+      onDismissed: (_) {
+        _controller.removerCarta(carta);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'deck.removida'.tr(namedArgs: {'nome': carta.name}),
+            ),
+            backgroundColor: AppTheme.textoSecundario,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      },
+      child: _cardLista(carta),
+    );
+  }
+
+  Widget _fundoSwipe() {
+    return Container(
+      alignment: Alignment.centerRight,
+      padding: const EdgeInsets.only(right: 20),
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: AppTheme.corErro,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: const Icon(Icons.delete_outline, color: Colors.white, size: 28),
+    );
+  }
+
+  Future<bool?> _confirmarRemocao(YugiohCardModel carta) {
+    return showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppTheme.textoSecundario,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        title: Text(
+          'deck.remover_confirmar'.tr(namedArgs: {'nome': carta.name}),
+          style: AppTheme.fonteSubtitulo(16).copyWith(color: AppTheme.fundoApp),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(
+              'drawer.cancelar'.tr(),
+              style: AppTheme.fonteSubtitulo(14).copyWith(color: AppTheme.fundoApp),
+            ),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.corErro,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(
+              'drawer.sair'.tr(),
+              style: AppTheme.fonteTitulo(14).copyWith(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _cardLista(YugiohCardModel carta) {
+    return Card(
+      color: AppTheme.textoSecundario,
+      elevation: 2,
+      margin: const EdgeInsets.only(bottom: 12),
+      shape: RoundedRectangleBorder(
+        side: const BorderSide(color: AppTheme.textoPrimario, width: 0.5),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: ListTile(
+        leading: ClipRRect(
+          borderRadius: BorderRadius.circular(4),
+          child: Image.network(
+            carta.imageUrl,
+            width: 40,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) =>
+            const Icon(Icons.broken_image, color: AppTheme.fundoApp),
+          ),
+        ),
+        title: Text(
+          carta.name,
+          style: AppTheme.fonteSubtitulo(18).copyWith(color: AppTheme.fundoApp),
+        ),
+        subtitle: Text(
+          carta.type,
+          style: AppTheme.fonteDescricao(14).copyWith(color: AppTheme.fundoApp),
+        ),
+        trailing: const Icon(Icons.chevron_right, color: AppTheme.fundoApp),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetalhesCardPage(carta: carta),
+            ),
+          );
+        },
+      ),
+    );
   }
 }

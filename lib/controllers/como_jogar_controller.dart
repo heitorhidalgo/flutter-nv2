@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import '../models/regra_model.dart';
 
-class ComoJogarController extends ChangeNotifier {
+class ComoJogarController {
   List<RegraModel> get listaRegras => [
     RegraModel(
       titulo: 'como_jogar.objetivo_titulo'.tr(),

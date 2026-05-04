@@ -4,7 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_nv2/widgets/cabecalho_widget.dart';
 import '../controllers/catalogo_controller.dart';
 import '../core/themes/app_theme.dart';
-import '../repositories/yugioh_card_repository.dart';
 import '../widgets/lista_cartas_widget.dart';
 
 class CatalogoPage extends StatefulWidget {
@@ -15,28 +14,34 @@ class CatalogoPage extends StatefulWidget {
 }
 
 class _CatalogoPageState extends State<CatalogoPage> {
-  late final CatalogoController _controller;
+  final CatalogoController _controller = CatalogoController();
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _pesquisaController = TextEditingController();
   Timer? _debounce;
 
   @override
   void initState() {
     super.initState();
-    final repository = YugiohCardRepository();
-    _controller = CatalogoController(repository);
     _scrollController.addListener(_onScroll);
     _controller.buscarCartas();
   }
 
   void _onScroll() {
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
       _controller.buscarCartas(isLoadMore: true);
     }
+  }
+
+  void _limparPesquisa() {
+    _pesquisaController.clear();
+    _controller.pesquisarCarta('');
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _pesquisaController.dispose();
     _debounce?.cancel();
     _controller.dispose();
     super.dispose();
@@ -74,10 +79,22 @@ class _CatalogoPageState extends State<CatalogoPage> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: TextField(
+        controller: _pesquisaController,
         style: AppTheme.fonteDescricao(18),
         decoration: InputDecoration(
           hintText: 'catalogo.pesquisar'.tr(),
           prefixIcon: const Icon(Icons.search, color: AppTheme.textoSecundario),
+          suffixIcon: ListenableBuilder(
+            listenable: _pesquisaController,
+            builder: (context, _) {
+              return _pesquisaController.text.isNotEmpty
+                  ? IconButton(
+                icon: const Icon(Icons.close, color: AppTheme.textoSecundario),
+                onPressed: _limparPesquisa,
+              )
+                  : const SizedBox.shrink();
+            },
+          ),
           filled: true,
           fillColor: Colors.white.withValues(alpha: 0.5),
           border: OutlineInputBorder(
@@ -112,7 +129,12 @@ class _CatalogoPageState extends State<CatalogoPage> {
         children: [
           const Icon(Icons.error_outline, color: Colors.red, size: 60),
           const SizedBox(height: 16),
-          Text(_controller.errorMessage!, style: const TextStyle(color: Colors.red)),
+          Text(
+            _controller.errorMessage!,
+            style: const TextStyle(color: Colors.red),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 12),
           ElevatedButton(
             onPressed: () => _controller.buscarCartas(),
             child: Text('geral.tentar_novamente'.tr()),
@@ -124,9 +146,30 @@ class _CatalogoPageState extends State<CatalogoPage> {
 
   Widget _estadoVazio() {
     return Center(
-      child: Text(
-        'catalogo.nenhuma_carta'.tr(),
-        style: AppTheme.fonteTitulo(20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.style_outlined,
+            size: 72,
+            color: AppTheme.textoPrimario.withValues(alpha: 0.4),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'catalogo.nenhuma_carta'.tr(),
+            style: AppTheme.fonteTitulo(20),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 12),
+          TextButton.icon(
+            onPressed: _limparPesquisa,
+            icon: const Icon(Icons.close, color: AppTheme.textoSecundario),
+            label: Text(
+              'catalogo.limpar_pesquisa'.tr(),
+              style: AppTheme.fonteSubtitulo(16),
+            ),
+          ),
+        ],
       ),
     );
   }

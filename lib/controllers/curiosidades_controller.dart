@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import '../models/curiosidades_model.dart';
 
-class CuriosidadesController extends ChangeNotifier {
+class CuriosidadesController {
   List<CuriosidadesModel> get listaCuriosidades => [
     CuriosidadesModel(
       titulo: 'curiosidades.manga_titulo'.tr(),

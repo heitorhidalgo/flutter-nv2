@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../models/yugioh_card_model.dart';
 import '../core/themes/app_theme.dart';
 import '../views/detalhes_card_page.dart';
@@ -22,15 +23,15 @@ class ListaCartasWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       itemCount: cartas.length + (isFetchingMore ? 1 : 0),
       itemBuilder: (context, index) {
-
         if (index == cartas.length) {
           return const Padding(
             padding: EdgeInsets.symmetric(vertical: 32.0),
-            child: Center(child: CircularProgressIndicator(color: AppTheme.textoPrimario)),
+            child: Center(
+              child: CircularProgressIndicator(color: AppTheme.textoPrimario),
+            ),
           );
         }
-        final carta = cartas[index];
-        return _cardLista(context, carta);
+        return _cardLista(context, cartas[index]);
       },
     );
   }
@@ -51,11 +52,20 @@ class ListaCartasWidget extends StatelessWidget {
           tag: 'carta-image-${carta.id}',
           child: ClipRRect(
             borderRadius: BorderRadius.circular(4),
-            child: Image.network(
-              carta.imageUrl,
+            child: CachedNetworkImage(
+              imageUrl: carta.imageUrl,
               width: 40,
               fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) =>
+              placeholder: (context, url) => const SizedBox(
+                width: 40,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: AppTheme.fundoApp,
+                    strokeWidth: 2,
+                  ),
+                ),
+              ),
+              errorWidget: (context, url, error) =>
               const Icon(Icons.broken_image, color: AppTheme.fundoApp),
             ),
           ),

@@ -13,7 +13,8 @@
     "entrar": "INICIAR SESIÓN",
     "erro_campos_vazios": "Por favor, completa todos los campos para iniciar sesión",
     "erro_email_invalido": "Por favor, ingresa un correo electrónico válido",
-    "erro_senha_requisitos": "La contraseña no cumple con los requisitos"
+    "erro_senha_requisitos": "La contraseña no cumple con los requisitos",
+    "manter_conectado": "Mantener sesión iniciada"
   },
   "home": {
     "catalogo": "Catálogo",
@@ -26,13 +27,17 @@
   "catalogo": {
     "pesquisar": "Buscar...",
     "nenhuma_carta": "No se encontraron cartas.",
-    "erro_buscar": "Error al buscar cartas: {erro}"
+    "erro_buscar": "Error al buscar cartas: {erro}",
+    "limpar_pesquisa": "Limpiar búsqueda"
   },
   "deck": {
     "carta_adicionada": "¡{nome} añadida al mazo!",
     "limite_maximo": "¡Tu mazo ya alcanzó el límite máximo de 60 cartas!",
     "limite_copias": "¡Ya tienes 3 copias de {nome} en tu mazo!",
-    "deck_vazio": "¡No hay cartas añadidas!\n\nVe al Catálogo y añade cartas a tu mazo."
+    "deck_vazio": "¡No hay cartas añadidas!\n\nVe al Catálogo y añade cartas a tu mazo.",
+    "contador": "{atual}/{maximo} cartas",
+    "remover_confirmar": "¿Eliminar {nome} del mazo?",
+    "removida": "{nome} eliminada del mazo."
   },
   "detalhes": {
     "tipo": "TIPO: {tipo}"

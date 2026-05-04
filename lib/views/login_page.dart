@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../core/themes/app_theme.dart';
 import '../controllers/login_controller.dart';
 import 'home_page.dart';
-
-//TODO: checkbox manter conectado, senha esquecida, fazer cadastro (criar tela de cadastro)
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,7 +14,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _senhaController = TextEditingController();
-
   final _loginController = LoginController();
 
   Future<void> _entrar() async {
@@ -36,7 +34,9 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(_loginController.errorMessage ?? 'Erro desconhecido'),
+          content: Text(
+            _loginController.errorMessage ?? 'geral.erro_desconhecido'.tr(),
+          ),
           backgroundColor: AppTheme.corErro,
         ),
       );
@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               Image.asset(
                 'assets/icons/logotipo.png',
-               height: 200,
+                height: 200,
                 fit: BoxFit.contain,
                 semanticLabel: 'Yu-Gi-Oh! Logotipo',
               ),
@@ -74,14 +74,16 @@ class _LoginPageState extends State<LoginPage> {
                 keyboardType: TextInputType.emailAddress,
                 style: AppTheme.fonteDescricao(22),
                 decoration: InputDecoration(
-                  labelText: 'E-mail',
+                  labelText: 'login.email'.tr(),
                   labelStyle: AppTheme.fonteSubtitulo(18),
-                  prefixIcon: const Icon(Icons.email, color: AppTheme.textoSecundario),
+                  prefixIcon:
+                  const Icon(Icons.email, color: AppTheme.textoSecundario),
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: AppTheme.textoSecundario),
                   ),
                   focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: AppTheme.textoPrimario, width: 2),
+                    borderSide:
+                    BorderSide(color: AppTheme.textoPrimario, width: 2),
                   ),
                 ),
               ),
@@ -91,18 +93,39 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: true,
                 style: AppTheme.fonteDescricao(22),
                 decoration: InputDecoration(
-                  labelText: 'Senha',
+                  labelText: 'login.senha'.tr(),
                   labelStyle: AppTheme.fonteSubtitulo(18),
-                  prefixIcon: const Icon(Icons.lock, color: AppTheme.textoSecundario),
+                  prefixIcon:
+                  const Icon(Icons.lock, color: AppTheme.textoSecundario),
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: AppTheme.textoSecundario),
                   ),
                   focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: AppTheme.textoPrimario, width: 2),
+                    borderSide:
+                    BorderSide(color: AppTheme.textoPrimario, width: 2),
                   ),
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 8),
+              ListenableBuilder(
+                listenable: _loginController,
+                builder: (context, child) {
+                  return CheckboxListTile(
+                    value: _loginController.manterConectado,
+                    onChanged: (valor) =>
+                        _loginController.alterarManterConectado(valor ?? false),
+                    title: Text(
+                      'login.manter_conectado'.tr(),
+                      style: AppTheme.fonteDescricao(16),
+                    ),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    activeColor: AppTheme.textoPrimario,
+                    checkColor: AppTheme.fundoApp,
+                    contentPadding: EdgeInsets.zero,
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
               ListenableBuilder(
                 listenable: _loginController,
                 builder: (context, child) {
@@ -114,7 +137,8 @@ class _LoginPageState extends State<LoginPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      disabledBackgroundColor: AppTheme.textoSecundario.withValues(alpha: 0.5),
+                      disabledBackgroundColor:
+                      AppTheme.textoSecundario.withValues(alpha: 0.5),
                     ),
                     child: _loginController.isLoading
                         ? const SizedBox(
@@ -126,8 +150,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     )
                         : Text(
-                      'ENTRAR',
-                      style: AppTheme.fonteTitulo(18).copyWith(color: AppTheme.fundoApp),
+                      'login.entrar'.tr(),
+                      style: AppTheme.fonteTitulo(18)
+                          .copyWith(color: AppTheme.fundoApp),
                     ),
                   );
                 },

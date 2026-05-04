@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/perfil_model.dart';
 import 'package:flutter_nv2/views/login_page.dart';
+import 'package:flutter_nv2/controllers/login_controller.dart';
 import 'package:flutter_nv2/controllers/meu_deck_controller.dart';
 
 class PerfilController extends ChangeNotifier {
@@ -66,7 +67,6 @@ class PerfilController extends ChangeNotifier {
     await prefs.remove(_chaveNome);
     await prefs.remove(_chaveEmail);
     await prefs.remove(_chaveAvatar);
-
     perfil = const PerfilModel(
       nome: 'Duelista',
       email: 'duelista@yugioh.com',
@@ -79,6 +79,7 @@ class PerfilController extends ChangeNotifier {
     await Future.wait([
       _limparPerfil(),
       MeuDeckController().limpar(),
+      LoginController.limparSessao(),
     ]);
 
     if (!context.mounted) return;

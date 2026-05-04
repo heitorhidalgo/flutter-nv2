@@ -6,9 +6,7 @@ import '../models/yugioh_card_model.dart';
 import '../repositories/yugioh_card_repository.dart';
 
 class CatalogoController extends ChangeNotifier {
-  final YugiohCardRepository repository;
-
-  CatalogoController(this.repository);
+  final YugiohCardRepository _repository = YugiohCardRepository();
 
   List<YugiohCardModel> cartas = [];
   bool isLoading = false;
@@ -35,7 +33,7 @@ class CatalogoController extends ChangeNotifier {
     }
 
     try {
-      final novasCartas = await repository.buscarCartasApi(
+      final novasCartas = await _repository.buscarCartasApi(
         offset: _offset,
         limit: _limit,
         nome: _termoPesquisa.isNotEmpty ? _termoPesquisa : null,
