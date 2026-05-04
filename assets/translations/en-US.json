@@ -3,7 +3,9 @@
     "carregando": "Loading...",
     "tentar_novamente": "Try again",
     "erro_desconhecido": "Unknown error",
-    "erro_iniciar_app": "Error starting the application. Please try again!"
+    "erro_iniciar_app": "Error starting the application. Please try again!",
+    "erro_desconhecido_api": "An unknown error occurred.",
+    "erro_status": "Error {codigo}: {mensagem}"
   },
   "login": {
     "email": "E-mail",

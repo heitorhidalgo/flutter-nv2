@@ -6,13 +6,11 @@ class ApiError {
 
   factory ApiError.fromJson(Map<String, dynamic> json, int statusCode) {
     return ApiError(
-      message: json['error'] ?? 'Ocorreu um erro desconhecido.',
+      message: json['error'] ?? 'unknown_error',
       statusCode: statusCode,
     );
   }
 
   @override
-  String toString() {
-    return 'Erro $statusCode: $message';
-  }
+  String toString() => message;
 }

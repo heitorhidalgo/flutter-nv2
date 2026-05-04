@@ -112,9 +112,9 @@ class DrawerWidget extends StatelessWidget {
               backgroundColor: AppTheme.textoPrimario,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             ),
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(ctx);
-              controller.fazerLogout(context);
+              await controller.fazerLogout(context);
             },
             child: Text(
               'drawer.sair'.tr(),

@@ -4,18 +4,13 @@ import '../core/themes/app_theme.dart';
 import '../widgets/cabecalho_widget.dart';
 import '../widgets/card_personagem_widget.dart';
 
-class PersonagensPage extends StatefulWidget {
+class PersonagensPage extends StatelessWidget {
   const PersonagensPage({super.key});
 
   @override
-  State<PersonagensPage> createState() => _PersonagensPageState();
-}
-
-class _PersonagensPageState extends State<PersonagensPage> {
-  final PersonagensController _controller = PersonagensController();
-
-  @override
   Widget build(BuildContext context) {
+    final controller = PersonagensController();
+
     return Scaffold(
       backgroundColor: AppTheme.fundoApp,
       appBar: const CabecalhoWidget(
@@ -23,9 +18,9 @@ class _PersonagensPageState extends State<PersonagensPage> {
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
-        itemCount: _controller.listaPersonagens.length,
+        itemCount: controller.listaPersonagens.length,
         itemBuilder: (context, index) {
-          final personagem = _controller.listaPersonagens[index];
+          final personagem = controller.listaPersonagens[index];
           return CardPersonagemWidget(personagem: personagem);
         },
       ),

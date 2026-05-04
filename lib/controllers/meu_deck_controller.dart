@@ -40,6 +40,13 @@ class MeuDeckController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> limpar() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_chaveDeck);
+    minhasCartas = [];
+    notifyListeners();
+  }
+
   Future<void> _salvarDeck() async {
     final prefs = await SharedPreferences.getInstance();
     final listaJson = minhasCartas.map((carta) => jsonEncode({

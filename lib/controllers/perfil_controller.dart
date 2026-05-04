@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/perfil_model.dart';
 import 'package:flutter_nv2/views/login_page.dart';
+import 'package:flutter_nv2/controllers/meu_deck_controller.dart';
 
 class PerfilController extends ChangeNotifier {
   static final PerfilController _instancia = PerfilController._interno();
@@ -60,7 +61,28 @@ class PerfilController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void fazerLogout(BuildContext context) {
+  Future<void> _limparPerfil() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_chaveNome);
+    await prefs.remove(_chaveEmail);
+    await prefs.remove(_chaveAvatar);
+
+    perfil = const PerfilModel(
+      nome: 'Duelista',
+      email: 'duelista@yugioh.com',
+      avatarPath: null,
+    );
+    notifyListeners();
+  }
+
+  Future<void> fazerLogout(BuildContext context) async {
+    await Future.wait([
+      _limparPerfil(),
+      MeuDeckController().limpar(),
+    ]);
+
+    if (!context.mounted) return;
+
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (_) => const LoginPage()),
           (route) => false,

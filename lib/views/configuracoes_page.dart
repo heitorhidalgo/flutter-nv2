@@ -76,7 +76,10 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
       ),
       child: ListTile(
         leading: const Icon(Icons.language, color: AppTheme.fundoApp, size: 28),
-        title: Text('configuracoes.idioma'.tr(), style: AppTheme.fonteTitulo(20).copyWith(color: AppTheme.fundoApp)),
+        title: Text(
+          'configuracoes.idioma'.tr(),
+          style: AppTheme.fonteTitulo(20).copyWith(color: AppTheme.fundoApp),
+        ),
         trailing: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
             value: _controller.idiomaSelecionado,
@@ -85,8 +88,10 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
             style: AppTheme.fonteDescricao(18).copyWith(color: AppTheme.fundoApp),
             items: _controller.idiomasDisponiveis.map((String idioma) {
               return DropdownMenuItem<String>(
-                  value: idioma,
-                  child: Text(idioma));
+                value: idioma,
+                alignment: Alignment.center,
+                child: Text(idioma),
+              );
             }).toList(),
             onChanged: (String? novoIdioma) {
               if (novoIdioma != null) {
@@ -109,7 +114,10 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
       ),
       child: ListTile(
         leading: const Icon(Icons.info_outline, color: AppTheme.fundoApp, size: 28),
-        title: Text('configuracoes.versao'.tr(), style: AppTheme.fonteTitulo(20).copyWith(color: AppTheme.fundoApp)),
+        title: Text(
+          'configuracoes.versao'.tr(),
+          style: AppTheme.fonteTitulo(20).copyWith(color: AppTheme.fundoApp),
+        ),
         trailing: Text(
           _controller.versaoApp,
           style: AppTheme.fonteDescricao(16).copyWith(color: AppTheme.fundoApp),

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class ConfiguracoesController extends ChangeNotifier {
+  static final ConfiguracoesController _instancia = ConfiguracoesController._interno();
+  factory ConfiguracoesController() => _instancia;
+  ConfiguracoesController._interno();
+
   final String versaoApp = '1.0.0';
   final String desenvolvedor = 'Heitor Hidalgo';
   final String linkLinkedin = 'https://www.linkedin.com/in/heitorhidalgo/';
