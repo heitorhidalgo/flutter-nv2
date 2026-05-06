@@ -31,14 +31,12 @@ class ListaCartasWidget extends StatelessWidget {
             ),
           );
         }
-        return _cardLista(context, cartas[index]);
+        return _cardLista(context, cartas[index], index);
       },
     );
   }
 
-  // --- WIDGET FRAGMENTADO ---
-
-  Widget _cardLista(BuildContext context, YugiohCardModel carta) {
+  Widget _cardLista(BuildContext context, YugiohCardModel carta, int index) {
     return Card(
       color: AppTheme.textoSecundario,
       elevation: 2,
@@ -49,7 +47,7 @@ class ListaCartasWidget extends StatelessWidget {
       ),
       child: ListTile(
         leading: Hero(
-          tag: 'carta-image-${carta.id}',
+          tag: 'carta-image-${carta.id}-$index',
           child: ClipRRect(
             borderRadius: BorderRadius.circular(4),
             child: CachedNetworkImage(
@@ -83,7 +81,10 @@ class ListaCartasWidget extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => DetalhesCardPage(carta: carta),
+              builder: (context) => DetalhesCardPage(
+                carta: carta,
+                heroTag: 'carta-image-${carta.id}-$index',
+              ),
             ),
           );
         },

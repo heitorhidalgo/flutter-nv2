@@ -1,3 +1,5 @@
+const _removido = Object();
+
 class PerfilModel {
   final String nome;
   final String email;
@@ -12,12 +14,14 @@ class PerfilModel {
   PerfilModel copyWith({
     String? nome,
     String? email,
-    String? avatarPath,
+    Object? avatarPath = _removido,
   }) {
     return PerfilModel(
       nome: nome ?? this.nome,
       email: email ?? this.email,
-      avatarPath: avatarPath ?? this.avatarPath,
+      avatarPath: identical(avatarPath, _removido)
+          ? this.avatarPath
+          : avatarPath as String?,
     );
   }
 }

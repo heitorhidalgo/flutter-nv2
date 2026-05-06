@@ -29,8 +29,6 @@ class _MeuDeckPageState extends State<MeuDeckPage> {
     );
   }
 
-  // --- WIDGETS FRAGMENTADOS ---
-
   Widget _conteudoPrincipal() {
     if (_controller.minhasCartas.isEmpty) return _estadoVazio();
     return Column(

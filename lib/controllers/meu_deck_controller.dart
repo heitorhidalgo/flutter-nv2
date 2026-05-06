@@ -17,7 +17,7 @@ class MeuDeckController extends ChangeNotifier {
     await _carregarDeck();
   }
 
-  String? adicionarCarta(YugiohCardModel carta) {
+  Future<String?> adicionarCarta(YugiohCardModel carta) async {
     if (minhasCartas.length >= 60) {
       return 'deck.limite_maximo'.tr();
     }
@@ -29,14 +29,14 @@ class MeuDeckController extends ChangeNotifier {
     }
 
     minhasCartas.add(carta);
-    _salvarDeck();
+    await _salvarDeck();
     notifyListeners();
     return null;
   }
 
-  void removerCarta(YugiohCardModel carta) {
+  Future<void> removerCarta(YugiohCardModel carta) async {
     minhasCartas.remove(carta);
-    _salvarDeck();
+    await _salvarDeck();
     notifyListeners();
   }
 

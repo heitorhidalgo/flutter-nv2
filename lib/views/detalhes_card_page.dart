@@ -9,11 +9,13 @@ import '../widgets/cabecalho_widget.dart';
 class DetalhesCardPage extends StatelessWidget {
   final YugiohCardModel carta;
   final bool modoRemover;
+  final String? heroTag;
 
   const DetalhesCardPage({
     super.key,
     required this.carta,
     this.modoRemover = false,
+    this.heroTag,
   });
 
   @override
@@ -51,8 +53,9 @@ class DetalhesCardPage extends StatelessWidget {
     );
   }
 
-  void _adicionarAoDeck(BuildContext context) {
-    final mensagemErro = MeuDeckController().adicionarCarta(carta);
+  void _adicionarAoDeck(BuildContext context) async {
+    final mensagemErro = await MeuDeckController().adicionarCarta(carta);
+    if (!context.mounted) return;
     if (mensagemErro != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -74,8 +77,9 @@ class DetalhesCardPage extends StatelessWidget {
     }
   }
 
-  void _removerDoDeck(BuildContext context) {
-    MeuDeckController().removerCarta(carta);
+  void _removerDoDeck(BuildContext context) async {
+    await MeuDeckController().removerCarta(carta);
+    if (!context.mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
@@ -91,8 +95,9 @@ class DetalhesCardPage extends StatelessWidget {
   // --- WIDGETS FRAGMENTADOS ---
 
   Widget _imagemCarta() {
+    final tag = heroTag ?? 'carta-image-${carta.id}';
     return Hero(
-      tag: 'carta-image-${carta.id}',
+      tag: tag,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: CachedNetworkImage(
