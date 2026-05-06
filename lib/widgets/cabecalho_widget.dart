@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../controllers/perfil_controller.dart';
 import '../core/themes/app_theme.dart';
 
@@ -7,6 +8,8 @@ class CabecalhoWidget extends StatelessWidget implements PreferredSizeWidget {
   final bool mostrarDrawer;
   final bool mostrarBotaoAddDeck;
   final VoidCallback? cliqueBotaoAddDeck;
+  final String? labelBotaoAddDeck;
+  final IconData? iconeBotaoAddDeck;
 
   const CabecalhoWidget({
     super.key,
@@ -14,6 +17,8 @@ class CabecalhoWidget extends StatelessWidget implements PreferredSizeWidget {
     this.mostrarDrawer = false,
     this.mostrarBotaoAddDeck = false,
     this.cliqueBotaoAddDeck,
+    this.labelBotaoAddDeck,
+    this.iconeBotaoAddDeck,
   });
 
   @override
@@ -54,7 +59,8 @@ class CabecalhoWidget extends StatelessWidget implements PreferredSizeWidget {
                 backgroundImage:
                 avatarPath != null ? AssetImage(avatarPath) : null,
                 child: avatarPath == null
-                    ? const Icon(Icons.person, size: 20, color: AppTheme.fundoApp)
+                    ? const Icon(Icons.person,
+                    size: 20, color: AppTheme.fundoApp)
                     : null,
               ),
             ),
@@ -67,6 +73,10 @@ class CabecalhoWidget extends StatelessWidget implements PreferredSizeWidget {
 
   List<Widget>? _construirActions(BuildContext context) {
     if (mostrarBotaoAddDeck) {
+      final label =
+          labelBotaoAddDeck ?? 'detalhes.adicionar_ao_deck'.tr();
+      final icone = iconeBotaoAddDeck ?? Icons.add_circle;
+
       return [
         PopupMenuButton<String>(
           icon: const Icon(Icons.more_vert, color: AppTheme.textoPrimario),
@@ -76,21 +86,21 @@ class CabecalhoWidget extends StatelessWidget implements PreferredSizeWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           onSelected: (valor) {
-            if (valor == 'adicionar' && cliqueBotaoAddDeck != null) {
+            if (valor == 'acao' && cliqueBotaoAddDeck != null) {
               cliqueBotaoAddDeck!();
             }
           },
           itemBuilder: (context) => [
             PopupMenuItem<String>(
-              value: 'adicionar',
+              value: 'acao',
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 children: [
-                  const Icon(Icons.add_circle, color: AppTheme.fundoApp, size: 20),
+                  Icon(icone, color: AppTheme.fundoApp, size: 20),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'Adicionar ao Meu Deck',
+                      label,
                       style: AppTheme.fonteSubtitulo(16).copyWith(
                         color: AppTheme.fundoApp,
                       ),

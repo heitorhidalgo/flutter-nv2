@@ -37,10 +37,12 @@
     "deck_vazio": "¡No hay cartas añadidas!\n\nVe al Catálogo y añade cartas a tu mazo.",
     "contador": "{atual}/{maximo} cartas",
     "remover_confirmar": "¿Eliminar {nome} del mazo?",
-    "removida": "{nome} eliminada del mazo."
+    "removida": "{nome} eliminada del mazo.",
+    "remover_do_deck": "Eliminar del Mazo"
   },
   "detalhes": {
-    "tipo": "TIPO: {tipo}"
+    "tipo": "TIPO: {tipo}",
+    "adicionar_ao_deck": "Añadir a Mi Mazo"
   },
   "configuracoes": {
     "preferencias": "PREFERENCIAS",

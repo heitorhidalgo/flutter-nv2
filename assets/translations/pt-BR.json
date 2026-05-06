@@ -37,10 +37,12 @@
     "deck_vazio": "Nenhuma carta adicionada!\n\nVá até o Catálogo e adicione cartas ao seu deck.",
     "contador": "{atual}/{maximo} cartas",
     "remover_confirmar": "Remover {nome} do deck?",
-    "removida": "{nome} removida do deck."
+    "removida": "{nome} removida do deck.",
+    "remover_do_deck": "Remover do Deck"
   },
   "detalhes": {
-    "tipo": "TIPO: {tipo}"
+    "tipo": "TIPO: {tipo}",
+    "adicionar_ao_deck": "Adicionar ao Meu Deck"
   },
   "configuracoes": {
     "preferencias": "PREFERÊNCIAS",

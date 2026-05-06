@@ -8,10 +8,12 @@ import '../widgets/cabecalho_widget.dart';
 
 class DetalhesCardPage extends StatelessWidget {
   final YugiohCardModel carta;
+  final bool modoRemover;
 
   const DetalhesCardPage({
     super.key,
     required this.carta,
+    this.modoRemover = false,
   });
 
   @override
@@ -21,28 +23,15 @@ class DetalhesCardPage extends StatelessWidget {
       appBar: CabecalhoWidget(
         mostrarBotaoVoltar: true,
         mostrarBotaoAddDeck: true,
-        cliqueBotaoAddDeck: () {
-          final mensagemErro = MeuDeckController().adicionarCarta(carta);
-          if (mensagemErro != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(mensagemErro),
-                backgroundColor: AppTheme.corErro,
-                duration: const Duration(seconds: 3),
-              ),
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  'deck.carta_adicionada'.tr(namedArgs: {'nome': carta.name}),
-                ),
-                backgroundColor: AppTheme.corSucesso,
-                duration: const Duration(seconds: 2),
-              ),
-            );
-          }
-        },
+        cliqueBotaoAddDeck: () => modoRemover
+            ? _removerDoDeck(context)
+            : _adicionarAoDeck(context),
+        labelBotaoAddDeck: modoRemover
+            ? 'deck.remover_do_deck'.tr()
+            : 'detalhes.adicionar_ao_deck'.tr(),
+        iconeBotaoAddDeck: modoRemover
+            ? Icons.delete_outline
+            : Icons.add_circle,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
@@ -60,6 +49,43 @@ class DetalhesCardPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _adicionarAoDeck(BuildContext context) {
+    final mensagemErro = MeuDeckController().adicionarCarta(carta);
+    if (mensagemErro != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(mensagemErro),
+          backgroundColor: AppTheme.corErro,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'deck.carta_adicionada'.tr(namedArgs: {'nome': carta.name}),
+          ),
+          backgroundColor: AppTheme.corSucesso,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  void _removerDoDeck(BuildContext context) {
+    MeuDeckController().removerCarta(carta);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'deck.removida'.tr(namedArgs: {'nome': carta.name}),
+        ),
+        backgroundColor: AppTheme.textoSecundario,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+    Navigator.pop(context);
   }
 
   // --- WIDGETS FRAGMENTADOS ---

@@ -24,9 +24,7 @@ class _MeuDeckPageState extends State<MeuDeckPage> {
       appBar: const CabecalhoWidget(mostrarBotaoVoltar: true),
       body: ListenableBuilder(
         listenable: _controller,
-        builder: (context, child) {
-          return _conteudoPrincipal();
-        },
+        builder: (context, child) => _conteudoPrincipal(),
       ),
     );
   }
@@ -108,77 +106,8 @@ class _MeuDeckPageState extends State<MeuDeckPage> {
       itemCount: _controller.minhasCartas.length,
       itemBuilder: (context, index) {
         final carta = _controller.minhasCartas[index];
-        return _cardComSwipe(carta);
+        return _cardLista(carta);
       },
-    );
-  }
-
-  Widget _cardComSwipe(YugiohCardModel carta) {
-    return Dismissible(
-      key: Key('${carta.id}-${_controller.minhasCartas.indexOf(carta)}'),
-      direction: DismissDirection.endToStart,
-      background: _fundoSwipe(),
-      confirmDismiss: (_) => _confirmarRemocao(carta),
-      onDismissed: (_) {
-        _controller.removerCarta(carta);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'deck.removida'.tr(namedArgs: {'nome': carta.name}),
-            ),
-            backgroundColor: AppTheme.textoSecundario,
-            duration: const Duration(seconds: 2),
-          ),
-        );
-      },
-      child: _cardLista(carta),
-    );
-  }
-
-  Widget _fundoSwipe() {
-    return Container(
-      alignment: Alignment.centerRight,
-      padding: const EdgeInsets.only(right: 20),
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: AppTheme.corErro,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: const Icon(Icons.delete_outline, color: Colors.white, size: 28),
-    );
-  }
-
-  Future<bool?> _confirmarRemocao(YugiohCardModel carta) {
-    return showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: AppTheme.textoSecundario,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: Text(
-          'deck.remover_confirmar'.tr(namedArgs: {'nome': carta.name}),
-          style: AppTheme.fonteSubtitulo(16).copyWith(color: AppTheme.fundoApp),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: Text(
-              'drawer.cancelar'.tr(),
-              style: AppTheme.fonteSubtitulo(14).copyWith(color: AppTheme.fundoApp),
-            ),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.corErro,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            ),
-            onPressed: () => Navigator.pop(ctx, true),
-            child: Text(
-              'drawer.sair'.tr(),
-              style: AppTheme.fonteTitulo(14).copyWith(color: Colors.white),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -215,7 +144,10 @@ class _MeuDeckPageState extends State<MeuDeckPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => DetalhesCardPage(carta: carta),
+              builder: (context) => DetalhesCardPage(
+                carta: carta,
+                modoRemover: true,
+              ),
             ),
           );
         },
