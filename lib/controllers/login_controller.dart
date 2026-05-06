@@ -4,39 +4,62 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends ChangeNotifier {
   bool isLoading = false;
-  String? errorMessage;
   bool manterConectado = false;
-
+  bool senhaVisivel = false;
+  String? erroEmail;
+  String? erroSenha;
   static const _chaveLogado = 'usuario_logado';
+  static final _regexSenha = RegExp(
+    r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$',
+  );
 
   void alterarManterConectado(bool valor) {
     manterConectado = valor;
     notifyListeners();
   }
 
+  void alterarVisibilidadeSenha() {
+    senhaVisivel = !senhaVisivel;
+    notifyListeners();
+  }
+
+  void onEmailChanged() {
+    if (erroEmail != null) {
+      erroEmail = null;
+      notifyListeners();
+    }
+  }
+
+  void onSenhaChanged() {
+    if (erroSenha != null) {
+      erroSenha = null;
+      notifyListeners();
+    }
+  }
+
   Future<bool> fazerLogin(String email, String senha) async {
-    if (email.isEmpty || senha.isEmpty) {
-      errorMessage = 'login.erro_campos_vazios'.tr();
-      notifyListeners();
-      return false;
+    erroEmail = null;
+    erroSenha = null;
+
+    if (email.isEmpty) {
+      erroEmail = 'login.erro_campos_vazios'.tr();
+    } else if (!email.contains('@') || !email.contains('.')) {
+      erroEmail = 'login.erro_email_invalido'.tr();
     }
 
-    if (!email.contains('@')) {
-      errorMessage = 'login.erro_email_invalido'.tr();
-      notifyListeners();
-      return false;
+    if (senha.isEmpty) {
+      erroSenha = 'login.erro_campos_vazios'.tr();
+    } else if (!_regexSenha.hasMatch(senha)) {
+      erroSenha = 'login.erro_senha_requisitos'.tr();
     }
 
-    if (senha.length < 6) {
-      errorMessage = 'login.erro_senha_requisitos'.tr();
+    if (erroEmail != null || erroSenha != null) {
       notifyListeners();
       return false;
     }
 
     isLoading = true;
-    errorMessage = null;
     notifyListeners();
-
     await Future.delayed(const Duration(seconds: 2));
 
     if (manterConectado) {

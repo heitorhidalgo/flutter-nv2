@@ -13,8 +13,10 @@
     "entrar": "LOG IN",
     "erro_campos_vazios": "Please fill in all fields to log in",
     "erro_email_invalido": "Please enter a valid e-mail address",
-    "erro_senha_requisitos": "Password does not meet the requirements",
-    "manter_conectado": "Keep me logged in"
+    "erro_senha_requisitos": "Password must have at least 8 characters, one uppercase, one lowercase and one number",
+    "manter_conectado": "Keep me logged in",
+    "mostrar_senha": "Show password",
+    "ocultar_senha": "Hide password"
   },
   "home": {
     "catalogo": "Catalog",

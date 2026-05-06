@@ -13,8 +13,10 @@
     "entrar": "ENTRAR",
     "erro_campos_vazios": "Preencha todos os campos para realizar o login",
     "erro_email_invalido": "Por favor, digite um e-mail válido",
-    "erro_senha_requisitos": "A senha deve preencher os requisitos",
-    "manter_conectado": "Manter conectado"
+    "erro_senha_requisitos": "A senha deve ter no mínimo 8 caracteres, uma letra maiúscula, uma minúscula e um número",
+    "manter_conectado": "Manter conectado",
+    "mostrar_senha": "Mostrar senha",
+    "ocultar_senha": "Ocultar senha"
   },
   "home": {
     "catalogo": "Catálogo",
