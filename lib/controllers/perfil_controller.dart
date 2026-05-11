@@ -31,15 +31,21 @@ class PerfilController extends ChangeNotifier {
     await _carregarPerfil();
   }
 
-  void atualizarNome(String novoNome) {
+  Future<void> atualizarNome(String novoNome) async {
     perfil = perfil.copyWith(nome: novoNome.trim());
-    _salvarPerfil();
+    await _salvarPerfil();
     notifyListeners();
   }
 
-  void atualizarAvatar(String caminho) {
+  Future<void> atualizarEmail(String novoEmail) async {
+    perfil = perfil.copyWith(email: novoEmail.trim());
+    await _salvarPerfil();
+    notifyListeners();
+  }
+
+  Future<void> atualizarAvatar(String caminho) async {
     perfil = perfil.copyWith(avatarPath: caminho);
-    _salvarPerfil();
+    await _salvarPerfil();
     notifyListeners();
   }
 

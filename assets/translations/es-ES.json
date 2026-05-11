@@ -95,7 +95,10 @@
     "insira_nome": "Ingresa tu nombre",
     "escolha_avatar": "Elige tu avatar",
     "salvar": "GUARDAR",
-    "atualizado": "¡Perfil actualizado!"
+    "atualizado": "¡Perfil actualizado!",
+    "email": "Correo electrónico",
+    "insira_email": "Ingresa tu correo electrónico",
+    "erro_email_invalido": "Por favor, ingresa un correo electrónico válido"
   },
   "drawer": {
     "perfil": "Perfil",

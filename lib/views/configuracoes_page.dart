@@ -184,11 +184,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
           debugPrint('Erro ao tentar abrir o link: $e');
         }
       },
-      icon: Image.asset(
-        caminhoImagem,
-        height: 24,
-        width: 24,
-      ),
+      icon: Image.asset(caminhoImagem, height: 24, width: 24),
       label: Text(label),
     );
   }

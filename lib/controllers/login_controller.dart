@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_nv2/controllers/perfil_controller.dart';
 
 class LoginController extends ChangeNotifier {
   bool isLoading = false;
@@ -8,6 +9,7 @@ class LoginController extends ChangeNotifier {
   bool senhaVisivel = false;
   String? erroEmail;
   String? erroSenha;
+
   static const _chaveLogado = 'usuario_logado';
   static final _regexSenha = RegExp(
     r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$',
@@ -60,12 +62,15 @@ class LoginController extends ChangeNotifier {
 
     isLoading = true;
     notifyListeners();
+
     await Future.delayed(const Duration(seconds: 2));
 
     if (manterConectado) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool(_chaveLogado, true);
     }
+
+    await PerfilController().atualizarEmail(email.trim());
 
     isLoading = false;
     notifyListeners();
