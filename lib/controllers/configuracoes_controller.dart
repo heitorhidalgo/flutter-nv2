@@ -39,7 +39,6 @@ class ConfiguracoesController extends ChangeNotifier {
       } else {
         context.setLocale(const Locale('pt', 'BR'));
       }
-
       notifyListeners();
     }
   }

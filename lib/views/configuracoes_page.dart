@@ -11,8 +11,7 @@ class ConfiguracoesPage extends ConsumerStatefulWidget {
   const ConfiguracoesPage({super.key});
 
   @override
-  ConsumerState<ConfiguracoesPage> createState() =>
-      _ConfiguracoesPageState();
+  ConsumerState<ConfiguracoesPage> createState() => _ConfiguracoesPageState();
 }
 
 class _ConfiguracoesPageState
@@ -21,17 +20,12 @@ class _ConfiguracoesPageState
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    ref
-        .read(configuracoesProvider)
-        .carregarIdiomaAtual(context);
+    ref.read(configuracoesProvider).carregarIdiomaAtual(context);
   }
 
   @override
   Widget build(BuildContext context) {
-
     final controller = ref.watch(configuracoesProvider);
-
     return Scaffold(
       backgroundColor: AppTheme.fundoApp,
       appBar: const CabecalhoWidget(mostrarBotaoVoltar: true),
@@ -89,8 +83,9 @@ class _ConfiguracoesPageState
         ),
         title: Text(
           'configuracoes.idioma'.tr(),
-          style: AppTheme.fonteTitulo(20)
-              .copyWith(color: AppTheme.fundoApp),
+          style: AppTheme.fonteTitulo(20).copyWith(
+              color: AppTheme.fundoApp
+          ),
         ),
         trailing: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
@@ -100,8 +95,9 @@ class _ConfiguracoesPageState
               Icons.arrow_drop_down,
               color: AppTheme.fundoApp,
             ),
-            style: AppTheme.fonteDescricao(18)
-                .copyWith(color: AppTheme.fundoApp),
+            style: AppTheme.fonteDescricao(18).copyWith(
+                color: AppTheme.fundoApp
+            ),
             items: controller.idiomasDisponiveis.map((String idioma) {
               return DropdownMenuItem<String>(
                 value: idioma,
@@ -139,13 +135,15 @@ class _ConfiguracoesPageState
         ),
         title: Text(
           'configuracoes.versao'.tr(),
-          style: AppTheme.fonteTitulo(20)
-              .copyWith(color: AppTheme.fundoApp),
+          style: AppTheme.fonteTitulo(20).copyWith(
+              color: AppTheme.fundoApp
+          ),
         ),
         trailing: Text(
           controller.versaoApp,
-          style: AppTheme.fonteDescricao(16)
-              .copyWith(color: AppTheme.fundoApp),
+          style: AppTheme.fonteDescricao(16).copyWith(
+              color: AppTheme.fundoApp
+          ),
         ),
       ),
     );
@@ -175,13 +173,15 @@ class _ConfiguracoesPageState
             const SizedBox(height: 16),
             Text(
               controller.desenvolvedor,
-              style: AppTheme.fonteTitulo(24)
-                  .copyWith(color: AppTheme.fundoApp),
+              style: AppTheme.fonteTitulo(24).copyWith(
+                  color: AppTheme.fundoApp
+              ),
             ),
             Text(
               'configuracoes.software_developer'.tr(),
-              style: AppTheme.fonteDescricao(20)
-                  .copyWith(color: AppTheme.fundoApp),
+              style: AppTheme.fonteDescricao(20).copyWith(
+                  color: AppTheme.fundoApp
+              ),
             ),
             const SizedBox(height: 20),
             Row(
@@ -206,11 +206,7 @@ class _ConfiguracoesPageState
     );
   }
 
-  Widget _botaoSocial(
-      String caminhoImagem,
-      String label,
-      String url,
-      ) {
+  Widget _botaoSocial(String caminhoImagem, String label, String url) {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppTheme.fundoApp,
@@ -221,12 +217,8 @@ class _ConfiguracoesPageState
       ),
       onPressed: () async {
         final Uri uri = Uri.parse(url);
-
         try {
-          if (!await launchUrl(
-            uri,
-            mode: LaunchMode.externalApplication,
-          )) {
+          if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
             debugPrint(
               'Não foi possível abrir o link: $url',
             );
