@@ -1,6 +1,5 @@
-import 'package:flutter_riverpod/legacy.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../controllers/configuracoes_controller.dart';
 
-final configuracoesProvider = ChangeNotifierProvider<ConfiguracoesController>((ref) {
-  return ConfiguracoesController();
-});
+final ChangeNotifierProvider<ConfiguracoesController> configuracoesProvider =
+  ChangeNotifierProvider<ConfiguracoesController>((ref) => ConfiguracoesController());

@@ -1,61 +1,64 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_nv2/widgets/cabecalho_widget.dart';
 import '../controllers/meu_deck_controller.dart';
 import '../core/themes/app_theme.dart';
 import '../models/yugioh_card_model.dart';
+import '../providers/meu_deck_provider.dart';
 import '../views/detalhes_card_page.dart';
+import '../widgets/cabecalho_widget.dart';
 
-class MeuDeckPage extends StatefulWidget {
+class MeuDeckPage extends ConsumerWidget {
   const MeuDeckPage({super.key});
 
-  @override
-  State<MeuDeckPage> createState() => _MeuDeckPageState();
-}
-
-class _MeuDeckPageState extends State<MeuDeckPage> {
-  final MeuDeckController _controller = MeuDeckController();
   static const int _limiteMaximo = 60;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final MeuDeckController controller = ref.watch(meuDeckProvider);
+
     return Scaffold(
       backgroundColor: AppTheme.fundoApp,
       appBar: const CabecalhoWidget(mostrarBotaoVoltar: true),
-      body: ListenableBuilder(
-        listenable: _controller,
-        builder: (context, child) => _conteudoPrincipal(),
-      ),
+      body: _conteudoPrincipal(controller),
     );
   }
 
-  Widget _conteudoPrincipal() {
-    if (_controller.minhasCartas.isEmpty) return _estadoVazio();
+  Widget _conteudoPrincipal(MeuDeckController controller) {
+    if (controller.minhasCartas.isEmpty) {
+      return _estadoVazio();
+    }
+
     return Column(
-      children: [
-        _contadorCartas(),
-        Expanded(child: _listaDeCartas()),
+      children: <Widget>[
+        _contadorCartas(controller),
+        Expanded(
+          child: _listaDeCartas(controller),
+        ),
       ],
     );
   }
 
-  Widget _contadorCartas() {
-    final total = _controller.minhasCartas.length;
-    final porcentagem = total / _limiteMaximo;
+  Widget _contadorCartas(MeuDeckController controller) {
+    final int total = controller.minhasCartas.length;
+    final double porcentagem = total / _limiteMaximo;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
+        children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: <Widget>[
               Text(
-                'deck.contador'.tr(namedArgs: {
-                  'atual': total.toString(),
-                  'maximo': _limiteMaximo.toString(),
-                }),
+                'deck.contador'.tr(
+                  namedArgs: <String, String>{
+                    'atual': total.toString(),
+                    'maximo': _limiteMaximo.toString(),
+                  },
+                ),
                 style: AppTheme.fonteSubtitulo(14),
               ),
               Text(
@@ -72,11 +75,7 @@ class _MeuDeckPageState extends State<MeuDeckPage> {
               minHeight: 8,
               backgroundColor: AppTheme.textoSecundario.withValues(alpha: 0.3),
               valueColor: AlwaysStoppedAnimation<Color>(
-                porcentagem < 0.8
-                    ? Colors.green
-                    : porcentagem < 0.95
-                    ? Colors.orange
-                    : AppTheme.corErro,
+                porcentagem < 0.8 ? Colors.green : porcentagem < 0.95 ? Colors.orange : AppTheme.corErro,
               ),
             ),
           ),
@@ -88,7 +87,7 @@ class _MeuDeckPageState extends State<MeuDeckPage> {
   Widget _estadoVazio() {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(24),
         child: Text(
           'deck.deck_vazio'.tr(),
           style: AppTheme.fonteTitulo(20),
@@ -98,54 +97,72 @@ class _MeuDeckPageState extends State<MeuDeckPage> {
     );
   }
 
-  Widget _listaDeCartas() {
+  Widget _listaDeCartas(MeuDeckController controller) {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      itemCount: _controller.minhasCartas.length,
-      itemBuilder: (context, index) {
-        final carta = _controller.minhasCartas[index];
-        return _cardLista(carta);
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 8,
+      ),
+      itemCount: controller.minhasCartas.length,
+      itemBuilder: (BuildContext context, int index) {
+        final YugiohCardModel carta = controller.minhasCartas[index];
+
+        return _cardLista(context, carta);
       },
     );
   }
 
-  Widget _cardLista(YugiohCardModel carta) {
+  Widget _cardLista(BuildContext context, YugiohCardModel carta) {
     return Card(
       color: AppTheme.textoSecundario,
       elevation: 2,
       margin: const EdgeInsets.only(bottom: 12),
       shape: RoundedRectangleBorder(
-        side: const BorderSide(color: AppTheme.textoPrimario, width: 0.5),
+        side: const BorderSide(
+          color: AppTheme.textoPrimario,
+          width: 0.5,
+        ),
         borderRadius: BorderRadius.circular(8),
       ),
       child: ListTile(
         leading: ClipRRect(
           borderRadius: BorderRadius.circular(4),
-          child: Image.network(
-            carta.imageUrl,
+          child: CachedNetworkImage(
+            imageUrl: carta.imageUrl,
             width: 40,
             fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) =>
-            const Icon(Icons.broken_image, color: AppTheme.fundoApp),
+            errorWidget: (BuildContext context, String url, Object error) =>
+            const Icon(
+              Icons.broken_image,
+              color: AppTheme.fundoApp,
+            ),
           ),
         ),
         title: Text(
           carta.name,
-          style: AppTheme.fonteSubtitulo(18).copyWith(color: AppTheme.fundoApp),
+          style: AppTheme.fonteSubtitulo(18).copyWith(
+            color: AppTheme.fundoApp,
+          ),
         ),
         subtitle: Text(
           carta.type,
-          style: AppTheme.fonteDescricao(14).copyWith(color: AppTheme.fundoApp),
+          style: AppTheme.fonteDescricao(14).copyWith(
+            color: AppTheme.fundoApp,
+          ),
         ),
-        trailing: const Icon(Icons.chevron_right, color: AppTheme.fundoApp),
+        trailing: const Icon(
+          Icons.chevron_right,
+          color: AppTheme.fundoApp,
+        ),
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => DetalhesCardPage(
-                carta: carta,
-                modoRemover: true,
-              ),
+              builder: (BuildContext context) =>
+                  DetalhesCardPage(
+                    carta: carta,
+                    modoRemover: true,
+                  ),
             ),
           );
         },

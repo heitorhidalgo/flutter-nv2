@@ -1,6 +1,5 @@
-import 'package:flutter_riverpod/legacy.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../controllers/perfil_controller.dart';
 
-final perfilProvider = ChangeNotifierProvider<PerfilController>((ref) {
-  return PerfilController();
-});
+final ChangeNotifierProvider<PerfilController> perfilProvider =
+  ChangeNotifierProvider<PerfilController>((ref) => PerfilController());
