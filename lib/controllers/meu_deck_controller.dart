@@ -29,30 +29,21 @@ class MeuDeckController extends ChangeNotifier {
       );
     }
     _minhasCartas.add(carta);
-
     await _salvarDeck();
-
     notifyListeners();
-
     return null;
   }
 
   Future<void> removerCarta(YugiohCardModel carta) async {
     _minhasCartas.remove(carta);
-
     await _salvarDeck();
-
     notifyListeners();
   }
 
   Future<void> limpar() async {
-
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
     await prefs.remove(_chaveDeck);
-
     _minhasCartas.clear();
-
     notifyListeners();
   }
 
@@ -78,11 +69,8 @@ class MeuDeckController extends ChangeNotifier {
 
   Future<void> _carregarDeck() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
     final List<String> listaJson = prefs.getStringList(_chaveDeck) ?? <String>[];
-
     _minhasCartas.clear();
-
     _minhasCartas.addAll(listaJson.map((String jsonStr) {
           final Map<String, dynamic> map = jsonDecode(jsonStr) as Map<String, dynamic>;
           return YugiohCardModel(
@@ -95,7 +83,6 @@ class MeuDeckController extends ChangeNotifier {
         },
       ),
     );
-
     notifyListeners();
   }
 }

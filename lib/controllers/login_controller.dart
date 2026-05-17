@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_nv2/controllers/perfil_controller.dart';
+
+import 'perfil_controller.dart';
 
 class LoginController extends ChangeNotifier {
   bool isLoading = false;
@@ -10,10 +11,8 @@ class LoginController extends ChangeNotifier {
   String? erroEmail;
   String? erroSenha;
 
-  static const _chaveLogado = 'usuario_logado';
-  static final _regexSenha = RegExp(
-    r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$',
-  );
+  static const String _chaveLogado = 'usuario_logado';
+  static final RegExp _regexSenha = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$');
 
   void alterarManterConectado(bool valor) {
     manterConectado = valor;
@@ -39,23 +38,26 @@ class LoginController extends ChangeNotifier {
     }
   }
 
-  Future<bool> fazerLogin(String email, String senha) async {
+  Future<bool> fazerLogin(String email, String senha, PerfilController perfilController) async {
     erroEmail = null;
     erroSenha = null;
 
     if (email.isEmpty) {
       erroEmail = 'login.erro_campos_vazios'.tr();
-    } else if (!email.contains('@') || !email.contains('.')) {
+    } else if (
+    !email.contains('@') || !email.contains('.')) {
       erroEmail = 'login.erro_email_invalido'.tr();
     }
 
     if (senha.isEmpty) {
       erroSenha = 'login.erro_campos_vazios'.tr();
-    } else if (!_regexSenha.hasMatch(senha)) {
+    } else if (
+    !_regexSenha.hasMatch(senha)) {
       erroSenha = 'login.erro_senha_requisitos'.tr();
     }
 
-    if (erroEmail != null || erroSenha != null) {
+    if (
+    erroEmail != null || erroSenha != null) {
       notifyListeners();
       return false;
     }
@@ -63,27 +65,30 @@ class LoginController extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(
+      const Duration(seconds: 2),
+    );
 
     if (manterConectado) {
-      final prefs = await SharedPreferences.getInstance();
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool(_chaveLogado, true);
     }
 
-    await PerfilController().atualizarEmail(email.trim());
-
+    await perfilController.atualizarEmail(email.trim());
     isLoading = false;
     notifyListeners();
     return true;
   }
 
-  static Future<void> limparSessao() async {
-    final prefs = await SharedPreferences.getInstance();
+  static Future<void>
+  limparSessao() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove(_chaveLogado);
   }
 
-  static Future<bool> estaLogado() async {
-    final prefs = await SharedPreferences.getInstance();
+  static Future<bool>
+  estaLogado() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool(_chaveLogado) ?? false;
   }
 }
