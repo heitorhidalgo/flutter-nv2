@@ -1,73 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_nv2/controllers/splash_controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../controllers/login_controller.dart';
+import '../providers/perfil_provider.dart';
+import '../providers/meu_deck_provider.dart';
 import '../core/themes/app_theme.dart';
 import 'home_page.dart';
 import 'login_page.dart';
 
-class SplashPage extends StatefulWidget {
+class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
 
   @override
-  State<SplashPage> createState() => _SplashPageState();
+  ConsumerState<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _animationController;
-  late final Animation<double> _pulseAnimation;
-
-  final SplashController _splashController = SplashController();
-
+class _SplashPageState extends ConsumerState<SplashPage> {
   @override
   void initState() {
     super.initState();
 
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    );
-
-    _pulseAnimation = Tween<double>(
-      begin: 1.0,
-      end: 1.10,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
-
-    _animationController.repeat(reverse: true);
-    _iniciarCarregamento();
+    _inicializar();
   }
 
-  void _iniciarCarregamento() async {
-    final sessaoAtiva = await _splashController.carregarDependencias();
+  Future<void> _inicializar() async {
+    await Future.wait(<Future<void>>[
+      ref.read(perfilProvider).inicializar(),
+      ref.read(meuDeckProvider).inicializar(),
+    ]);
+
+    final bool estaLogado =
+    await LoginController.estaLogado();
 
     if (!mounted) return;
-
-    if (sessaoAtiva == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('geral.erro_iniciar_app'.tr()),
-          backgroundColor: AppTheme.corErro,
-        ),
-      );
-      return;
-    }
 
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-        sessaoAtiva ? const HomePage() : const LoginPage(),
+        builder: (BuildContext context) =>
+        estaLogado
+            ? const HomePage()
+            : const LoginPage(),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
   }
 
   @override
@@ -77,20 +51,15 @@ class _SplashPageState extends State<SplashPage>
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ScaleTransition(
-              scale: _pulseAnimation,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Image.asset(
-                  'assets/icons/card_verso.png',
-                  height: 350,
-                  fit: BoxFit.contain,
-                ),
-              ),
+          children: <Widget>[
+            Image.asset(
+              'assets/icons/icone.png',
+              width: 180,
             ),
-            const SizedBox(height: 75),
-            Text('geral.carregando'.tr(), style: AppTheme.fonteTitulo(20)),
+            const SizedBox(height: 32),
+            const CircularProgressIndicator(
+              color: AppTheme.textoPrimario,
+            ),
           ],
         ),
       ),
