@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/personagem_model.dart';
 
-class PersonagensController {
-  List<PersonagemModel> get listaPersonagens => [
+final Provider<List<PersonagemModel>> personagensProvider =
+Provider<List<PersonagemModel>>((ref) {
+  return <PersonagemModel>[
     PersonagemModel(
       id: 1,
       nome: 'personagens.yugi_nome'.tr(),
@@ -28,4 +30,4 @@ class PersonagensController {
       imagem: 'assets/personagens/mai.jpg',
     ),
   ];
-}
+});

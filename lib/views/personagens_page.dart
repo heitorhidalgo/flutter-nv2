@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import '../controllers/personagens_controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/themes/app_theme.dart';
+import '../models/personagem_model.dart';
+import '../providers/personagens_provider.dart';
 import '../widgets/cabecalho_widget.dart';
 import '../widgets/card_personagem_widget.dart';
 
-class PersonagensPage extends StatelessWidget {
+class PersonagensPage extends ConsumerWidget {
   const PersonagensPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final controller = PersonagensController();
-
+  Widget build(BuildContext context, WidgetRef ref) {
+    final List<PersonagemModel> personagens = ref.watch(personagensProvider);
     return Scaffold(
       backgroundColor: AppTheme.fundoApp,
       appBar: const CabecalhoWidget(
@@ -18,9 +19,9 @@ class PersonagensPage extends StatelessWidget {
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
-        itemCount: controller.listaPersonagens.length,
+        itemCount: personagens.length,
         itemBuilder: (context, index) {
-          final personagem = controller.listaPersonagens[index];
+          final personagem = personagens[index];
           return CardPersonagemWidget(personagem: personagem);
         },
       ),

@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/regra_model.dart';
 
-class ComoJogarController {
-  List<RegraModel> get listaRegras => [
+final Provider<List<RegraModel>> comoJogarProvider =
+Provider<List<RegraModel>>((ref) {
+  return <RegraModel>[
     RegraModel(
       titulo: 'como_jogar.objetivo_titulo'.tr(),
       descricao: 'como_jogar.objetivo_descricao'.tr(),
@@ -30,4 +32,4 @@ class ComoJogarController {
       icone: Icons.storm,
     ),
   ];
-}
+});

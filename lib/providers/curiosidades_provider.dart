@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/curiosidades_model.dart';
 
-class CuriosidadesController {
-  List<CuriosidadesModel> get listaCuriosidades => [
+final Provider<List<CuriosidadesModel>> curiosidadesProvider =
+Provider<List<CuriosidadesModel>>((ref) {
+  return <CuriosidadesModel>[
     CuriosidadesModel(
       titulo: 'curiosidades.manga_titulo'.tr(),
       descricao: 'curiosidades.manga_descricao'.tr(),
@@ -35,4 +37,4 @@ class CuriosidadesController {
       imagem: 'assets/curiosidades/raras.png',
     ),
   ];
-}
+});
