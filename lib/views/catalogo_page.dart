@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
-import '../controllers/catalogo_controller.dart';
 import '../core/themes/app_theme.dart';
+import '../models/catalogo_state.dart';
 import '../providers/catalogo_provider.dart';
 import '../widgets/cabecalho_widget.dart';
 import '../widgets/lista_cartas_widget.dart';
@@ -24,23 +24,18 @@ class _CatalogoPageState extends ConsumerState<CatalogoPage> {
   @override
   void initState() {
     super.initState();
-
     _scrollController.addListener(_onScroll);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(catalogoProvider).buscarCartas();
-    });
   }
 
   void _onScroll() {
     if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
-      ref.read(catalogoProvider).buscarCartas(isLoadMore: true);
+      ref.read(catalogoProvider.notifier).buscarMaisCartas();
     }
   }
 
   void _limparPesquisa() {
     _pesquisaController.clear();
-    ref.read(catalogoProvider).pesquisarCarta('');
+    ref.read(catalogoProvider.notifier).pesquisarCarta('');
   }
 
   @override
@@ -48,45 +43,41 @@ class _CatalogoPageState extends ConsumerState<CatalogoPage> {
     _scrollController.dispose();
     _pesquisaController.dispose();
     _debounce?.cancel();
-
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final CatalogoController controller = ref.watch(catalogoProvider);
-
+    final AsyncValue<CatalogoState> catalogo =
+    ref.watch(catalogoProvider);
     return Scaffold(
       backgroundColor: AppTheme.fundoApp,
-      appBar: const CabecalhoWidget(mostrarBotaoVoltar: true),
+      appBar: const CabecalhoWidget(
+        mostrarBotaoVoltar: true,
+      ),
       body: Column(
         children: <Widget>[
-          _barraDePesquisa(controller),
+          _barraDePesquisa(),
           Expanded(
-            child: _conteudoPrincipal(controller),
+            child: catalogo.when(
+              loading: _estadoCarregando,
+              error: (error, stack) => _estadoErro(error),
+              data: (CatalogoState estado) => _conteudoPrincipal(estado),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _conteudoPrincipal(CatalogoController controller) {
-    if (controller.isLoading) {
-      return _estadoCarregando();
-    }
-
-    if (controller.errorMessage != null) {
-      return _estadoErro(controller);
-    }
-
-    if (controller.cartas.isEmpty) {
+  Widget _conteudoPrincipal(CatalogoState estado) {
+    if (estado.cartas.isEmpty) {
       return _estadoVazio();
     }
-
-    return _listaDeCartas(controller);
+    return _listaDeCartas(estado);
   }
 
-  Widget _barraDePesquisa(CatalogoController controller) {
+  Widget _barraDePesquisa() {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: TextField(
@@ -101,7 +92,8 @@ class _CatalogoPageState extends ConsumerState<CatalogoPage> {
           suffixIcon: ListenableBuilder(
             listenable: _pesquisaController,
             builder: (context, _) {
-              return _pesquisaController.text.isNotEmpty ? IconButton(
+              return _pesquisaController.text.isNotEmpty
+                  ? IconButton(
                 icon: const Icon(
                   Icons.close,
                   color: AppTheme.textoSecundario,
@@ -130,11 +122,10 @@ class _CatalogoPageState extends ConsumerState<CatalogoPage> {
           if (_debounce?.isActive ?? false) {
             _debounce!.cancel();
           }
-
           _debounce = Timer(
             const Duration(milliseconds: 500),
                 () {
-              controller.pesquisarCarta(texto);
+              ref.read(catalogoProvider.notifier).pesquisarCarta(texto);
             },
           );
         },
@@ -150,7 +141,7 @@ class _CatalogoPageState extends ConsumerState<CatalogoPage> {
     );
   }
 
-  Widget _estadoErro(CatalogoController controller) {
+  Widget _estadoErro(Object error) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -162,13 +153,13 @@ class _CatalogoPageState extends ConsumerState<CatalogoPage> {
           ),
           const SizedBox(height: 16),
           Text(
-            controller.errorMessage!,
+            error.toString(),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
           ElevatedButton(
             onPressed: () {
-              controller.buscarCartas();
+              ref.invalidate(catalogoProvider);
             },
             child: Text(
               'geral.tentar_novamente'.tr(),
@@ -207,11 +198,11 @@ class _CatalogoPageState extends ConsumerState<CatalogoPage> {
     );
   }
 
-  Widget _listaDeCartas(CatalogoController controller) {
+  Widget _listaDeCartas(CatalogoState estado) {
     return ListaCartasWidget(
-      cartas: controller.cartas,
+      cartas: estado.cartas,
       scrollController: _scrollController,
-      isFetchingMore: controller.isFetchingMore,
+      isFetchingMore: estado.isFetchingMore,
     );
   }
 }

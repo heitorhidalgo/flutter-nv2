@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../controllers/catalogo_controller.dart';
+import '../models/catalogo_state.dart';
+import '../notifiers/catalogo_notifier.dart';
 
-final ChangeNotifierProvider<CatalogoController> catalogoProvider =
-  ChangeNotifierProvider<CatalogoController>((ref) => CatalogoController());
+final AsyncNotifierProvider<CatalogoNotifier, CatalogoState> catalogoProvider =
+  AsyncNotifierProvider<CatalogoNotifier, CatalogoState>(CatalogoNotifier.new);
