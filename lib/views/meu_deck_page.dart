@@ -6,7 +6,8 @@ import '../controllers/meu_deck_controller.dart';
 import '../core/themes/app_theme.dart';
 import '../models/yugioh_card_model.dart';
 import '../providers/meu_deck_provider.dart';
-import '../views/detalhes_card_page.dart';
+import '../routes/app_routes.dart';
+import '../routes/arguments/detalhes_card_args.dart';
 import '../widgets/cabecalho_widget.dart';
 
 class MeuDeckPage extends ConsumerWidget {
@@ -155,14 +156,12 @@ class MeuDeckPage extends ConsumerWidget {
           color: AppTheme.fundoApp,
         ),
         onTap: () {
-          Navigator.push(
+          Navigator.pushNamed(
             context,
-            MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  DetalhesCardPage(
-                    carta: carta,
-                    modoRemover: true,
-                  ),
+            AppRoutes.detalhesCard,
+            arguments: DetalhesCardArguments(
+              carta: carta,
+              modoRemover: true,
             ),
           );
         },

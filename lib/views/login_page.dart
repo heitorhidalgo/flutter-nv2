@@ -6,7 +6,7 @@ import '../controllers/perfil_controller.dart';
 import '../core/themes/app_theme.dart';
 import '../providers/login_provider.dart';
 import '../providers/perfil_provider.dart';
-import 'home_page.dart';
+import '../routes/app_routes.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -63,11 +63,8 @@ class _LoginPageState extends ConsumerState<LoginPage> with SingleTickerProvider
 
   Future<void> _entrar() async {
     FocusScope.of(context).unfocus();
-
     final LoginController loginController = ref.read(loginProvider);
-
     final PerfilController perfilController = ref.read(perfilProvider);
-
     final bool sucesso = await loginController.fazerLogin(
       _emailController.text,
       _senhaController.text,
@@ -79,12 +76,9 @@ class _LoginPageState extends ConsumerState<LoginPage> with SingleTickerProvider
     }
 
     if (sucesso) {
-      Navigator.pushReplacement(
+      Navigator.pushReplacementNamed(
         context,
-        MaterialPageRoute(
-          builder:
-              (BuildContext context) => const HomePage(),
-        ),
+        AppRoutes.home,
       );
     }
   }
@@ -102,7 +96,6 @@ class _LoginPageState extends ConsumerState<LoginPage> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     final LoginController loginController = ref.watch(loginProvider);
-
     return Scaffold(
       backgroundColor:
       AppTheme.fundoApp,

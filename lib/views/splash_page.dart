@@ -4,8 +4,7 @@ import '../controllers/login_controller.dart';
 import '../providers/perfil_provider.dart';
 import '../providers/meu_deck_provider.dart';
 import '../core/themes/app_theme.dart';
-import 'home_page.dart';
-import 'login_page.dart';
+import '../routes/app_routes.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
@@ -27,21 +26,12 @@ class _SplashPageState extends ConsumerState<SplashPage> {
       ref.read(perfilProvider).inicializar(),
       ref.read(meuDeckProvider).inicializar(),
     ]);
-
     final bool estaLogado =
     await LoginController.estaLogado();
-
     if (!mounted) return;
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) =>
-        estaLogado
-            ? const HomePage()
-            : const LoginPage(),
-      ),
-    );
+    Navigator.pushReplacementNamed(
+        context,
+        estaLogado ? AppRoutes.home : AppRoutes.login);
   }
 
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/perfil_model.dart';
-import '../views/login_page.dart';
+import '../routes/app_routes.dart';
 import 'login_controller.dart';
 
 class PerfilController extends ChangeNotifier {
@@ -108,11 +108,8 @@ class PerfilController extends ChangeNotifier {
       return;
     }
 
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute<LoginPage>(
-        builder: (_) =>
-        const LoginPage(),
-      ),
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      AppRoutes.login,
           (Route<dynamic> route) => false,
     );
   }

@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../core/themes/app_theme.dart';
-import '../views/catalogo_page.dart';
-import '../views/como_jogar_page.dart';
-import '../views/configuracoes_page.dart';
-import '../views/curiosidades_page.dart';
-import '../views/meu_deck_page.dart';
-import '../views/personagens_page.dart';
+import '../routes/app_routes.dart';
 import '../widgets/botao_home_widget.dart';
 import '../widgets/cabecalho_widget.dart';
 import '../widgets/drawer_widget.dart';
@@ -41,11 +36,9 @@ class HomePage extends StatelessWidget {
                     titulo: 'home.catalogo'.tr(),
                     icone: Icons.style,
                     clique: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => const CatalogoPage(),
-                        ),
+                        AppRoutes.catalogo,
                       );
                     },
                   ),
@@ -53,11 +46,9 @@ class HomePage extends StatelessWidget {
                     titulo: 'home.meu_deck'.tr(),
                     icone: Icons.style_outlined,
                     clique: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => const MeuDeckPage(),
-                        ),
+                        AppRoutes.meuDeck,
                       );
                     },
                   ),
@@ -65,11 +56,9 @@ class HomePage extends StatelessWidget {
                     titulo: 'home.personagens'.tr(),
                     icone: Icons.person,
                     clique: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => const PersonagensPage(),
-                        ),
+                        AppRoutes.personagens,
                       );
                     },
                   ),
@@ -77,11 +66,9 @@ class HomePage extends StatelessWidget {
                     titulo: 'home.curiosidades'.tr(),
                     icone: Icons.question_mark,
                     clique: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => const CuriosidadesPage(),
-                        ),
+                        AppRoutes.curiosidades,
                       );
                     },
                   ),
@@ -89,11 +76,9 @@ class HomePage extends StatelessWidget {
                     titulo: 'home.como_jogar'.tr(),
                     icone: Icons.play_arrow,
                     clique: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => const ComoJogarPage(),
-                        ),
+                        AppRoutes.comoJogar,
                       );
                     },
                   ),
@@ -101,11 +86,9 @@ class HomePage extends StatelessWidget {
                     titulo: 'home.configuracoes'.tr(),
                     icone: Icons.settings,
                     clique: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => const ConfiguracoesPage(),
-                        ),
+                        AppRoutes.configuracoes,
                       );
                     },
                   ),

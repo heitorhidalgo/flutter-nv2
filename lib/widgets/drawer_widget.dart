@@ -5,7 +5,7 @@ import '../controllers/perfil_controller.dart';
 import '../core/themes/app_theme.dart';
 import '../providers/meu_deck_provider.dart';
 import '../providers/perfil_provider.dart';
-import '../views/perfil_page.dart';
+import '../routes/app_routes.dart';
 
 class DrawerWidget extends ConsumerWidget {
   const DrawerWidget({super.key});
@@ -89,11 +89,9 @@ class DrawerWidget extends ConsumerWidget {
       ),
       onTap: () {
         Navigator.pop(context);
-        Navigator.push(
+        Navigator.pushNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) => const PerfilPage(),
-          ),
+          AppRoutes.perfil,
         );
       },
     );
