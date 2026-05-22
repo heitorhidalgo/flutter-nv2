@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../controllers/configuracoes_controller.dart';
+import '../models/configuracoes_state.dart';
+import '../notifiers/configuracoes_notifier.dart';
 
-final ChangeNotifierProvider<ConfiguracoesController> configuracoesProvider =
-  ChangeNotifierProvider<ConfiguracoesController>((ref) => ConfiguracoesController());
+final NotifierProvider<ConfiguracoesNotifier, ConfiguracoesState>configuracoesProvider =
+    NotifierProvider<ConfiguracoesNotifier, ConfiguracoesState>(ConfiguracoesNotifier.new);

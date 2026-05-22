@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../controllers/configuracoes_controller.dart';
 import '../core/themes/app_theme.dart';
+import '../models/configuracoes_state.dart';
+import '../notifiers/configuracoes_notifier.dart';
 import '../providers/configuracoes_provider.dart';
 import '../widgets/cabecalho_widget.dart';
 
@@ -14,41 +15,44 @@ class ConfiguracoesPage extends ConsumerStatefulWidget {
   ConsumerState<ConfiguracoesPage> createState() => _ConfiguracoesPageState();
 }
 
-class _ConfiguracoesPageState
-    extends ConsumerState<ConfiguracoesPage> {
-
+class _ConfiguracoesPageState extends ConsumerState<ConfiguracoesPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    ref.read(configuracoesProvider).carregarIdiomaAtual(context);
+    ref.read(configuracoesProvider.notifier).carregarIdiomaAtual(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    final controller = ref.watch(configuracoesProvider);
+    final ConfiguracoesState configuracoesState = ref.watch(
+      configuracoesProvider,
+    );
+
+    final ConfiguracoesNotifier configuracoesNotifier = ref.read(
+      configuracoesProvider.notifier,
+    );
+
     return Scaffold(
       backgroundColor: AppTheme.fundoApp,
       appBar: const CabecalhoWidget(mostrarBotaoVoltar: true),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             _tituloSecao('configuracoes.preferencias'.tr()),
-            _cardIdioma(controller),
+            _cardIdioma(context, configuracoesState, configuracoesNotifier),
             const SizedBox(height: 32),
             _tituloSecao('configuracoes.sobre_app'.tr()),
-            _cardVersao(controller),
+            _cardVersao(configuracoesNotifier),
             const SizedBox(height: 16),
             _tituloSecao('configuracoes.desenvolvido_por'.tr()),
-            _cardDesenvolvedor(controller),
+            _cardDesenvolvedor(configuracoesNotifier),
           ],
         ),
       ),
     );
   }
-
-  // --- WIDGETS FRAGMENTADOS ---
 
   Widget _tituloSecao(String titulo) {
     return Padding(
@@ -64,41 +68,27 @@ class _ConfiguracoesPageState
     );
   }
 
-  Widget _cardIdioma(ConfiguracoesController controller) {
+  Widget _cardIdioma(BuildContext context, ConfiguracoesState configuracoesState, ConfiguracoesNotifier configuracoesNotifier) {
     return Card(
       color: AppTheme.textoSecundario,
       elevation: 2,
       shape: RoundedRectangleBorder(
-        side: const BorderSide(
-          color: AppTheme.textoPrimario,
-          width: 0.5,
-        ),
+        side: const BorderSide(color: AppTheme.textoPrimario, width: 0.5),
         borderRadius: BorderRadius.circular(12),
       ),
       child: ListTile(
-        leading: const Icon(
-          Icons.language,
-          color: AppTheme.fundoApp,
-          size: 28,
-        ),
+        leading: const Icon(Icons.language, color: AppTheme.fundoApp, size: 28),
         title: Text(
           'configuracoes.idioma'.tr(),
-          style: AppTheme.fonteTitulo(20).copyWith(
-              color: AppTheme.fundoApp
-          ),
+          style: AppTheme.fonteTitulo(20).copyWith(color: AppTheme.fundoApp),
         ),
         trailing: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
-            value: controller.idiomaSelecionado,
+            value: configuracoesState.idiomaSelecionado,
             dropdownColor: AppTheme.textoSecundario,
-            icon: const Icon(
-              Icons.arrow_drop_down,
-              color: AppTheme.fundoApp,
-            ),
-            style: AppTheme.fonteDescricao(18).copyWith(
-                color: AppTheme.fundoApp
-            ),
-            items: controller.idiomasDisponiveis.map((String idioma) {
+            icon: const Icon(Icons.arrow_drop_down, color: AppTheme.fundoApp),
+            style: AppTheme.fonteDescricao(18).copyWith(color: AppTheme.fundoApp),
+            items: configuracoesNotifier.idiomasDisponiveis.map((String idioma) {
               return DropdownMenuItem<String>(
                 value: idioma,
                 alignment: Alignment.center,
@@ -107,7 +97,7 @@ class _ConfiguracoesPageState
             }).toList(),
             onChanged: (String? novoIdioma) {
               if (novoIdioma != null) {
-                controller.alterarIdioma(context, novoIdioma);
+                configuracoesNotifier.alterarIdioma(context, novoIdioma);
               }
             },
           ),
@@ -116,87 +106,44 @@ class _ConfiguracoesPageState
     );
   }
 
-  Widget _cardVersao(ConfiguracoesController controller) {
+  Widget _cardVersao(ConfiguracoesNotifier configuracoesNotifier) {
     return Card(
       color: AppTheme.textoSecundario,
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        side: const BorderSide(
-          color: AppTheme.textoPrimario,
-          width: 0.5,
-        ),
-        borderRadius: BorderRadius.circular(12),
-      ),
       child: ListTile(
-        leading: const Icon(
-          Icons.info_outline,
-          color: AppTheme.fundoApp,
-          size: 28,
-        ),
-        title: Text(
-          'configuracoes.versao'.tr(),
-          style: AppTheme.fonteTitulo(20).copyWith(
-              color: AppTheme.fundoApp
-          ),
-        ),
-        trailing: Text(
-          controller.versaoApp,
-          style: AppTheme.fonteDescricao(16).copyWith(
-              color: AppTheme.fundoApp
-          ),
-        ),
+        leading: const Icon(Icons.info_outline),
+        title: Text('configuracoes.versao'.tr()),
+        trailing: Text(configuracoesNotifier.versaoApp),
       ),
     );
   }
 
-  Widget _cardDesenvolvedor(ConfiguracoesController controller) {
+  Widget _cardDesenvolvedor(ConfiguracoesNotifier configuracoesNotifier) {
     return Card(
       color: AppTheme.textoSecundario,
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        side: const BorderSide(
-          color: AppTheme.textoPrimario,
-          width: 0.5,
-        ),
-        borderRadius: BorderRadius.circular(12),
-      ),
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20),
         child: Column(
-          children: [
+          children: <Widget>[
             const CircleAvatar(
               radius: 50,
-              backgroundColor: AppTheme.fundoApp,
-              backgroundImage:
-              AssetImage('assets/perfis/dev.png'),
+              backgroundImage: AssetImage('assets/perfis/dev.png'),
             ),
             const SizedBox(height: 16),
-            Text(
-              controller.desenvolvedor,
-              style: AppTheme.fonteTitulo(24).copyWith(
-                  color: AppTheme.fundoApp
-              ),
-            ),
-            Text(
-              'configuracoes.software_developer'.tr(),
-              style: AppTheme.fonteDescricao(20).copyWith(
-                  color: AppTheme.fundoApp
-              ),
-            ),
+            Text(configuracoesNotifier.desenvolvedor),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: <Widget>[
                 _botaoSocial(
                   'assets/icons/linkedin.png',
                   'LinkedIn',
-                  controller.linkLinkedin,
+                  configuracoesNotifier.linkLinkedin,
                 ),
                 const SizedBox(width: 20),
                 _botaoSocial(
                   'assets/icons/github.png',
                   'GitHub',
-                  controller.linkGithub,
+                  configuracoesNotifier.linkGithub,
                 ),
               ],
             ),
@@ -208,32 +155,11 @@ class _ConfiguracoesPageState
 
   Widget _botaoSocial(String caminhoImagem, String label, String url) {
     return ElevatedButton.icon(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppTheme.fundoApp,
-        foregroundColor: AppTheme.textoPrimario,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
       onPressed: () async {
         final Uri uri = Uri.parse(url);
-        try {
-          if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-            debugPrint(
-              'Não foi possível abrir o link: $url',
-            );
-          }
-        } catch (e) {
-          debugPrint(
-            'Erro ao tentar abrir o link: $e',
-          );
-        }
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
       },
-      icon: Image.asset(
-        caminhoImagem,
-        height: 24,
-        width: 24,
-      ),
+      icon: Image.asset(caminhoImagem, width: 24, height: 24),
       label: Text(label),
     );
   }
