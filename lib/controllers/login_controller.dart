@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'perfil_controller.dart';
-
 class LoginController extends ChangeNotifier {
   bool isLoading = false;
   bool manterConectado = false;
@@ -38,7 +36,7 @@ class LoginController extends ChangeNotifier {
     }
   }
 
-  Future<bool> fazerLogin(String email, String senha, PerfilController perfilController) async {
+  Future<bool> fazerLogin(String email, String senha, Future<void> Function(String)atualizarEmailPerfil) async {
     erroEmail = null;
     erroSenha = null;
 
@@ -74,7 +72,7 @@ class LoginController extends ChangeNotifier {
       await prefs.setBool(_chaveLogado, true);
     }
 
-    await perfilController.atualizarEmail(email.trim());
+    await atualizarEmailPerfil(email.trim());
     isLoading = false;
     notifyListeners();
     return true;

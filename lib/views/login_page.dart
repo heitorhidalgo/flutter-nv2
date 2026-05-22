@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../controllers/login_controller.dart';
-import '../controllers/perfil_controller.dart';
 import '../core/themes/app_theme.dart';
 import '../providers/login_provider.dart';
 import '../providers/perfil_provider.dart';
@@ -16,7 +15,6 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> with SingleTickerProviderStateMixin {
-
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
   final FocusNode _emailFocus = FocusNode();
@@ -28,7 +26,6 @@ class _LoginPageState extends ConsumerState<LoginPage> with SingleTickerProvider
   @override
   void initState() {
     super.initState();
-
     _animController = AnimationController(
           vsync: this,
           duration:
@@ -36,12 +33,10 @@ class _LoginPageState extends ConsumerState<LoginPage> with SingleTickerProvider
             milliseconds: 600,
           ),
         );
-
     _fadeAnim = CurvedAnimation(
       parent: _animController,
       curve: Curves.easeIn,
     );
-
     _slideAnim = Tween<Offset>(
           begin: const Offset(0, 0.08),
           end: Offset.zero,
@@ -52,23 +47,19 @@ class _LoginPageState extends ConsumerState<LoginPage> with SingleTickerProvider
             Curves.easeOut,
           ),
         );
-
     _animController.forward();
-
     _emailController.addListener(
       ref.read(loginProvider).onEmailChanged);
-
     _senhaController.addListener(ref.read(loginProvider).onSenhaChanged);
   }
 
   Future<void> _entrar() async {
     FocusScope.of(context).unfocus();
     final LoginController loginController = ref.read(loginProvider);
-    final PerfilController perfilController = ref.read(perfilProvider);
     final bool sucesso = await loginController.fazerLogin(
       _emailController.text,
       _senhaController.text,
-      perfilController,
+      ref.read(perfilProvider.notifier).atualizarEmail,
     );
 
     if (!mounted) {

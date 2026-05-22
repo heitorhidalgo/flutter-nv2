@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
-import '../controllers/perfil_controller.dart';
 import '../core/themes/app_theme.dart';
+import '../models/perfil_model.dart';
+import '../providers/perfil_provider.dart';
 
-class CabecalhoWidget extends StatelessWidget implements PreferredSizeWidget {
+class CabecalhoWidget extends ConsumerWidget implements PreferredSizeWidget {
   final bool mostrarBotaoVoltar;
   final bool mostrarDrawer;
   final bool mostrarBotaoAddDeck;
@@ -22,13 +24,15 @@ class CabecalhoWidget extends StatelessWidget implements PreferredSizeWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final PerfilModel perfil = ref.watch(perfilProvider);
+
     return AppBar(
       backgroundColor: AppTheme.fundoApp,
       centerTitle: true,
       elevation: 0,
-      leading: _construirLeading(context),
-      actions: _construirActions(context),
+      leading: _construirLeading(context, perfil),
+      actions: _construirActions(),
       title: Image.asset(
         'assets/icons/logotipo.png',
         height: 70,
@@ -37,83 +41,74 @@ class CabecalhoWidget extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Widget? _construirLeading(BuildContext context) {
+  Widget? _construirLeading(BuildContext context, PerfilModel perfil) {
     if (mostrarBotaoVoltar) {
       return IconButton(
         icon: const Icon(Icons.arrow_back, color: AppTheme.textoPrimario),
-        onPressed: () => Navigator.pop(context),
-      );
-    } else if (mostrarDrawer) {
-      final controller = PerfilController();
-      return ListenableBuilder(
-        listenable: controller,
-        builder: (context, child) {
-          final avatarPath = controller.perfil.avatarPath;
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(
-              onTap: () => Scaffold.of(context).openDrawer(),
-              child: CircleAvatar(
-                radius: 20,
-                backgroundColor: AppTheme.textoSecundario,
-                backgroundImage:
-                avatarPath != null ? AssetImage(avatarPath) : null,
-                child: avatarPath == null
-                    ? const Icon(Icons.person,
-                    size: 20, color: AppTheme.fundoApp)
-                    : null,
-              ),
-            ),
-          );
+        onPressed: () {
+          Navigator.pop(context);
         },
+      );
+    }
+
+    if (mostrarDrawer) {
+      return Padding(
+        padding: const EdgeInsets.all(8),
+        child: GestureDetector(
+          onTap: () {
+            Scaffold.of(context).openDrawer();
+          },
+          child: CircleAvatar(
+            radius: 20,
+            backgroundColor: AppTheme.textoSecundario,
+            backgroundImage: perfil.avatarPath != null ? AssetImage(perfil.avatarPath!) : null,
+            child: perfil.avatarPath == null ? const Icon(Icons.person, size: 20, color: AppTheme.fundoApp) : null,
+          ),
+        ),
       );
     }
     return null;
   }
 
-  List<Widget>? _construirActions(BuildContext context) {
-    if (mostrarBotaoAddDeck) {
-      final label =
-          labelBotaoAddDeck ?? 'detalhes.adicionar_ao_deck'.tr();
-      final icone = iconeBotaoAddDeck ?? Icons.add_circle;
-
-      return [
-        PopupMenuButton<String>(
-          icon: const Icon(Icons.more_vert, color: AppTheme.textoPrimario),
-          color: AppTheme.textoSecundario,
-          offset: const Offset(0, 50),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          onSelected: (valor) {
-            if (valor == 'acao' && cliqueBotaoAddDeck != null) {
-              cliqueBotaoAddDeck!();
-            }
-          },
-          itemBuilder: (context) => [
+  List<Widget>? _construirActions() {
+    if (!mostrarBotaoAddDeck) {
+      return null;
+    }
+    final String label = labelBotaoAddDeck ?? 'detalhes.adicionar_ao_deck'.tr();
+    final IconData icone = iconeBotaoAddDeck ?? Icons.add_circle;
+    return <Widget>[
+      PopupMenuButton<String>(
+        icon: const Icon(Icons.more_vert, color: AppTheme.textoPrimario),
+        color: AppTheme.textoSecundario,
+        offset: const Offset(0, 50),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        onSelected: (String valor) {
+          if (valor == 'acao' && cliqueBotaoAddDeck != null) {
+            cliqueBotaoAddDeck!();
+          }
+        },
+        itemBuilder: (BuildContext context) {
+          return <PopupMenuEntry<String>>[
             PopupMenuItem<String>(
               value: 'acao',
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
-                children: [
+                children: <Widget>[
                   Icon(icone, color: AppTheme.fundoApp, size: 20),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
                       label,
-                      style: AppTheme.fonteSubtitulo(16).copyWith(
-                        color: AppTheme.fundoApp,
-                      ),
+                      style: AppTheme.fonteSubtitulo(16).copyWith(color: AppTheme.fundoApp),
                     ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ];
-    }
-    return null;
+          ];
+        },
+      ),
+    ];
   }
 
   @override
