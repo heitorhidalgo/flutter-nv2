@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../core/themes/app_theme.dart';
+import '../models/meu_deck_state.dart';
 import '../models/yugioh_card_model.dart';
 import '../providers/meu_deck_provider.dart';
 import '../routes/app_routes.dart';
@@ -15,8 +16,8 @@ class MeuDeckPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final List<YugiohCardModel> cartas = ref.watch(meuDeckProvider);
-
+    final MeuDeckState meuDeckState = ref.watch(meuDeckProvider);
+    final List<YugiohCardModel> cartas = meuDeckState.cartas;
     return Scaffold(
       backgroundColor: AppTheme.fundoApp,
       appBar: const CabecalhoWidget(mostrarBotaoVoltar: true),
@@ -28,7 +29,6 @@ class MeuDeckPage extends ConsumerWidget {
     if (cartas.isEmpty) {
       return _estadoVazio();
     }
-
     return Column(
       children: <Widget>[
         _contadorCartas(cartas),
