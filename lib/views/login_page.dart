@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
-import '../controllers/login_controller.dart';
 import '../core/themes/app_theme.dart';
+import '../models/login_state.dart';
+import '../notifiers/login_notifier.dart';
 import '../providers/login_provider.dart';
 import '../providers/perfil_provider.dart';
 import '../routes/app_routes.dart';
@@ -14,7 +15,8 @@ class LoginPage extends ConsumerStatefulWidget {
   ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends ConsumerState<LoginPage> with SingleTickerProviderStateMixin {
+class _LoginPageState extends ConsumerState<LoginPage>
+    with SingleTickerProviderStateMixin {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
   final FocusNode _emailFocus = FocusNode();
@@ -26,37 +28,31 @@ class _LoginPageState extends ConsumerState<LoginPage> with SingleTickerProvider
   @override
   void initState() {
     super.initState();
+
     _animController = AnimationController(
-          vsync: this,
-          duration:
-          const Duration(
-            milliseconds: 600,
-          ),
-        );
-    _fadeAnim = CurvedAnimation(
-      parent: _animController,
-      curve: Curves.easeIn,
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
     );
+
+    _fadeAnim = CurvedAnimation(parent: _animController, curve: Curves.easeIn);
+
     _slideAnim = Tween<Offset>(
-          begin: const Offset(0, 0.08),
-          end: Offset.zero,
-        ).animate(
-          CurvedAnimation(
-            parent: _animController,
-            curve:
-            Curves.easeOut,
-          ),
-        );
+      begin: const Offset(0, 0.08),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _animController, curve: Curves.easeOut));
     _animController.forward();
     _emailController.addListener(
-      ref.read(loginProvider).onEmailChanged);
-    _senhaController.addListener(ref.read(loginProvider).onSenhaChanged);
+      ref.read(loginProvider.notifier).onEmailChanged,
+    );
+    _senhaController.addListener(
+      ref.read(loginProvider.notifier).onSenhaChanged,
+    );
   }
 
   Future<void> _entrar() async {
     FocusScope.of(context).unfocus();
-    final LoginController loginController = ref.read(loginProvider);
-    final bool sucesso = await loginController.fazerLogin(
+    final LoginNotifier loginNotifier = ref.read(loginProvider.notifier);
+    final bool sucesso = await loginNotifier.fazerLogin(
       _emailController.text,
       _senhaController.text,
       ref.read(perfilProvider.notifier).atualizarEmail,
@@ -67,10 +63,7 @@ class _LoginPageState extends ConsumerState<LoginPage> with SingleTickerProvider
     }
 
     if (sucesso) {
-      Navigator.pushReplacementNamed(
-        context,
-        AppRoutes.home,
-      );
+      Navigator.pushReplacementNamed(context, AppRoutes.home);
     }
   }
 
@@ -86,19 +79,16 @@ class _LoginPageState extends ConsumerState<LoginPage> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
-    final LoginController loginController = ref.watch(loginProvider);
+    final LoginState loginState = ref.watch(loginProvider);
+    final LoginNotifier loginNotifier = ref.read(loginProvider.notifier);
     return Scaffold(
-      backgroundColor:
-      AppTheme.fundoApp,
+      backgroundColor: AppTheme.fundoApp,
       body: Center(
-        child:
-        SingleChildScrollView(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(32),
-          child:
-          FadeTransition(
+          child: FadeTransition(
             opacity: _fadeAnim,
-            child:
-            SlideTransition(
+            child: SlideTransition(
               position: _slideAnim,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -106,13 +96,13 @@ class _LoginPageState extends ConsumerState<LoginPage> with SingleTickerProvider
                 children: <Widget>[
                   _logotipo(),
                   const SizedBox(height: 24),
-                  _campoEmail(loginController),
+                  _campoEmail(loginState),
                   const SizedBox(height: 14),
-                  _campoSenha(loginController),
+                  _campoSenha(loginState, loginNotifier),
                   const SizedBox(height: 4),
-                  _checkboxManterConectado(loginController),
+                  _checkboxManterConectado(loginState, loginNotifier),
                   const SizedBox(height: 16),
-                  _botaoEntrar(loginController),
+                  _botaoEntrar(loginState),
                 ],
               ),
             ),
@@ -127,80 +117,69 @@ class _LoginPageState extends ConsumerState<LoginPage> with SingleTickerProvider
       'assets/icons/logotipo.png',
       height: 200,
       fit: BoxFit.contain,
-      semanticLabel:
-      'Yu-Gi-Oh! Logotipo',
     );
   }
 
-  Widget _campoEmail(LoginController loginController) {
+  Widget _campoEmail(LoginState loginState) {
     return TextField(
       controller: _emailController,
       focusNode: _emailFocus,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
-      onSubmitted: (_) => _senhaFocus.requestFocus(),
+      onSubmitted: (_) {
+        _senhaFocus.requestFocus();
+      },
       style: AppTheme.fonteDescricao(22),
-      decoration:
-      InputDecoration(
-        labelText:
-        'login.email'.tr(),
-        errorText:
-        loginController.erroEmail,
+      decoration: InputDecoration(
+        labelText: 'login.email'.tr(),
+        errorText: loginState.erroEmail,
       ),
     );
   }
 
-  Widget _campoSenha(LoginController loginController) {
+  Widget _campoSenha(LoginState loginState, LoginNotifier loginNotifier) {
     return TextField(
       controller: _senhaController,
       focusNode: _senhaFocus,
-      obscureText: !loginController.senhaVisivel,
+      obscureText: !loginState.senhaVisivel,
       textInputAction: TextInputAction.done,
-      onSubmitted: (_) => loginController.isLoading ? null : _entrar(),
-      decoration:
-      InputDecoration(
-        labelText:
-        'login.senha'.tr(),
-        errorText:
-        loginController.erroSenha,
-        suffixIcon:
-        IconButton(
+      onSubmitted: (_) {
+        if (!loginState.isLoading) {
+          _entrar();
+        }
+      },
+      decoration: InputDecoration(
+        labelText: 'login.senha'.tr(),
+        errorText: loginState.erroSenha,
+        suffixIcon: IconButton(
           icon: Icon(
-            loginController.senhaVisivel ? Icons.visibility_off : Icons.visibility,
+            loginState.senhaVisivel ? Icons.visibility_off : Icons.visibility,
           ),
-          onPressed:
-          loginController.alterarVisibilidadeSenha,
+          onPressed: loginNotifier.alterarVisibilidadeSenha,
         ),
       ),
     );
   }
 
-  Widget _checkboxManterConectado(LoginController loginController) {
+  Widget _checkboxManterConectado(LoginState loginState, LoginNotifier loginNotifier) {
     return CheckboxListTile(
-      value:
-      loginController.manterConectado,
+      value: loginState.manterConectado,
       onChanged: (bool? valor) {
-        loginController.alterarManterConectado(valor ?? false);
+        loginNotifier.alterarManterConectado(valor ?? false);
       },
-      title: Text(
-        'login.manter_conectado'.tr(),
-      ),
+      title: Text('login.manter_conectado'.tr()),
     );
   }
 
-  Widget _botaoEntrar(LoginController loginController) {
+  Widget _botaoEntrar(LoginState loginState) {
     return ElevatedButton(
-      onPressed:
-      loginController.isLoading ? null : _entrar,
-      child:
-      loginController.isLoading ? const SizedBox(
-        height: 24,
-        width: 24,
-        child:
-        CircularProgressIndicator(),
-      ) : Text(
-        'login.entrar'.tr(),
-      ),
+      onPressed: loginState.isLoading ? null : _entrar,
+      child: loginState.isLoading ? const SizedBox(
+              height: 24,
+              width: 24,
+              child: CircularProgressIndicator(),
+            )
+          : Text('login.entrar'.tr()),
     );
   }
 }

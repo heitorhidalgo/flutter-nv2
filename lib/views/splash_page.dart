@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../controllers/login_controller.dart';
 import '../core/themes/app_theme.dart';
+import '../providers/login_provider.dart';
 import '../providers/meu_deck_provider.dart';
 import '../providers/perfil_provider.dart';
 import '../routes/app_routes.dart';
@@ -23,7 +23,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
   Future<void> _inicializar() async {
     ref.read(perfilProvider);
     ref.read(meuDeckProvider);
-    final bool estaLogado = await LoginController.estaLogado();
+    final bool estaLogado = await ref.read(loginProvider.notifier).estaLogado();
     if (!mounted) {
       return;
     }

@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../controllers/login_controller.dart';
+import '../models/login_state.dart';
+import '../notifiers/login_notifier.dart';
 
-final ChangeNotifierProvider<LoginController> loginProvider =
-  ChangeNotifierProvider<LoginController>((ref) => LoginController());
+final NotifierProvider<LoginNotifier, LoginState> loginProvider =
+    NotifierProvider<LoginNotifier, LoginState>(LoginNotifier.new);
