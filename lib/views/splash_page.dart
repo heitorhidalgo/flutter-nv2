@@ -22,7 +22,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
 
   Future<void> _inicializar() async {
     ref.read(perfilProvider);
-    await ref.read(meuDeckProvider).inicializar();
+    ref.read(meuDeckProvider);
     final bool estaLogado = await LoginController.estaLogado();
     if (!mounted) {
       return;

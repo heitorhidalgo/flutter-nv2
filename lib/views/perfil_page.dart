@@ -189,7 +189,7 @@ class _PerfilPageState extends ConsumerState<PerfilPage> {
             mainAxisSpacing: 12,
           ),
           itemCount: notifier.avataresDisponiveis.length,
-          itemBuilder: (BuildContextcontext, int index) {
+          itemBuilder: (BuildContext context, int index) {
             final String caminho = notifier.avataresDisponiveis[index];
             final bool selecionado = perfil.avatarPath == caminho;
             return GestureDetector(

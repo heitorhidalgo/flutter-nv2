@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../controllers/meu_deck_controller.dart';
+import '../models/yugioh_card_model.dart';
+import '../notifiers/meu_deck_notifier.dart';
 
-final ChangeNotifierProvider<MeuDeckController> meuDeckProvider =
-  ChangeNotifierProvider<MeuDeckController>((ref) => MeuDeckController());
+final NotifierProvider<MeuDeckNotifier, List<YugiohCardModel>> meuDeckProvider =
+    NotifierProvider<MeuDeckNotifier, List<YugiohCardModel>>(MeuDeckNotifier.new);

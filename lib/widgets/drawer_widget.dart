@@ -18,15 +18,10 @@ class DrawerWidget extends ConsumerWidget {
       child: Column(
         children: <Widget>[
           _cabecalhoDrawer(perfil),
-          const Divider(
-            color: AppTheme.fundoApp,
-            thickness: 0.5,
-          ),
+          const Divider(color: AppTheme.fundoApp, thickness: 0.5),
           _itemPerfil(context),
           _itemLogout(context, ref),
-          const SizedBox(
-            height: 16,
-          ),
+          const SizedBox(height: 16),
         ],
       ),
     );
@@ -35,20 +30,12 @@ class DrawerWidget extends ConsumerWidget {
   Widget _cabecalhoDrawer(PerfilModel perfil) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 24,
-          horizontal: 16,
-        ),
+        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            _avatarPerfil(
-              perfil,
-              radius: 50,
-            ),
-            const SizedBox(
-              height: 12,
-            ),
+            _avatarPerfil(perfil, radius: 50),
+            const SizedBox(height: 12),
             Text(
               perfil.nome,
               style: AppTheme.fonteTitulo(24).copyWith(color: AppTheme.fundoApp),
@@ -67,18 +54,14 @@ class DrawerWidget extends ConsumerWidget {
 
   Widget _itemPerfil(BuildContext context) {
     return ListTile(
-      leading: const Icon(
-        Icons.person_outline,
-        color: AppTheme.fundoApp,
-      ),
+      leading: const Icon(Icons.person_outline, color: AppTheme.fundoApp),
       title: Text(
         'drawer.perfil'.tr(),
-        style: AppTheme.fonteSubtitulo(16).copyWith(
-          color: AppTheme.fundoApp,
-        ),
+        style: AppTheme.fonteSubtitulo(16).copyWith(color: AppTheme.fundoApp),
       ),
       onTap: () {
         Navigator.pop(context);
+
         Navigator.pushNamed(context, AppRoutes.perfil);
       },
     );
@@ -86,19 +69,13 @@ class DrawerWidget extends ConsumerWidget {
 
   Widget _itemLogout(BuildContext context, WidgetRef ref) {
     return ListTile(
-      leading: const Icon(
-        Icons.logout,
-        color: AppTheme.fundoApp,
-      ),
+      leading: const Icon(Icons.logout, color: AppTheme.fundoApp),
       title: Text(
         'drawer.sair'.tr(),
         style: AppTheme.fonteSubtitulo(16).copyWith(color: AppTheme.fundoApp),
       ),
       onTap: () {
-        _confirmarLogout(
-          context,
-          ref,
-        );
+        _confirmarLogout(context, ref);
       },
     );
   }
@@ -106,56 +83,58 @@ class DrawerWidget extends ConsumerWidget {
   void _confirmarLogout(BuildContext context, WidgetRef ref) {
     showDialog(
       context: context,
-      builder: (BuildContext ctx) => AlertDialog(
-        backgroundColor: AppTheme.textoSecundario,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        title: Text(
-          'drawer.sair'.tr(),
-          style: AppTheme.fonteTitulo(20).copyWith(color: AppTheme.fundoApp),
-        ),
-        content: Text(
-          'drawer.confirmar_sair'.tr(),
-          style: AppTheme.fonteDescricao(16).copyWith(color: AppTheme.fundoApp),
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-            },
-            child: Text(
-              'drawer.cancelar'.tr(),
-              style: AppTheme.fonteSubtitulo(14).copyWith(color: AppTheme.fundoApp),
-            ),
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+          backgroundColor: AppTheme.textoSecundario,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.textoPrimario,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+          title: Text(
+            'drawer.sair'.tr(),
+            style: AppTheme.fonteTitulo(20).copyWith(color: AppTheme.fundoApp),
+          ),
+          content: Text(
+            'drawer.confirmar_sair'.tr(),
+            style: AppTheme.fonteDescricao(16).copyWith(color: AppTheme.fundoApp),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: Text(
+                'drawer.cancelar'.tr(),
+                style: AppTheme.fonteSubtitulo(14).copyWith(color: AppTheme.fundoApp),
               ),
             ),
-            onPressed: () async {
-              Navigator.pop(ctx);
-              await ref.read(perfilProvider.notifier).limparPerfil();
-              await ref.read(meuDeckProvider).limpar();
-              if (!context.mounted) {
-                return;
-              }
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                AppRoutes.login,
-                    (Route<dynamic> route) => false,
-              );
-            },
-            child: Text(
-              'drawer.sair'.tr(),
-              style: AppTheme.fonteTitulo(14).copyWith(color: AppTheme.fundoApp),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.textoPrimario,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () async {
+                Navigator.pop(ctx);
+                await ref.read(perfilProvider.notifier).limparPerfil();
+                await ref.read(meuDeckProvider.notifier).limpar();
+                if (!context.mounted) {
+                  return;
+                }
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  AppRoutes.login,
+                  (Route<dynamic> route) => false,
+                );
+              },
+              child: Text(
+                'drawer.sair'.tr(),
+                style: AppTheme.fonteTitulo(14).copyWith(color: AppTheme.fundoApp),
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      },
     );
   }
 
@@ -164,11 +143,7 @@ class DrawerWidget extends ConsumerWidget {
       radius: radius,
       backgroundColor: AppTheme.fundoApp,
       backgroundImage: perfil.avatarPath != null ? AssetImage(perfil.avatarPath!) : null,
-      child: perfil.avatarPath == null ? Icon(
-        Icons.person,
-        size: radius,
-        color: AppTheme.textoPrimario,
-      ) : null
+      child: perfil.avatarPath == null ? Icon(Icons.person, size: radius, color: AppTheme.textoPrimario) : null,
     );
   }
 }

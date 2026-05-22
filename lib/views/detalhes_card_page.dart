@@ -1,10 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import '../core/themes/app_theme.dart';
 import '../models/yugioh_card_model.dart';
 import '../providers/meu_deck_provider.dart';
-import '../core/themes/app_theme.dart';
 import '../widgets/cabecalho_widget.dart';
 
 class DetalhesCardPage extends ConsumerWidget {
@@ -26,15 +26,15 @@ class DetalhesCardPage extends ConsumerWidget {
       appBar: CabecalhoWidget(
         mostrarBotaoVoltar: true,
         mostrarBotaoAddDeck: true,
-        cliqueBotaoAddDeck: () => modoRemover
-            ? _removerDoDeck(context, ref)
-            : _adicionarAoDeck(context, ref),
-        labelBotaoAddDeck: modoRemover
-            ? 'deck.remover_do_deck'.tr()
-            : 'detalhes.adicionar_ao_deck'.tr(),
-        iconeBotaoAddDeck: modoRemover
-            ? Icons.delete_outline
-            : Icons.add_circle,
+        cliqueBotaoAddDeck: () {
+          if (modoRemover) {
+            _removerDoDeck(context, ref);
+          } else {
+            _adicionarAoDeck(context, ref);
+          }
+        },
+        labelBotaoAddDeck: modoRemover ? 'deck.remover_do_deck'.tr() : 'detalhes.adicionar_ao_deck'.tr(),
+        iconeBotaoAddDeck: modoRemover ? Icons.delete_outline : Icons.add_circle,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
@@ -54,15 +54,11 @@ class DetalhesCardPage extends ConsumerWidget {
     );
   }
 
-  Future<void> _adicionarAoDeck(
-      BuildContext context,
-      WidgetRef ref,
-      ) async {
-    final String? mensagemErro = await ref
-        .read(meuDeckProvider)
-        .adicionarCarta(carta);
-
-    if (!context.mounted) return;
+  Future<void> _adicionarAoDeck(BuildContext context, WidgetRef ref) async {
+    final String? mensagemErro = await ref.read(meuDeckProvider.notifier).adicionarCarta(carta);
+    if (!context.mounted) {
+      return;
+    }
 
     if (mensagemErro != null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -72,51 +68,42 @@ class DetalhesCardPage extends ConsumerWidget {
           duration: const Duration(seconds: 3),
         ),
       );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'deck.carta_adicionada'.tr(
-              namedArgs: <String, String>{
-                'nome': carta.name,
-              },
-            ),
-          ),
-          backgroundColor: AppTheme.corSucesso,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      return;
     }
-  }
-
-  Future<void> _removerDoDeck(
-      BuildContext context,
-      WidgetRef ref,
-      ) async {
-    await ref.read(meuDeckProvider).removerCarta(carta);
-
-    if (!context.mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          'deck.removida'.tr(
-            namedArgs: <String, String>{
-              'nome': carta.name,
-            },
+          'deck.carta_adicionada'.tr(
+            namedArgs: <String, String>{'nome': carta.name},
           ),
+        ),
+        backgroundColor: AppTheme.corSucesso,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  Future<void> _removerDoDeck(BuildContext context, WidgetRef ref) async {
+    await ref.read(meuDeckProvider.notifier).removerCarta(carta);
+    if (!context.mounted) {
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'deck.removida'.tr(namedArgs: <String, String>{'nome': carta.name}),
         ),
         backgroundColor: AppTheme.textoSecundario,
         duration: const Duration(seconds: 2),
       ),
     );
-
     Navigator.pop(context);
   }
 
   Widget _imagemCarta() {
     final String tag = heroTag ?? 'carta-image-${carta.id}';
-
     return Hero(
       tag: tag,
       child: ClipRRect(
@@ -125,22 +112,20 @@ class DetalhesCardPage extends ConsumerWidget {
           imageUrl: carta.imageUrl,
           height: 400,
           fit: BoxFit.contain,
-          placeholder: (context, url) => const SizedBox(
-            height: 400,
-            child: Center(
-              child: CircularProgressIndicator(
-                color: AppTheme.textoPrimario,
+          placeholder: (BuildContext context, String url) {
+            return const SizedBox(
+              height: 400,
+              child: Center(
+                child: CircularProgressIndicator(color: AppTheme.textoPrimario),
               ),
-            ),
-          ),
-          errorWidget: (context, url, error) => const SizedBox(
-            height: 400,
-            child: Icon(
-              Icons.broken_image,
-              size: 100,
-              color: Colors.grey,
-            ),
-          ),
+            );
+          },
+          errorWidget: (BuildContext context, String url, Object error) {
+            return const SizedBox(
+              height: 400,
+              child: Icon(Icons.broken_image, size: 100, color: Colors.grey),
+            );
+          },
         ),
       ),
     );
