@@ -137,7 +137,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
     );
   }
 
-  Widget _campoSenha(LoginState loginState, LoginNotifier loginNotifier) {
+  Widget _campoSenha(LoginState loginState, LoginNotifier loginNotifier,) {
     return TextField(
       controller: _senhaController,
       focusNode: _senhaFocus,
@@ -151,11 +151,13 @@ class _LoginPageState extends ConsumerState<LoginPage>
       decoration: InputDecoration(
         labelText: 'login.senha'.tr(),
         errorText: loginState.erroSenha,
+        errorMaxLines: 4,
+        errorStyle: AppTheme.fonteDescricao(12),
         suffixIcon: IconButton(
           icon: Icon(
-            loginState.senhaVisivel ? Icons.visibility_off : Icons.visibility,
-          ),
-          onPressed: loginNotifier.alterarVisibilidadeSenha,
+            loginState.senhaVisivel ? Icons.visibility_off : Icons.visibility),
+          onPressed:
+          loginNotifier.alterarVisibilidadeSenha,
         ),
       ),
     );
