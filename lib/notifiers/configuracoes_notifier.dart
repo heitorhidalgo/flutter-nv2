@@ -20,21 +20,6 @@ class ConfiguracoesNotifier extends Notifier<ConfiguracoesState> {
     return const ConfiguracoesState();
   }
 
-  void carregarIdiomaAtual(BuildContext context) {
-    final String localeCode = context.locale.languageCode;
-    if (localeCode == 'en') {
-      state = state.copyWith(idiomaSelecionado: 'English');
-      return;
-    }
-
-    if (localeCode == 'es') {
-      state = state.copyWith(idiomaSelecionado: 'Español');
-      return;
-    }
-
-    state = state.copyWith(idiomaSelecionado: 'Português (BR)');
-  }
-
   void alterarIdioma(BuildContext context, String novoIdioma) {
     if (novoIdioma == state.idiomaSelecionado) {
       return;
