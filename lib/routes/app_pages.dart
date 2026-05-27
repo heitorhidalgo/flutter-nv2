@@ -30,16 +30,17 @@ class AppPages {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case AppRoutes.detalhesCard:
-        final DetalhesCardArguments args = settings.arguments as DetalhesCardArguments;
+        final DetalhesCardArguments args =
+            settings.arguments as DetalhesCardArguments;
         return MaterialPageRoute(
           builder: (BuildContext context) {
             return DetalhesCardPage(
               carta: args.carta,
               modoRemover: args.modoRemover,
+              heroTag: args.heroTag,
             );
           },
         );
-
       default:
         return null;
     }

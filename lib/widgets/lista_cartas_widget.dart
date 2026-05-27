@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/yugioh_card_model.dart';
 import '../core/themes/app_theme.dart';
-import '../views/detalhes_card_page.dart';
+import '../routes/app_routes.dart';
+import '../routes/arguments/detalhes_card_args.dart';
 
 class ListaCartasWidget extends StatelessWidget {
   final List<YugiohCardModel> cartas;
@@ -22,7 +23,7 @@ class ListaCartasWidget extends StatelessWidget {
       controller: scrollController,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       itemCount: cartas.length + (isFetchingMore ? 1 : 0),
-      itemBuilder: (context, index) {
+      itemBuilder: (BuildContext context, int index) {
         if (index == cartas.length) {
           return const Padding(
             padding: EdgeInsets.symmetric(vertical: 32.0),
@@ -54,7 +55,7 @@ class ListaCartasWidget extends StatelessWidget {
               imageUrl: carta.imageUrl,
               width: 40,
               fit: BoxFit.cover,
-              placeholder: (context, url) => const SizedBox(
+              placeholder: (BuildContext context, String url) => const SizedBox(
                 width: 40,
                 child: Center(
                   child: CircularProgressIndicator(
@@ -63,8 +64,8 @@ class ListaCartasWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              errorWidget: (context, url, error) =>
-              const Icon(Icons.broken_image, color: AppTheme.fundoApp),
+              errorWidget: (BuildContext context, String url, Object error) =>
+                  const Icon(Icons.broken_image, color: AppTheme.fundoApp),
             ),
           ),
         ),
@@ -78,13 +79,13 @@ class ListaCartasWidget extends StatelessWidget {
         ),
         trailing: const Icon(Icons.chevron_right, color: AppTheme.fundoApp),
         onTap: () {
-          Navigator.push(
+          Navigator.pushNamed(
             context,
-            MaterialPageRoute(
-              builder: (context) => DetalhesCardPage(
-                carta: carta,
-                heroTag: 'carta-image-${carta.id}-$index',
-              ),
+            AppRoutes.detalhesCard,
+            arguments: DetalhesCardArguments(
+              carta: carta,
+              modoRemover: false,
+              heroTag: 'carta-image-${carta.id}-$index',
             ),
           );
         },
