@@ -25,7 +25,8 @@ class CabecalhoWidget extends ConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final PerfilModel perfil = ref.watch(perfilProvider);
+    final AsyncValue<PerfilModel> perfilAsync = ref.watch(perfilProvider);
+    final PerfilModel? perfil = perfilAsync.value;
 
     return AppBar(
       backgroundColor: AppTheme.fundoApp,
@@ -41,13 +42,11 @@ class CabecalhoWidget extends ConsumerWidget implements PreferredSizeWidget {
     );
   }
 
-  Widget? _construirLeading(BuildContext context, PerfilModel perfil) {
+  Widget? _construirLeading(BuildContext context, PerfilModel? perfil) {
     if (mostrarBotaoVoltar) {
       return IconButton(
         icon: const Icon(Icons.arrow_back, color: AppTheme.textoPrimario),
-        onPressed: () {
-          Navigator.pop(context);
-        },
+        onPressed: () => Navigator.pop(context),
       );
     }
 
@@ -55,14 +54,12 @@ class CabecalhoWidget extends ConsumerWidget implements PreferredSizeWidget {
       return Padding(
         padding: const EdgeInsets.all(8),
         child: GestureDetector(
-          onTap: () {
-            Scaffold.of(context).openDrawer();
-          },
+          onTap: () => Scaffold.of(context).openDrawer(),
           child: CircleAvatar(
             radius: 20,
             backgroundColor: AppTheme.textoSecundario,
-            backgroundImage: perfil.avatarPath != null ? AssetImage(perfil.avatarPath!) : null,
-            child: perfil.avatarPath == null ? const Icon(Icons.person, size: 20, color: AppTheme.fundoApp) : null,
+            backgroundImage: perfil?.avatarPath != null ? AssetImage(perfil!.avatarPath!) : null,
+            child: perfil?.avatarPath == null ? const Icon(Icons.person, size: 20, color: AppTheme.fundoApp) : null,
           ),
         ),
       );
@@ -71,11 +68,11 @@ class CabecalhoWidget extends ConsumerWidget implements PreferredSizeWidget {
   }
 
   List<Widget>? _construirActions() {
-    if (!mostrarBotaoAddDeck) {
-      return null;
-    }
+    if (!mostrarBotaoAddDeck) return null;
+
     final String label = labelBotaoAddDeck ?? 'detalhes.adicionar_ao_deck'.tr();
     final IconData icone = iconeBotaoAddDeck ?? Icons.add_circle;
+
     return <Widget>[
       PopupMenuButton<String>(
         icon: const Icon(Icons.more_vert, color: AppTheme.textoPrimario),

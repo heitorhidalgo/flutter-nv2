@@ -18,15 +18,7 @@ class _PerfilPageState extends ConsumerState<PerfilPage> {
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   String? _erroEmail;
-
-  @override
-  void initState() {
-    super.initState();
-    final PerfilModel perfil = ref.read(perfilProvider);
-    _nomeController.text = perfil.nome;
-    _emailController.text = perfil.email;
-  }
-
+  bool _inicializado = false;
   bool _validarEmail(String email) {
     return email.contains('@') && email.contains('.');
   }
@@ -39,36 +31,46 @@ class _PerfilPageState extends ConsumerState<PerfilPage> {
   }
 
   @override
-  Widget build(BuildContext context) {final PerfilModel perfil = ref.watch(perfilProvider);
+  Widget build(BuildContext context) {
+    final AsyncValue<PerfilModel> perfilAsync = ref.watch(perfilProvider);
     final PerfilNotifier notifier = ref.read(perfilProvider.notifier);
     return Scaffold(
       backgroundColor: AppTheme.fundoApp,
-      appBar: const CabecalhoWidget(
-        mostrarBotaoVoltar: true,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment:
-          CrossAxisAlignment.stretch,
-          children: <Widget>[
-            _secaoAvatar(perfil),
-            const SizedBox(height: 32),
-            _secaoNome(),
-            const SizedBox(height: 20),
-            _secaoEmail(),
-            const SizedBox(height: 32),
-            _secaoEscolhaAvatar(
-              perfil,
-              notifier,
-            ),
-            const SizedBox(height: 32),
-            _botaoSalvar(notifier),
-          ],
+      appBar: const CabecalhoWidget(mostrarBotaoVoltar: true),
+      body: perfilAsync.when(
+        loading: () => const Center(
+          child: CircularProgressIndicator(color: AppTheme.textoPrimario),
         ),
+        error: (error, _) => Center(child: Text(error.toString())),
+        data: (PerfilModel perfil) {
+          if (!_inicializado) {
+            _nomeController.text = perfil.nome;
+            _emailController.text = perfil.email;
+            _inicializado = true;
+          }
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                _secaoAvatar(perfil),
+                const SizedBox(height: 32),
+                _secaoNome(),
+                const SizedBox(height: 20),
+                _secaoEmail(),
+                const SizedBox(height: 32),
+                _secaoEscolhaAvatar(perfil, notifier),
+                const SizedBox(height: 32),
+                _botaoSalvar(notifier),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
+
+  // --- WIDGETS FRAGMENTADOS ---
 
   Widget _secaoAvatar(PerfilModel perfil) {
     return Center(
@@ -76,17 +78,9 @@ class _PerfilPageState extends ConsumerState<PerfilPage> {
         children: <Widget>[
           CircleAvatar(
             radius: 80,
-            backgroundColor:
-            AppTheme.textoSecundario,
-            backgroundImage:
-            perfil.avatarPath != null ? AssetImage(perfil.avatarPath!) : null,
-            child:
-            perfil.avatarPath == null ? const Icon(
-              Icons.person,
-              size: 60,
-              color:
-              AppTheme.fundoApp,
-            ) : null
+            backgroundColor: AppTheme.textoSecundario,
+            backgroundImage: perfil.avatarPath != null ? AssetImage(perfil.avatarPath!) : null,
+            child: perfil.avatarPath == null ? const Icon(Icons.person, size: 60, color: AppTheme.fundoApp) : null,
           ),
           Positioned(
             bottom: 0,
@@ -94,21 +88,12 @@ class _PerfilPageState extends ConsumerState<PerfilPage> {
             child: Container(
               decoration: BoxDecoration(
                 color: AppTheme.textoPrimario,
-                shape:
-                BoxShape.circle,
-                border: Border.all(
-                  color: AppTheme.fundoApp,
-                  width: 2,
-                ),
+                shape: BoxShape.circle,
+                border: Border.all(color: AppTheme.fundoApp, width: 2),
               ),
               child: const Padding(
-                padding:
-                EdgeInsets.all(6),
-                child: Icon(
-                  Icons.edit,
-                  size: 18,
-                  color: AppTheme.fundoApp,
-                ),
+                padding: EdgeInsets.all(6),
+                child: Icon(Icons.edit, size: 18, color: AppTheme.fundoApp),
               ),
             ),
           ),
@@ -121,21 +106,27 @@ class _PerfilPageState extends ConsumerState<PerfilPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          'perfil.nome'.tr(),
-          style:
-          AppTheme.fonteSubtitulo(18),
-        ),
+        Text('perfil.nome'.tr(), style: AppTheme.fonteSubtitulo(18)),
         const SizedBox(height: 8),
         TextField(
           controller: _nomeController,
           style: AppTheme.fonteDescricao(18),
           decoration: InputDecoration(
-            hintText:
-            'perfil.insira_nome'.tr(),
+            hintText: 'perfil.insira_nome'.tr(),
+            hintStyle: AppTheme.fonteDescricao(16).copyWith(color: AppTheme.textoSecundario),
             filled: true,
-            fillColor:
-            Colors.white.withValues(alpha: 0.4),
+            fillColor: Colors.white.withValues(alpha: 0.4),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: AppTheme.textoPrimario),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(
+                color: AppTheme.textoPrimario,
+                width: 2,
+              ),
+            ),
           ),
         ),
       ],
@@ -146,25 +137,41 @@ class _PerfilPageState extends ConsumerState<PerfilPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          'perfil.email'.tr(),
-          style: AppTheme.fonteSubtitulo(18),
-        ),
+        Text('perfil.email'.tr(), style: AppTheme.fonteSubtitulo(18)),
         const SizedBox(height: 8),
         TextField(
           controller: _emailController,
           keyboardType: TextInputType.emailAddress,
           style: AppTheme.fonteDescricao(18),
           onChanged: (_) {
-            if (_erroEmail != null) {
-              setState(() {
-                _erroEmail = null;
-              });
-            }
+            if (_erroEmail != null) setState(() => _erroEmail = null);
           },
-          decoration:
-          InputDecoration(
+          decoration: InputDecoration(
+            hintText: 'perfil.insira_email'.tr(),
+            hintStyle: AppTheme.fonteDescricao(16).copyWith(color: AppTheme.textoSecundario),
+            filled: true,
+            fillColor: Colors.white.withValues(alpha: 0.4),
             errorText: _erroEmail,
+            errorStyle: AppTheme.fonteDescricao(13).copyWith(color: AppTheme.corErro),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: AppTheme.textoPrimario),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(
+                color: AppTheme.textoPrimario,
+                width: 2,
+              ),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: AppTheme.corErro),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: AppTheme.corErro, width: 2),
+            ),
           ),
         ),
       ],
@@ -175,10 +182,7 @@ class _PerfilPageState extends ConsumerState<PerfilPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          'perfil.escolha_avatar'.tr(),
-          style: AppTheme.fonteSubtitulo(18),
-        ),
+        Text('perfil.escolha_avatar'.tr(), style: AppTheme.fonteSubtitulo(18)),
         const SizedBox(height: 12),
         GridView.builder(
           shrinkWrap: true,
@@ -193,25 +197,16 @@ class _PerfilPageState extends ConsumerState<PerfilPage> {
             final String caminho = notifier.avataresDisponiveis[index];
             final bool selecionado = perfil.avatarPath == caminho;
             return GestureDetector(
-              onTap: () {
-                notifier.atualizarAvatar(caminho);
-              },
+              onTap: () => notifier.atualizarAvatar(caminho),
               child: Container(
-                decoration:
-                BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: selecionado ? AppTheme.textoPrimario : Colors.transparent,
                     width: 3,
                   ),
                 ),
-                child:
-                CircleAvatar(
-                  backgroundImage:
-                  AssetImage(
-                    caminho,
-                  ),
-                ),
+                child: CircleAvatar(backgroundImage: AssetImage(caminho)),
               ),
             );
           },
@@ -222,31 +217,36 @@ class _PerfilPageState extends ConsumerState<PerfilPage> {
 
   Widget _botaoSalvar(PerfilNotifier notifier) {
     return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppTheme.textoPrimario,
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
       onPressed: () async {
         final String email = _emailController.text.trim();
         if (!_validarEmail(email)) {
-          setState(() {
-            _erroEmail = 'perfil.erro_email_invalido'.tr();
-          });
+          setState(() => _erroEmail = 'perfil.erro_email_invalido'.tr());
           return;
         }
         await notifier.atualizarNome(_nomeController.text);
         await notifier.atualizarEmail(email);
-        if (!mounted) {
-          return;
-        }
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
               'perfil.atualizado'.tr(),
+              style: AppTheme.fonteDescricao(
+                16,
+              ).copyWith(color: AppTheme.textoPrimario),
             ),
+            backgroundColor: AppTheme.corSucesso,
           ),
         );
-
         Navigator.pop(context);
       },
       child: Text(
         'perfil.salvar'.tr(),
+        style: AppTheme.fonteTitulo(16).copyWith(color: AppTheme.fundoApp),
       ),
     );
   }

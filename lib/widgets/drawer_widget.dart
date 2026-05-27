@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../core/themes/app_theme.dart';
 import '../models/perfil_model.dart';
+import '../providers/login_provider.dart';
 import '../providers/meu_deck_provider.dart';
 import '../providers/perfil_provider.dart';
 import '../routes/app_routes.dart';
@@ -12,7 +13,8 @@ class DrawerWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final PerfilModel perfil = ref.watch(perfilProvider);
+    final PerfilModel? perfil = ref.watch(perfilProvider).value;
+
     return Drawer(
       backgroundColor: AppTheme.textoSecundario,
       child: Column(
@@ -27,7 +29,7 @@ class DrawerWidget extends ConsumerWidget {
     );
   }
 
-  Widget _cabecalhoDrawer(PerfilModel perfil) {
+  Widget _cabecalhoDrawer(PerfilModel? perfil) {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
@@ -37,12 +39,12 @@ class DrawerWidget extends ConsumerWidget {
             _avatarPerfil(perfil, radius: 50),
             const SizedBox(height: 12),
             Text(
-              perfil.nome,
+              perfil?.nome ?? 'Duelista',
               style: AppTheme.fonteTitulo(24).copyWith(color: AppTheme.fundoApp),
               overflow: TextOverflow.ellipsis,
             ),
             Text(
-              perfil.email,
+              perfil?.email ?? '',
               style: AppTheme.fonteDescricao(20).copyWith(color: AppTheme.fundoApp),
               overflow: TextOverflow.ellipsis,
             ),
@@ -61,7 +63,6 @@ class DrawerWidget extends ConsumerWidget {
       ),
       onTap: () {
         Navigator.pop(context);
-
         Navigator.pushNamed(context, AppRoutes.perfil);
       },
     );
@@ -74,9 +75,7 @@ class DrawerWidget extends ConsumerWidget {
         'drawer.sair'.tr(),
         style: AppTheme.fonteSubtitulo(16).copyWith(color: AppTheme.fundoApp),
       ),
-      onTap: () {
-        _confirmarLogout(context, ref);
-      },
+      onTap: () => _confirmarLogout(context, ref),
     );
   }
 
@@ -99,9 +98,7 @@ class DrawerWidget extends ConsumerWidget {
           ),
           actions: <Widget>[
             TextButton(
-              onPressed: () {
-                Navigator.pop(ctx);
-              },
+              onPressed: () => Navigator.pop(ctx),
               child: Text(
                 'drawer.cancelar'.tr(),
                 style: AppTheme.fonteSubtitulo(14).copyWith(color: AppTheme.fundoApp),
@@ -116,11 +113,12 @@ class DrawerWidget extends ConsumerWidget {
               ),
               onPressed: () async {
                 Navigator.pop(ctx);
-                await ref.read(perfilProvider.notifier).limparPerfil();
-                await ref.read(meuDeckProvider.notifier).limpar();
-                if (!context.mounted) {
-                  return;
-                }
+                await Future.wait([
+                  ref.read(perfilProvider.notifier).limparPerfil(),
+                  ref.read(meuDeckProvider.notifier).limpar(),
+                  ref.read(loginProvider.notifier).limparSessao(),
+                ]);
+                if (!context.mounted) return;
                 Navigator.pushNamedAndRemoveUntil(
                   context,
                   AppRoutes.login,
@@ -138,12 +136,12 @@ class DrawerWidget extends ConsumerWidget {
     );
   }
 
-  Widget _avatarPerfil(PerfilModel perfil, {double radius = 30}) {
+  Widget _avatarPerfil(PerfilModel? perfil, {double radius = 30}) {
     return CircleAvatar(
       radius: radius,
       backgroundColor: AppTheme.fundoApp,
-      backgroundImage: perfil.avatarPath != null ? AssetImage(perfil.avatarPath!) : null,
-      child: perfil.avatarPath == null ? Icon(Icons.person, size: radius, color: AppTheme.textoPrimario) : null,
+      backgroundImage: perfil?.avatarPath != null ? AssetImage(perfil!.avatarPath!) : null,
+      child: perfil?.avatarPath == null ? Icon(Icons.person, size: radius, color: AppTheme.textoPrimario) : null,
     );
   }
 }

@@ -12,27 +12,35 @@ import '../widgets/cabecalho_widget.dart';
 
 class MeuDeckPage extends ConsumerWidget {
   const MeuDeckPage({super.key});
+
   static const int _limiteMaximo = 60;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final MeuDeckState meuDeckState = ref.watch(meuDeckProvider);
-    final List<YugiohCardModel> cartas = meuDeckState.cartas;
+    final AsyncValue<MeuDeckState> deckAsync = ref.watch(meuDeckProvider);
     return Scaffold(
       backgroundColor: AppTheme.fundoApp,
       appBar: const CabecalhoWidget(mostrarBotaoVoltar: true),
-      body: _conteudoPrincipal(cartas),
+      body: deckAsync.when(
+        loading: () => const Center(
+          child: CircularProgressIndicator(color: AppTheme.textoPrimario),
+        ),
+        error: (error, _) => Center(child: Text(error.toString())),
+        data: (MeuDeckState estado) =>
+            _conteudoPrincipal(context, estado.cartas),
+      ),
     );
   }
 
-  Widget _conteudoPrincipal(List<YugiohCardModel> cartas) {
-    if (cartas.isEmpty) {
-      return _estadoVazio();
-    }
+  Widget _conteudoPrincipal(
+    BuildContext context,
+    List<YugiohCardModel> cartas,
+  ) {
+    if (cartas.isEmpty) return _estadoVazio();
     return Column(
       children: <Widget>[
         _contadorCartas(cartas),
-        Expanded(child: _listaDeCartas(cartas)),
+        Expanded(child: _listaDeCartas(context, cartas)),
       ],
     );
   }
@@ -93,13 +101,12 @@ class MeuDeckPage extends ConsumerWidget {
     );
   }
 
-  Widget _listaDeCartas(List<YugiohCardModel> cartas) {
+  Widget _listaDeCartas(BuildContext context, List<YugiohCardModel> cartas) {
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       itemCount: cartas.length,
       itemBuilder: (BuildContext context, int index) {
-        final YugiohCardModel carta = cartas[index];
-        return _cardLista(context, carta);
+        return _cardLista(context, cartas[index]);
       },
     );
   }
@@ -120,9 +127,8 @@ class MeuDeckPage extends ConsumerWidget {
             imageUrl: carta.imageUrl,
             width: 40,
             fit: BoxFit.cover,
-            errorWidget: (BuildContext context, String url, Object error) {
-              return const Icon(Icons.broken_image, color: AppTheme.fundoApp);
-            },
+            errorWidget: (BuildContext context, String url, Object error) =>
+                const Icon(Icons.broken_image, color: AppTheme.fundoApp),
           ),
         ),
         title: Text(
