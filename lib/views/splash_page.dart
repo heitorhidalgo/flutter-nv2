@@ -21,12 +21,15 @@ class _SplashPageState extends ConsumerState<SplashPage> {
   }
 
   Future<void> _inicializar() async {
-    ref.read(perfilProvider);
-    ref.read(meuDeckProvider);
+    await Future.wait([
+      ref.read(perfilProvider.future),
+      ref.read(meuDeckProvider.future),
+    ]);
+
     final bool estaLogado = await ref.read(loginProvider.notifier).estaLogado();
-    if (!mounted) {
-      return;
-    }
+
+    if (!mounted) return;
+
     Navigator.pushReplacementNamed(
       context,
       estaLogado ? AppRoutes.home : AppRoutes.login,
